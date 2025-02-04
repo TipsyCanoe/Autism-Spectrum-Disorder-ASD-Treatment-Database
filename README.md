@@ -12,3 +12,17 @@ If you want to run the frontend-barebones testing website locally, get into the 
 Then, run ```npm install```. After that, running ```npm start``` should be sufficient to deploy locally. if you ctrl-z to 
 end the process in the terminal, the process still may be running on port 3000 (I think it's specified). run ```fuser -k 3000/tcp``` 
 which should kill the process. 
+
+## PubMed API Extraction
+Source: https://youtu.be/sGC66q45BX4
+
+The code was cloned from a public Github repository, obtained from the above Youtube video.
+No email needed for now, as I doubt we are using more than 3 requests per second.
+
+Dependencies (if using Python 3, just add 3 after pip or python): 
+    ```sh
+    pip install pandas biopython
+    ```
+Run the python program, and output is in PubMed_results.xlsx.
+For full README, go to the github listed in the video.
+Full-text download is possible, in xml, txt, and pdf format I think, but I haven't gotten that yet.
