@@ -4,19 +4,19 @@ import useSearch from "../hooks/useSearch";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("q");
+  const filters = JSON.parse(searchParams.get("filters") || "[]");
   const { results, fetchResults } = useSearch();
 
   useEffect(() => {
-    if (query) {
-      const queryVector = JSON.parse(query);
-      fetchResults(queryVector);
+    if (filters.length > 0) {
+      // Assuming fetchResults can handle an array of filters
+      fetchResults(filters);
     }
-  }, [query, fetchResults]);
+  }, [filters, fetchResults]);
 
   return (
     <div>
-      <h1>Search Results for: {query}</h1>
+      <h1>Search Results for: {filters.join(", ")}</h1>
       <ul>
         {results.map((result, index) => (
           <li key={index}>{result.join(", ")}</li>
