@@ -1,8 +1,12 @@
-// api calls from searching feature
+import axios from "axios";
 
-import React from "react";
-
-const searchService = () => {
+const searchVectors = async (queryVector) => {
+  const response = await axios.get(
+    `http://localhost:3001/search-vectors?q=${JSON.stringify(queryVector)}`
+  );
+  return response.data;
 };
 
-export default searchService;
+export default {
+  searchVectors,
+};

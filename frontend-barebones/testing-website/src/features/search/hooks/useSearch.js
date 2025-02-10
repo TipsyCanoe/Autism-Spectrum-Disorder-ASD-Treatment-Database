@@ -1,13 +1,21 @@
-// barebones component for hooks
-
 import { useState } from "react";
+import searchService from "../services/searchService";
 
 const useSearch = () => {
-  // Hook logic here
-  const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState({});
+  const [query, setQuery] = useState([]);
+  const [results, setResults] = useState([]);
 
-  return { query, setQuery, filters, setFilters };
+  const fetchResults = async (queryVector) => {
+    const data = await searchService.searchVectors(queryVector);
+    setResults(data);
+  };
+
+  return {
+    query,
+    setQuery,
+    results,
+    fetchResults,
+  };
 };
 
 export default useSearch;

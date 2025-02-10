@@ -1,13 +1,27 @@
-// page for search results
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import useSearch from "../features/search/hooks/useSearch";
 
-import React from "react";
-import "../index.css";
+const SearchResults = () => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q");
+  const { results, fetchResults } = useSearch();
 
-const SearchResults = ({ query }) => {
+  useEffect(() => {
+    if (query) {
+      const queryVector = JSON.parse(query);
+      fetchResults(queryVector);
+    }
+  }, [query, fetchResults]);
+
   return (
     <div>
-      {/* Display search results based on the query */}
-      <p>Results for: {query}</p>
+      <h1>Search Results for: {query}</h1>
+      <ul>
+        {results.map((result, index) => (
+          <li key={index}>{result.join(", ")}</li>
+        ))}
+      </ul>
     </div>
   );
 };
