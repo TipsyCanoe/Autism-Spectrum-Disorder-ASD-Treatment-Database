@@ -1,6 +1,7 @@
 // general code for not found error page
 
 import React from 'react';
+import "../index.css"
 
 const NotFoundPage = () => {
     return (

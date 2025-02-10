@@ -1,4 +1,7 @@
-import React from 'react';
+// page for search results
+
+import React from "react";
+import "../index.css";
 
 const SearchResults = ({ query }) => {
   return (

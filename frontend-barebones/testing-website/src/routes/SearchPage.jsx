@@ -1,19 +1,18 @@
-// essentially the search page barebones
-
 import React from "react";
-import useSearch from '../features/search/hooks/useSearch';
+import { Outlet } from "react-router-dom";
+import SearchFilters from "../features/search/components/SearchFilters";
+import SearchInput from "../features/search/components/SearchInput";
+import useSearch from "../features/search/hooks/useSearch";
+import "../index.css"
 
 const SearchPage = () => {
   const { query, setQuery } = useSearch();
 
   return (
     <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button>Search</button>
+      <SearchFilters />
+      <SearchInput query={query} setQuery={setQuery} />
+      <Outlet /> {/* This will render the child routes */}
     </div>
   );
 };
