@@ -2,17 +2,17 @@ import { useState } from "react";
 import searchService from "../services/searchService";
 
 const useSearch = () => {
-  const [query, setQuery] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [results, setResults] = useState([]);
 
-  const fetchResults = async (queryVector) => {
-    const data = await searchService.searchVectors(queryVector);
+  const fetchResults = async () => {
+    const data = await searchService.search(selectedOptions);
     setResults(data);
   };
 
   return {
-    query,
-    setQuery,
+    selectedOptions,
+    setSelectedOptions,
     results,
     fetchResults,
   };
