@@ -114,3 +114,10 @@ select:focus {
 .bg-custom:hover {
   background-color: #1a252f; /* Darker shade for hover */
 }
+
+.horizontal-resources {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem; /* Equivalent to Tailwind's gap-8 */
+  overflow-x: auto;
+}

@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AutismSociety from "../assets/AutismSociety.png";
 import AutismSpeaksImg from "../assets/AutismSpeaksLink.jpg";
+import NationalAutismAssociation from "../assets/NationalAutismAssociation.png";
 import "../index.css";
 
 const HomePage = () => {
@@ -15,8 +17,10 @@ const HomePage = () => {
           <p className="text-gray-600 mt-4">
             A comprehensive database of resources for professionals and
             families. We are working with the{" "}
-            <a href="https://sendancenter.com/">Sendan Center</a> to provide the
-            best resources for autism support.
+            <a href="https://sendancenter.com/" target="_blank">
+              <b>Sendan Center</b>
+            </a>{" "}
+            to provide the best resources for autism support.
           </p>
         </div>
       </section>
@@ -95,12 +99,14 @@ const HomePage = () => {
           <h3 className="text-2xl font-bold text-gray-800 mb-8">
             Other Autism Resources
           </h3>
-          <div className="flex flex-wrap justify-center gap-8">
+          {/* Use our custom horizontal-resources class */}
+          <div className="horizontal-resources">
+            {/* Resource Card */}
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
                 src={AutismSpeaksImg}
                 alt="Autism Speaks"
-                className="w-24 h-24 object-cover rounded-lg mb-4"
+                className="w-16 h-16 object-cover rounded-lg mb-4"
               />
               <h4 className="text-xl font-semibold">Autism Speaks</h4>
               <p className="text-gray-600 mt-2">
@@ -116,11 +122,12 @@ const HomePage = () => {
                 Visit Autism Speaks
               </a>
             </div>
+            {/* Another Resource */}
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
-                src="https://nationalautismassociation.org/wp-content/uploads/2019/02/NAA-Logo.png"
+                src={NationalAutismAssociation}
                 alt="National Autism Association"
-                className="w-24 h-24 object-cover rounded-lg mb-4"
+                className="w-16 h-16 object-cover rounded-lg mb-4"
               />
               <h4 className="text-xl font-semibold">
                 National Autism Association
@@ -138,11 +145,12 @@ const HomePage = () => {
                 Visit National Autism Association
               </a>
             </div>
+            {/* Another Resource */}
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
-                src="https://www.autism-society.org/wp-content/uploads/2019/04/Autism-Society-Logo.png"
+                src={AutismSociety}
                 alt="Autism Society"
-                className="w-24 h-24 object-cover rounded-lg mb-4"
+                className="w-16 h-16 object-cover rounded-lg mb-4"
               />
               <h4 className="text-xl font-semibold">Autism Society</h4>
               <p className="text-gray-600 mt-2">
