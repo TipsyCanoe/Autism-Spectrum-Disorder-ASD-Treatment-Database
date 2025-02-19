@@ -14,7 +14,9 @@ const HomePage = () => {
           </h2>
           <p className="text-gray-600 mt-4">
             A comprehensive database of resources for professionals and
-            families.
+            families. We are working with the{" "}
+            <a href="https://sendancenter.com/">Sendan Center</a> to provide the
+            best resources for autism support.
           </p>
         </div>
       </section>
@@ -26,7 +28,7 @@ const HomePage = () => {
             Find the Resources You Need
           </h3>
           <Link to="/search">
-            <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <button className="mt-4 px-6 py-2 bg-custom text-white rounded-lg hover:bg-blue-700">
               Search
             </button>
           </Link>
@@ -167,7 +169,7 @@ const HomePage = () => {
           <p className="mb-8">
             Sign up to receive updates and access exclusive resources.
           </p>
-          <button className="px-6 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-200">
+          <button className="px-6 py-2 bg-custom rounded-lg">
             Sign Up Now
           </button>
         </div>
