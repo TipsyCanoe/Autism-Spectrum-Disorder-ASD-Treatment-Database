@@ -1,0 +1,23 @@
+# Ignore Python virtual environments
+medbert_env/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore large dataset or pretraining outputs (if applicable)
+*.db
+*.h5
+*.npy
+*.pt
+*.ckpt
+
+# Ignore log and temporary files
+logs/
+*.log
+*.tmp
+
+# Ignore screenshots (optional)
+*.png
+*.jpg

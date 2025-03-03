@@ -5,7 +5,7 @@ import "./NavBar.css"; // Import the CSS file for NavBar styles
 const NavBar = () => {
   return (
     <nav className="navbar">
-      <div className = "navbar-title">ASD Database</div>
+      <div className = "navbar-title">RAT</div>
       <div className="navbar-list-wrapper">
         <ul className="navbar-list">
           <li className="navbar-item">

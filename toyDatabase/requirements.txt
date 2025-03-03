@@ -1,0 +1,6 @@
+faiss-cpu
+numpy
+matplotlib
+sentence-transformers
+torch
+transformers
