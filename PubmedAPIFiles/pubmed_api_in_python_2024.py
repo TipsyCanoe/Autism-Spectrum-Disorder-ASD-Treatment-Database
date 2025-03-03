@@ -9,7 +9,7 @@ Things I removed and should maybe remember:
 '''
 # Set the email address to avoid any potential issues with Entrez
 Entrez.email = 'loa4@wwu.edu'
-Entrez.api_key = 'c301edeca095efe481ce5e2a727560444908'
+#Entrez.api_key = ''
 
 # May need to adjust path depending on what directory you run this in
 path = str(Path.cwd()) + '/PubmedAPI/Harle - ASD bio tx .xlsx'
