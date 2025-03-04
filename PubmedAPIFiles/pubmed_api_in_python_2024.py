@@ -12,7 +12,7 @@ Entrez.email = 'loa4@wwu.edu'
 #Entrez.api_key = ''
 
 # May need to adjust path depending on what directory you run this in
-path = str(Path.cwd()) + '/PubmedAPI/Harle - ASD bio tx .xlsx'
+path = str(Path.cwd()) + '/PubmedAPIFiles/Harle - ASD bio tx .xlsx'
 #print(path)
 
 oldDf = pd.read_excel(path, 'Tx Data', usecols="A,D")
@@ -60,7 +60,7 @@ for query in queries:
     id_list = record['IdList']
 
     # DataFrame to store the extracted data
-    df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract', 'Authors', 'Journal', 'Keywords', 'URL', 'Affiliations'])
+    df = pd.DataFrame(columns=['PMID', 'DOI', 'Title', 'Abstract', 'Authors', 'Journal', 'Keywords', 'URL', 'Affiliations'])
 
     # Fetch information for each record in the id_list
     for pmid in id_list:
@@ -71,6 +71,11 @@ for query in queries:
         for record in records['PubmedArticle']:
             # Print the record in a formatted JSON style
             #print(json.dumps(record, indent=4, default=str))  # default=str handles types JSON can't serialize like datetime
+            if record.get('PubmedData'):
+                if record['PubmedData'].get('ArticleIdList'):
+                    for other_id in record['PubmedData']['ArticleIdList']:
+                        if 'doi' in other_id.attributes.values():
+                            doi = (other_id.title())
             title = record['MedlineCitation']['Article']['ArticleTitle']
             abstract = ' '.join(record['MedlineCitation']['Article']['Abstract']['AbstractText']) if 'Abstract' in record['MedlineCitation']['Article'] and 'AbstractText' in record['MedlineCitation']['Article']['Abstract'] else ''
             authors = ', '.join(author.get('LastName', '') + ' ' + author.get('ForeName', '') for author in record['MedlineCitation']['Article']['AuthorList'])
@@ -87,6 +92,7 @@ for query in queries:
 
             new_row = pd.DataFrame({
                 'PMID': [pmid],
+                'DOI': [doi],
                 'Title': [title],
                 'Abstract': [abstract],
                 'Authors': [authors],
@@ -97,7 +103,7 @@ for query in queries:
             })
 
             df = pd.concat([df, new_row], ignore_index=True)
-    completePD = pd.concat([completePD, df], ignore_index=True)
+    completePD = pd.concat([completePD, df], ignore_index=True).drop_duplicates()
     print("Finished " + query)
 
 # Save DataFrame to an Excel file
