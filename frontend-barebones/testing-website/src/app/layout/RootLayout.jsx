@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../../features/search/components/NavBar";
-import "./RootLayout.css";
 
 const RootLayout = () => {
   return (
