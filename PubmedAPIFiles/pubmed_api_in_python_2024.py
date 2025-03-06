@@ -9,7 +9,7 @@ Things I removed and should maybe remember:
 '''
 # Set the email address to avoid any potential issues with Entrez
 Entrez.email = 'loa4@wwu.edu'
-#Entrez.api_key = ''
+Entrez.api_key = 'c301edeca095efe481ce5e2a727560444908'
 
 # May need to adjust path depending on what directory you run this in
 path = str(Path.cwd()) + '/PubmedAPIFiles/Harle - ASD bio tx .xlsx'
@@ -44,7 +44,7 @@ if topics:
     #queries.append('(' + ' OR '.join(topic_queries) + ')')
 
 for i in range(len(author_queries)):
-    queries.append(author_queries[i] + ' AND ' + topic_queries[i])
+    queries.append(author_queries[i] + ' AND ' + topic_queries[i] + ' AND ' + '(randomized controlled trial[Publication Type] OR "Clinical Trial"[Publication Type])')
 
 '''
 print(author_queries)
@@ -107,5 +107,5 @@ for query in queries:
     print("Finished " + query)
 
 # Save DataFrame to an Excel file
-completePD.to_excel('Adjusted_ASD_Sheet_Info.xlsx', index=False)
+completePD.to_excel('Adjusted_ASD_Sheet_Info_V2.xlsx', index=False)
 
