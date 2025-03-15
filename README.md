@@ -24,6 +24,4 @@ I have two extraction files currently; one based on the query Jim sent, and one 
 
 `convert_excel_to_json.py` is as the name implies; it converts the excel spreadsheet to a JSON. Currently, it expects the two excel sheets listed above.
 
-Dependencies (if using Python 3, just add 3 after pip or python):
-    ``sh     pip install pandas biopython     ``
-Run the python program, and output is in PubMed_results.xlsx.
+Dependencies (if using Python 3, just add 3 after pip or python): ``sh pip install pandas biopython``
