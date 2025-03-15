@@ -9,7 +9,7 @@ from pathlib import Path
 '''
 # Set the email address to avoid any potential issues with Entrez
 Entrez.email = 'loa4@wwu.edu'
-Entrez.api_key = 'c301edeca095efe481ce5e2a727560444908'
+#Entrez.api_key = ''
 
 queries = []
 topic_queries = []
