@@ -5,21 +5,20 @@ from pathlib import Path
 
 '''
 - The main puller for the data
-- Plan on implementing automatic pulling from a csv or text file 
-depending on if the terms fit
-- Also pipe to metapub maybe
-- Ask me for the API key if you want to run it, or just make an account of your own and fill in your own info
 - Github doesn't like it wihen keys are exposed
 '''
 # Set the email address to avoid any potential issues with Entrez
 Entrez.email = 'loa4@wwu.edu'
-#Entrez.api_key = ''
+Entrez.api_key = 'c301edeca095efe481ce5e2a727560444908'
 
 queries = []
 topic_queries = []
+monthDict = {
+    "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
+    "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+    "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
+}
 
-
-# Will be adjusted
 general_terms = ['Autism Spectrum Disorder[MeSH]', 'Autism[Title/Abstract]', 'Autistic Disorder[Title/Abstract]', 'ASD[Title/Abstract]']
 biologics_terms = ['"Biological Products"[MeSH]', 'Biologic*[Title/Abstract]', '"Antibodies, monoclonal"[MeSH]', 'Cytokine Inhibitors[MeSH]', 'Immunotherapy[MeSH]']
 treatment_terms = ['rTMS[Title/Abstract]', '"Transcranial Magnetic Stimulation"[MeSH]', 'ECT[Title/Abstract]', '"Electroconvulsive Therapy"[MeSH]', 
@@ -33,7 +32,7 @@ for terms in query_boxes:
     queries.append('(' + ' OR '.join(topic_queries) + ')')
 
 full_query = queries[0] + ' AND (' + queries[1] + ' OR ' + queries[2] + ') AND ' + queries[3]
-print(full_query)
+# print(full_query)
 
 completePD = pd.DataFrame()
 
@@ -43,7 +42,7 @@ record = Entrez.read(handle)
 id_list = record['IdList']
 
 # DataFrame to store the extracted data
-df = pd.DataFrame(columns=['PMID', 'DOI', 'Title', 'Abstract', 'Authors', 'Journal', 'Keywords', 'URL', 'Affiliations'])
+df = pd.DataFrame(columns=['PMID', 'DOI', 'Title', 'Publication Date', 'Abstract', 'Authors', 'Journal', 'Keywords', 'URL', 'Affiliations'])
 
 count = 0
 
@@ -54,12 +53,27 @@ for pmid in id_list:
 
     # Process each PubMed article in the respons e
     for record in records['PubmedArticle']:
+        doi = ''
         if record.get('PubmedData'):
             if record['PubmedData'].get('ArticleIdList'):
                 for other_id in record['PubmedData']['ArticleIdList']:
                     if 'doi' in other_id.attributes.values():
                         doi = (other_id.title()) 
         title = record['MedlineCitation']['Article']['ArticleTitle']
+
+        pubDate = ''
+        pubDate_section = record['MedlineCitation']['Article']['Journal']['JournalIssue'].get('PubDate', {})
+
+        if 'Year' in pubDate_section:
+            year = pubDate_section['Year']
+            month = pubDate_section.get('Month', '01')
+            if month != '01':
+                month = monthDict.get(month)
+            day = pubDate_section.get('Day', '01')
+            pubDate = f"{year}-{month}-{day}"
+        elif 'MedlineDate' in pubDate_section:
+            pubDate = pubDate_section['MedlineDate']  # Fallback to textual date
+
         abstract = ' '.join(record['MedlineCitation']['Article']['Abstract']['AbstractText']) if 'Abstract' in record['MedlineCitation']['Article'] and 'AbstractText' in record['MedlineCitation']['Article']['Abstract'] else ''
         authors = ', '.join(author.get('LastName', '') + ' ' + author.get('ForeName', '') for author in record['MedlineCitation']['Article'].get('AuthorList', []))
         
@@ -77,6 +91,7 @@ for pmid in id_list:
             'PMID': [pmid],
             'DOI': [doi],
             'Title': [title],
+            'Publication Date': [pubDate],
             'Abstract': [abstract],
             'Authors': [authors],
             'Journal': [journal],
@@ -86,13 +101,10 @@ for pmid in id_list:
         })
 
         df = pd.concat([df, new_row], ignore_index=True).drop_duplicates()
-        '''
         count += 1
         if(count % 100 == 0):
             print(count)
-        '''
         
-
 # Save DataFrame to an Excel file
 df.to_excel('pubmed_papers_info.xlsx', index=False)
 
