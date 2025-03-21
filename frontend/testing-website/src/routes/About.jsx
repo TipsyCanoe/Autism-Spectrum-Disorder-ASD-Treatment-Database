@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import AlexLo from "../assets/AlexLo.jpg";
+import RichardJefferson from "../assets/RichardJefferson.jpg";
 import "../index.css";
 import Contact from "./Contact";
 
@@ -36,16 +38,16 @@ const About = () => {
           Our Partnership with the Sendan Center
         </h2>
         <p className="text-lg mb-4">
-          The Autism Resources Database was developed in collaboration with the
-          Sendan Center, a leading organization specializing in autism
-          assessment, treatment, and support services. This partnership ensures
-          that our database is informed by clinical expertise and reflects the
-          real-world needs of practitioners and families.
+          The Autism Resources Database was developed in collaboration with Jim
+          Harle from the Sendan Center, a leading organization specializing in
+          autism assessment, treatment, and support services. This partnership
+          ensures that our database is built on clinical expertise and reflects
+          the real-world needs of practitioners and families.
         </p>
         <p className="text-lg">
-          The Sendan Center's team of specialists contributes to the vetting
-          process of our resources, ensuring that all information shared through
-          our platform meets high standards of scientific validity and practical
+          The process of articles getting added to our database is thoroughly
+          discussed and vetted, ensuring that all information shared through our
+          platform meets high standards of scientific validity and practical
           applicability.
         </p>
       </section>
@@ -59,35 +61,10 @@ const About = () => {
           <div className="border border-gray-300 rounded-lg p-6">
             <h3 className="text-xl font-medium mb-3">Research Papers</h3>
             <p>
-              Peer-reviewed studies on autism interventions, diagnostic
-              approaches, and emerging therapies. Our collection spans from
-              foundational research to the latest advancements in the field.
-            </p>
-          </div>
-          <div className="border border-gray-300 rounded-lg p-6">
-            <h3 className="text-xl font-medium mb-3">
-              Treatment Methodologies
-            </h3>
-            <p>
-              Detailed guides on evidence-based interventions including Applied
-              Behavior Analysis (ABA), speech therapy, occupational therapy, and
-              social skills training approaches.
-            </p>
-          </div>
-          <div className="border border-gray-300 rounded-lg p-6">
-            <h3 className="text-xl font-medium mb-3">Educational Resources</h3>
-            <p>
-              Materials for teachers and educational specialists working with
-              students on the autism spectrum, including classroom strategies
-              and accommodation recommendations.
-            </p>
-          </div>
-          <div className="border border-gray-300 rounded-lg p-6">
-            <h3 className="text-xl font-medium mb-3">Family Support</h3>
-            <p>
-              Practical guides and resources for parents and caregivers,
-              addressing daily challenges, advocacy information, and approaches
-              to supporting development at home.
+              Established studies on autism interventions, diagnostic
+              approaches, and emerging treatments for mental health. Our
+              collection spans from foundational research to the latest
+              advancements in the field.
             </p>
           </div>
         </div>
@@ -101,21 +78,44 @@ const About = () => {
           researchers, clinicians, and technology specialists who are passionate
           about improving access to autism resources.
         </p>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-5">
           <div className="text-center">
-            <div className="w-32 h-32 rounded-full bg-gray-300 mx-auto mb-4"></div>
-            <h3 className="font-semibold">John Smith</h3>
-            <p className="text-gray-600">Research Director</p>
+            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <h3 className="font-semibold">James Harle, MD</h3>
+            <p className="text-gray-600">Child and Adolescent Psychiatrist</p>
           </div>
           <div className="text-center">
-            <div className="w-32 h-32 rounded-full bg-gray-300 mx-auto mb-4"></div>
-            <h3 className="font-semibold">John Smith</h3>
+            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <h3 className="font-semibold">Shameem Ahmed</h3>
+            <p className="text-gray-600">Research Oversight and ASD Expert</p>
+          </div>
+          <div className="text-center">
+            <img
+              src={RichardJefferson}
+              alt="Richard Jefferson"
+              className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"
+            />
+            <h3 className="font-semibold">Richard Jefferson</h3>
             <p className="text-gray-600">Database Architect</p>
           </div>
           <div className="text-center">
-            <div className="w-32 h-32 rounded-full bg-gray-300 mx-auto mb-4"></div>
-            <h3 className="font-semibold">John Smith</h3>
-            <p className="text-gray-600">Clinical Advisor</p>
+            <img
+              src={AlexLo}
+              alt="Alex Lo"
+              className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"
+            />
+            <h3 className="font-semibold">Alex Lo</h3>
+            <p className="text-gray-600">API and Formatting Architect</p>
+          </div>
+          <div className="text-center">
+            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <h3 className="font-semibold">Logan Kalloway</h3>
+            <p className="text-gray-600">LLM and MedBERT Architect</p>
+          </div>
+          <div className="text-center">
+            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <h3 className="font-semibold">Cole Oliva</h3>
+            <p className="text-gray-600">Frontend and Endpoints Architect</p>
           </div>
         </div>
       </section>
@@ -127,19 +127,17 @@ const About = () => {
         </h2>
         <p className="text-lg mb-4">
           We are committed to maintaining the highest standards of accuracy and
-          relevance in our database. Each resource undergoes a rigorous
+          relevance in our database. Each resource undergoes an automated
           evaluation process before being included:
         </p>
         <ol className="list-decimal pl-6 space-y-2">
           <li>
-            Initial screening by our research team for relevance and basic
-            scientific merit
+            Initial screening by 3rd-party scientific databases (PubMed)
           </li>
           <li>
-            Review by subject matter experts from various disciplines related to
-            autism
+            Review by automated queries to make sure the paper is relevant to ASD.
           </li>
-          <li>Clinical evaluation by practitioners from the Sendan Center</li>
+          <li>Double checking when categorizing papers to ensure accuracy</li>
           <li>
             Regular reassessment to ensure continued relevance and accuracy
           </li>

@@ -45,17 +45,17 @@ const FAQ = () => {
     {
       question: "How are resources vetted before being added?",
       answer:
-        "All resources undergo a thorough review process by autism specialists and experts from the Sendan Center to ensure quality and reliability.",
+        "All resources are pulled from established and respected scientific databases like PubMed to ensure quality and reliability.",
     },
     {
       question: "Is there a cost to access the database?",
       answer:
-        "Basic access to the database is free. Some specialized research papers may require a professional subscription.",
+        "Basic access to the database is free.",
     },
     {
       question: "How can I save resources for later reference?",
       answer:
-        "Create a free account to save resources to your personal library and organize them into custom folders.",
+        "We hope to implement a feature to save resources in the future. Stay tuned!",
     },
   ];
 
