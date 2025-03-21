@@ -25,3 +25,58 @@ I have two extraction files currently; one based on the query Jim sent, and one 
 `convert_excel_to_json.py` is as the name implies; it converts the excel spreadsheet to a JSON. Currently, it expects the two excel sheets listed above.
 
 Dependencies (if using Python 3, just add 3 after pip or python): ``sh pip install pandas biopython``
+
+# Local Database Setup Instructions
+
+This guide will help you set up a local instance of the ASD Treatment Database using PostgreSQL.
+
+## Prerequisites
+
+- PostgreSQL installed on your system (version 10.0 or higher recommended)
+- psql command-line tool or pgAdmin GUI tool
+
+## Setup Instructions
+
+### Using psql (Command Line)
+
+1. Open your terminal or command prompt
+2. Log in to PostgreSQL:
+   ```bash
+   psql -U postgres
+   ```
+3. Create a new database:
+   ```sql
+   CREATE DATABASE asd_treat_db_local;
+   ```
+4. Connect to the newly created database:
+   ```sql
+   \c asd_treat_db_local
+   ```
+5. Import the database schema and data:
+   ```bash
+   \i 'path/to/seniorProjLocal.sql'
+   ```
+   Replace `path/to/seniorProjLocal.sql` with the actual path to the SQL file.
+
+### Using pgAdmin
+
+1. Open pgAdmin
+2. Right-click on "Databases" in the object browser and select "Create" > "Database..."
+3. Name your database (e.g., "asd_treat_db_local") and click "Save"
+4. Right-click on your new database and select "Query Tool"
+5. Click the "Open File" button (or press Ctrl+O)
+6. Navigate to and select the `seniorProjLocal.sql` file
+7. Click the "Execute/Refresh" button (or press F5) to run the script
+
+## Verifying the Setup
+
+To confirm the database was set up correctly, run:
+
+```sql
+SELECT * FROM public.treatment_data;
+```
+
+You should see the treatment data records displayed in the results.
+
+
+
