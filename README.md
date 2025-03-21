@@ -24,6 +24,11 @@ I have two extraction files currently; one based on the query Jim sent, and one 
 
 `convert_excel_to_json.py` is as the name implies; it converts the excel spreadsheet to a JSON. Currently, it expects the two excel sheets listed above.
 
+Planned additions:
+- Automatic querying based on keywords using files (currently working + unfinished)
+- Obtain full-text; if not for every, then at least some (have an idea, unimplemented)
+- Different queries to meet all the trial types and papers for customer request (currently working on with customer)
+
 Dependencies (if using Python 3, just add 3 after pip or python): ``sh pip install pandas biopython``
 
 # Local Database Setup Instructions
