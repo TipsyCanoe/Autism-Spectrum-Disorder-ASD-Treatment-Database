@@ -18,6 +18,3 @@ logs/
 *.log
 *.tmp
 
-# Ignore screenshots (optional)
-*.png
-*.jpg
