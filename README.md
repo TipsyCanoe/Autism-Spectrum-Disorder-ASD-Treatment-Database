@@ -8,9 +8,9 @@ The goal of this project is to create a database and front-end representation fo
 healthcare professionals looking to know more about autism. Resources will be pulled from various
 published studies and articles.
 
-If you want to run the frontend-barebones testing website locally, get into the frontend directory, and then the testing-website directory inside.
+If you want to run the frontend testing website locally, get into the frontend directory, and then the testing-website directory inside (``cd frontend/testing-website``)
 Then, run ``npm install``. After that, running ``npm start`` should be sufficient to deploy locally. if you ctrl-z to
-end the process in the terminal, the process still may be running on port 3000 (I think it's specified). run ``fuser -k 3000/tcp``
+end the process in the terminal, the process still may be running on port 3000 (I think it's specified). run ``fuser -k 3000/tcp`` or ``npx kill-port 3000``
 which should kill the process.
 
 ## PubMed API Extraction
