@@ -7,7 +7,10 @@
     "@tailwindcss/postcss": "^4.0.5",
     "@tailwindcss/vite": "^4.0.5",
     "axios": "^1.7.9",
+    "chai": "^5.2.0",
     "cra-template": "1.2.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^11.1.0",
     "postcss-import": "^16.1.0",
     "postcss-nested": "^7.0.2",
     "react": "^18.2.0",
@@ -18,7 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "nyc mocha --timeout=3000",
     "eject": "react-scripts eject",
     "tailwind": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch"
   },
