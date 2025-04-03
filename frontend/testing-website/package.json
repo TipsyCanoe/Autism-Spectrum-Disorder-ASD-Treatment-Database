@@ -7,10 +7,8 @@
     "@tailwindcss/postcss": "^4.0.5",
     "@tailwindcss/vite": "^4.0.5",
     "axios": "^1.7.9",
-    "chai": "^5.2.0",
     "cra-template": "1.2.0",
     "istanbul": "^0.4.5",
-    "mocha": "^11.1.0",
     "postcss-import": "^16.1.0",
     "postcss-nested": "^7.0.2",
     "react": "^18.2.0",
@@ -21,9 +19,18 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "nyc mocha --timeout=3000",
+    "test": "jest",
     "eject": "react-scripts eject",
     "tailwind": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -45,8 +52,14 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "autoprefixer": "^10.4.20",
+    "jest": "^27.5.1",
+    "jsdom": "^26.0.0",
+    "jsdom-global": "^3.0.2",
     "postcss": "^8.4.21",
+    "sinon": "^20.0.0",
     "tailwindcss": "^3.3.2"
   }
 }
