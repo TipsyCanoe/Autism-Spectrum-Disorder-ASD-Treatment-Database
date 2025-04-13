@@ -13,6 +13,8 @@ Then, run ``npm install``. After that, running ``npm start`` should be sufficien
 end the process in the terminal, the process still may be running on port 3000 (I think it's specified). run ``fuser -k 3000/tcp`` or ``npx kill-port 3000``
 which should kill the process.
 
+For testing purposes, run ``npm test`` inside the frontend/testing-website/ directory.
+
 ## PubMed API Extraction
 
 Source: https://youtu.be/sGC66q45BX4

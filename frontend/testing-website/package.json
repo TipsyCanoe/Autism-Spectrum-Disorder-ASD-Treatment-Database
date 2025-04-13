@@ -19,16 +19,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tailwind": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch"
   },
   "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
+    "transformIgnorePatterns": ["/node_modules/(?!axios)/"],
     "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/src/__mocks__/fileMock.js",
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }
   },
@@ -55,6 +53,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "autoprefixer": "^10.4.20",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "jsdom": "^26.0.0",
     "jsdom-global": "^3.0.2",
