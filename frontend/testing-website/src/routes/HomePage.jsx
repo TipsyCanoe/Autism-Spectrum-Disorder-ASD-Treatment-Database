@@ -32,7 +32,7 @@ const HomePage = () => {
             Find the Resources You Need
           </h3>
           <Link to="/search">
-            <button className="mt-4 px-6 py-2 bg-custom text-white rounded-lg hover:bg-blue-700">
+            <button className="mt-4 px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue">
               Search
             </button>
           </Link>
@@ -117,7 +117,7 @@ const HomePage = () => {
                 href="https://www.autismspeaks.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block px-6 py-2 bg-custom text-white rounded-lg hover:bg-blue-700"
+                className="mt-4 inline-block px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue"
               >
                 Visit Autism Speaks
               </a>
@@ -140,7 +140,7 @@ const HomePage = () => {
                 href="https://nationalautismassociation.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block px-6 py-2 bg-custom text-white rounded-lg hover:bg-blue-700"
+                className="mt-4 inline-block px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue"
               >
                 Visit National Autism Association
               </a>
@@ -161,7 +161,7 @@ const HomePage = () => {
                 href="https://www.autism-society.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block px-6 py-2 bg-custom text-white rounded-lg hover:bg-blue-700"
+                className="mt-4 inline-block px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue"
               >
                 Visit Autism Society
               </a>
@@ -177,7 +177,7 @@ const HomePage = () => {
           <p className="mb-8">
             Sign up to receive updates and access exclusive resources.
           </p>
-          <button className="px-6 py-2 bg-custom rounded-lg text-white">
+          <button className="px-6 py-2 bg-navbar-blue rounded-lg text-white">
             Sign Up Now
           </button>
         </div>
