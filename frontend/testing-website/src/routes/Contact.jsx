@@ -7,14 +7,13 @@ const Contact = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-black mb-4">Contact Us</h2>
-        {/* Add action, method attributes. Remove onSubmit or ensure it doesn't preventDefault */}
+        {}
         <form
-          action="https://formspree.io/f/xpwpbeag" // <-- Replace with your actual Formspree URL later
+          action="https://formspree.io/f/xpwpbeag" 
           method="POST"
-          // onSubmit={handleSubmit} // Optional: Keep for UI feedback, but remove preventDefault inside it
         >
           <div className="mb-4">
-            {/* Add htmlFor and id for accessibility */}
+            {}
             <label htmlFor="contact-name" className="block text-black mb-2">
               Name
             </label>

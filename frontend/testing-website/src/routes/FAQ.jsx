@@ -1,27 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
 import Contact from "./Contact";
-
-const FAQItem = ({ question, answer, isOpen, onClick }) => {
-  return (
-    <div className="w-full max-w-2xl border border-gray-300 mb-2 bg-white">
-      <button
-        className="flex justify-between items-center w-full text-left font-semibold text-black p-4 bg-white focus:outline-none"
-        onClick={onClick}
-      >
-        <span>{question}</span>
-        <span className="text-xl">{isOpen ? "−" : "+"}</span>
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
-          isOpen ? "max-h-96" : "max-h-0"
-        }`}
-      >
-        <div className="p-4 text-black border-t border-gray-300">{answer}</div>
-      </div>
-    </div>
-  );
-};
+import FAQItem from "./FAQItem";
 
 const FAQ = () => {
   const [openItem, setOpenItem] = useState(null);
@@ -67,7 +47,7 @@ const FAQ = () => {
 
       <div className="w-full max-w-2xl flex flex-col items-center">
         {faqItems.map((item, index) => (
-          <FAQItem
+          <FAQItem // <-- Use the imported component
             key={index}
             question={item.question}
             answer={item.answer}
@@ -77,6 +57,7 @@ const FAQ = () => {
         ))}
       </div>
 
+      {/* ... rest of the component (Contact Us button, Contact modal) ... */}
       <div className="mt-8 text-center">
         <p className="text-black mb-4">Don't see your question here?</p>
         <button
