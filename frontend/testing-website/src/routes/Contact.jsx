@@ -3,35 +3,53 @@ import React from "react";
 const Contact = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted");
-    onClose();
-  };
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-black mb-4">Contact Us</h2>
-        <form onSubmit={handleSubmit}>
+        {/* Add action, method attributes. Remove onSubmit or ensure it doesn't preventDefault */}
+        <form
+          action="https://formspree.io/f/xpwpbeag" // <-- Replace with your actual Formspree URL later
+          method="POST"
+          // onSubmit={handleSubmit} // Optional: Keep for UI feedback, but remove preventDefault inside it
+        >
           <div className="mb-4">
-            <label className="block text-black mb-2">Name</label>
+            {/* Add htmlFor and id for accessibility */}
+            <label htmlFor="contact-name" className="block text-black mb-2">
+              Name
+            </label>
             <input
               type="text"
+              id="contact-name" 
+              name="name"
               className="w-full p-2 border border-gray-300 rounded"
+              required 
             />
           </div>
           <div className="mb-4">
-            <label className="block text-black mb-2">Email</label>
+            {/* Add htmlFor and id */}
+            <label htmlFor="contact-email" className="block text-black mb-2">
+              Email
+            </label>
             <input
               type="email"
+              id="contact-email" // Add id
+              name="email" // Add name attribute for Formspree
               className="w-full p-2 border border-gray-300 rounded"
+              required // Add required attribute if the field is mandatory
             />
           </div>
           <div className="mb-4">
-            <label className="block text-black mb-2">Message</label>
-            <textarea className="w-full p-2 border border-gray-300 rounded h-32"></textarea>
+            {/* Add htmlFor and id */}
+            <label htmlFor="contact-message" className="block text-black mb-2">
+              Message
+            </label>
+            <textarea
+              id="contact-message" // Add id
+              name="message" // Add name attribute for Formspree
+              className="w-full p-2 border border-gray-300 rounded h-32"
+              required // Add required attribute if the field is mandatory
+            ></textarea>
           </div>
           <div className="flex justify-end">
             <button
