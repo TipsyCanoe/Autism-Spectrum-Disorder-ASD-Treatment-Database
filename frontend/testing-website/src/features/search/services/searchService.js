@@ -1,8 +1,11 @@
 import axios from "axios";
 
-// Update searchService.js
+// Define the base URL for the backend API
+const API_BASE_URL = "http://localhost:5001"; // Use the port your backend is running on
+
 const search = async (selectedOptions, searchQuery) => {
-  const response = await axios.post("/api/search", {
+  // Use the full URL by combining the base URL and the endpoint path
+  const response = await axios.post(`${API_BASE_URL}/api/search`, {
     selectedOptions,
     searchQuery,
   });
