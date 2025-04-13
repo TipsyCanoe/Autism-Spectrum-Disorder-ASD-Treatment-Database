@@ -7,17 +7,25 @@ import "../index.css";
 
 const HomePage = () => {
   return (
-    <div>
+    // Use <main> for the primary content of the page
+    <main>
       {/* Hero Section */}
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-800">
+          {/* Use <h1> for the main page title */}
+          <h1 className="text-4xl font-bold text-gray-800">
             Welcome to the Autism Resources Database
-          </h2>
+          </h1>
           <p className="text-gray-600 mt-4">
             A comprehensive database of resources for professionals and
             families. We are working with the{" "}
-            <a href="https://sendancenter.com/" target="_blank">
+            <a
+              href="https://sendancenter.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {" "}
+              {/* Added rel attribute */}
               <b>Sendan Center</b>
             </a>{" "}
             to provide the best resources for autism support.
@@ -28,9 +36,10 @@ const HomePage = () => {
       {/* Search Section */}
       <section className="bg-white py-12">
         <div className="container mx-auto text-center">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
+          {/* Use <h2> for major section headings */}
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Find the Resources You Need
-          </h3>
+          </h2>
           <Link to="/search">
             <button className="mt-4 px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue">
               Search
@@ -42,24 +51,28 @@ const HomePage = () => {
       {/* Features Section */}
       <section className="bg-white py-12">
         <div className="container mx-auto text-center">
-          <h3 className="text-2xl font-bold text-gray-800 text-center mb-8">
+          {/* Use <h2> */}
+          <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
             Features
-          </h3>
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-6 bg-gray-100 rounded-lg shadow">
-              <h4 className="text-xl font-semibold">Extensive Database</h4>
+              {/* Use <h3> for sub-section headings within Features */}
+              <h3 className="text-xl font-semibold">Extensive Database</h3>
               <p className="text-gray-600 mt-2">
                 Access a wide range of resources tailored for autism support.
               </p>
             </div>
             <div className="p-6 bg-gray-100 rounded-lg shadow">
-              <h4 className="text-xl font-semibold">Professional Guidance</h4>
+              {/* Use <h3> */}
+              <h3 className="text-xl font-semibold">Professional Guidance</h3>
               <p className="text-gray-600 mt-2">
                 Find expert advice and best practices for autism care.
               </p>
             </div>
             <div className="p-6 bg-gray-100 rounded-lg shadow">
-              <h4 className="text-xl font-semibold">Family Support</h4>
+              {/* Use <h3> */}
+              <h3 className="text-xl font-semibold">Family Support</h3>
               <p className="text-gray-600 mt-2">
                 Discover resources and support networks for families.
               </p>
@@ -71,10 +84,12 @@ const HomePage = () => {
       {/* Testimonials Section */}
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto text-center">
-          <h3 className="text-2xl font-bold text-gray-800 mb-8">
+          {/* Use <h2> */}
+          <h2 className="text-2xl font-bold text-gray-800 mb-8">
             What Our Users Say
-          </h3>
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Testimonials could be <article> or just <div> */}
             <div className="p-6 bg-white rounded-lg shadow">
               <p className="text-gray-600">
                 "This database has been a lifesaver for our family. We found so
@@ -96,10 +111,10 @@ const HomePage = () => {
       {/* Other Resources Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto text-center">
-          <h3 className="text-2xl font-bold text-gray-800 mb-8">
+          {/* Use <h2> */}
+          <h2 className="text-2xl font-bold text-gray-800 mb-8">
             Other Autism Resources
-          </h3>
-          {/* Use our custom horizontal-resources class */}
+          </h2>
           <div className="horizontal-resources">
             {/* Resource Card */}
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
@@ -108,7 +123,8 @@ const HomePage = () => {
                 alt="Autism Speaks"
                 className="w-16 h-16 object-cover rounded-lg mb-4"
               />
-              <h4 className="text-xl font-semibold">Autism Speaks</h4>
+              {/* Use <h3> */}
+              <h3 className="text-xl font-semibold">Autism Speaks</h3>
               <p className="text-gray-600 mt-2">
                 Autism Speaks is dedicated to promoting solutions for the needs
                 of individuals with autism and their families.
@@ -129,9 +145,10 @@ const HomePage = () => {
                 alt="National Autism Association"
                 className="w-16 h-16 object-cover rounded-lg mb-4"
               />
-              <h4 className="text-xl font-semibold">
+              {/* Use <h3> */}
+              <h3 className="text-xl font-semibold">
                 National Autism Association
-              </h4>
+              </h3>
               <p className="text-gray-600 mt-2">
                 The National Autism Association provides resources, education,
                 advocacy, and support for families affected by autism.
@@ -152,7 +169,8 @@ const HomePage = () => {
                 alt="Autism Society"
                 className="w-16 h-16 object-cover rounded-lg mb-4"
               />
-              <h4 className="text-xl font-semibold">Autism Society</h4>
+              {/* Use <h3> */}
+              <h3 className="text-xl font-semibold">Autism Society</h3>
               <p className="text-gray-600 mt-2">
                 The Autism Society aims to improve the lives of all affected by
                 autism through advocacy, education, and support.
@@ -173,7 +191,8 @@ const HomePage = () => {
       {/* Call to Action Section */}
       <section className="py-16 text-black text-center">
         <div className="container mx-auto">
-          <h3 className="text-2xl font-bold mb-4">Join Our Community</h3>
+          {/* Use <h2> */}
+          <h2 className="text-2xl font-bold mb-4">Join Our Community</h2>
           <p className="mb-8">
             Sign up to receive updates and access exclusive resources.
           </p>
@@ -183,11 +202,11 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Footer Section */}
+      {/* Footer Section - Already semantic */}
       <footer className="bg-gray-800 text-white text-center py-4">
         <p>&copy; 2025 Autism Resources Database. All rights reserved.</p>
       </footer>
-    </div>
+    </main> // Close main tag
   );
 };
 
