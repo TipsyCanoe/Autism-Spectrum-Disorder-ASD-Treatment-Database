@@ -5,7 +5,7 @@ from Bio import Entrez
 from pathlib import Path
 
 def expand(text):
-    # pattern = r"([^()\sANDOR]+(?: [^()\sANDOR]+)*)(?=\s*(?:AND|OR|\(|\)|$))|([()])|(AND|OR)"
+    pattern = r"([^()\sANDOR]+(?: [^()\sANDOR]+)*)(?=\s*(?:AND|OR|\(|\)|$))|([()])|(AND|OR)"
     #tokens = re.findall(r'\w+|[()]', text)    
     tokens = re.findall(pattern, text)
     # print(tokens)
@@ -52,8 +52,8 @@ if treatments:
         if ' and ' in treatments[i] or ' or ' in treatments[i]:
             treatments[i] = treatments[i].replace(' and ', ' AND ')
             treatments[i] = treatments[i].replace(' or ', ' OR ') 
-            treatment_new = expand(treatments[i]);
-            print(treatment_new)
+            # treatment_new = expand(treatments[i]);
+            # print(treatment_new)
     treatment_queries = ['({})'.format(treatment) for treatment in treatments]
 # print(treatment_queries)
 
@@ -74,7 +74,7 @@ completePD = pd.DataFrame()
 
 count = 0
 
-'''for query in full_queries:
+for query in full_queries:
     # Search PubMed for relevant records
     handle = Entrez.esearch(db='pubmed', retmax=1000, term=query)
     record = Entrez.read(handle)
@@ -154,4 +154,3 @@ count = 0
 # Save DataFrame to an Excel file
 completePD.to_excel('Individual_Treatment_Queries.xlsx', index=False)
 
-'''
