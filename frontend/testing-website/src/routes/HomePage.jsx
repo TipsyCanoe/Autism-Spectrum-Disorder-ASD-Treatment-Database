@@ -115,7 +115,7 @@ const HomePage = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-8">
             Other Autism Resources
           </h2>
-          <div className="horizontal-resources">
+          <div className="horizontal-resources justify-center">
             {/* Resource Card */}
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
@@ -185,20 +185,6 @@ const HomePage = () => {
               </a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="py-16 text-black text-center">
-        <div className="container mx-auto">
-          {/* Use <h2> */}
-          <h2 className="text-2xl font-bold mb-4">Join Our Community</h2>
-          <p className="mb-8">
-            Sign up to receive updates and access exclusive resources.
-          </p>
-          <button className="px-6 py-2 bg-navbar-blue rounded-lg text-white">
-            Sign Up Now
-          </button>
         </div>
       </section>
 
