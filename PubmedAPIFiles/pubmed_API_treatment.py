@@ -34,7 +34,7 @@ monthDict = {
 '''
 # Set the email address to avoid any potential issues with Entrez
 Entrez.email = 'loa4@wwu.edu'
-Entrez.api_key = 'c301edeca095efe481ce5e2a727560444908'
+#Entrez.api_key = ''
 
 # May need to adjust path depending on what directory you run this in
 path = str(Path.cwd()) + '/Treatment_Names.xlsx'
@@ -81,7 +81,7 @@ for query in full_queries:
     id_list = record['IdList']
 
     # DataFrame to store the extracted data
-    df = pd.DataFrame(columns=['PMID', 'DOI', 'Title', 'Publication Date', 'Abstract', 'Authors', 'Journal', 'Keywords', 'URL', 'Affiliations'])
+    df = pd.DataFrame(columns=['pmid', 'doi', 'title', 'pub_date', 'abstract', 'authors', 'journal', 'keywords', 'url', 'affiliations'])
 
     # Fetch information for each record in the id_list
     for pmid in id_list:
@@ -132,16 +132,16 @@ for query in full_queries:
             url = f"https://www.ncbi.nlm.nih.gov/pubmed/{pmid}"
 
             new_row = pd.DataFrame({
-                'PMID': [pmid],
-                'DOI': [doi],
-                'Title': [title],
-                'Publication Date': [pubDate],
-                'Abstract': [abstract],
-                'Authors': [authors],
-                'Journal': [journal],
-                'Keywords': [keywords],
-                'URL': [url],
-                'Affiliations': [affiliations]
+                'pmid': [pmid],
+                'doi': [doi],
+                'title': [title],
+                'pub_date': [pubDate],
+                'abstract': [abstract],
+                'authors': [authors],
+                'journal': [journal],
+                'keywords': [keywords],
+                'url': [url],
+                'affiliations': [affiliations]
             })
 
             df = pd.concat([df, new_row], ignore_index=True)

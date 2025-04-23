@@ -61,7 +61,7 @@ record = Entrez.read(handle)
 id_list = record['IdList']
 
 # DataFrame to store the extracted data
-df = pd.DataFrame(columns=['PMID', 'DOI', 'Title', 'Publication Date', 'Abstract', 'Authors', 'Journal', 'Keywords', 'URL', 'Affiliations'])
+df = pd.DataFrame(columns=['pmid', 'doi', 'title', 'pub_date', 'abstract', 'authors', 'journal', 'keywords', 'url', 'affiliations'])
 
 count = 0
 
@@ -107,16 +107,16 @@ for pmid in id_list:
         url = f"https://www.ncbi.nlm.nih.gov/pubmed/{pmid}"
 
         new_row = pd.DataFrame({
-            'PMID': [pmid],
-            'DOI': [doi],
-            'Title': [title],
-            'Publication Date': [pubDate],
-            'Abstract': [abstract],
-            'Authors': [authors],
-            'Journal': [journal],
-            'Keywords': [keywords],
-            'URL': [url],
-            'Affiliations': [affiliations]
+            'pmid': [pmid],
+            'doi': [doi],
+            'title': [title],
+            'pub_date': [pubDate],
+            'abstract': [abstract],
+            'authors': [authors],
+            'journal': [journal],
+            'keywords': [keywords],
+            'url': [url],
+            'affiliations': [affiliations]
         })
 
         df = pd.concat([df, new_row], ignore_index=True).drop_duplicates()
