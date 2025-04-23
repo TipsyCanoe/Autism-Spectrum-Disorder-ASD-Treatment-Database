@@ -106,7 +106,7 @@ for query in queries:
 
             df = pd.concat([df, new_row], ignore_index=True)
     completePD = pd.concat([completePD, df], ignore_index=True).drop_duplicates()
-    # print("Finished " + query)
+    print("Finished " + query)
 
 # Save DataFrame to an Excel file
 completePD.to_excel('Adjusted_ASD_Sheet_Info_V2.xlsx', index=False)

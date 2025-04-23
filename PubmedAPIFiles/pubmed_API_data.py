@@ -3,6 +3,17 @@ import json
 from Bio import Entrez
 from pathlib import Path
 
+def get_terms(file_name, default):
+    path = Path(file_name)
+    terms = []
+    if path.exists() and path.stat().st_size != 0:
+        with open(file_name, "r") as file:
+            for line in file:
+                terms.append(line.strip())
+    if not terms:
+        terms = default
+    return terms
+
 '''
 - The main puller for the data
 - Github doesn't like it wihen keys are exposed
@@ -20,21 +31,29 @@ monthDict = {
 }
 
 general_terms = ['Autism Spectrum Disorder[MeSH]', 'Autism[Title/Abstract]', 'Autistic Disorder[Title/Abstract]', 'ASD[Title/Abstract]']
+
 biologics_terms = ['"Biological Products"[MeSH]', 'Biologic*[Title/Abstract]', '"Antibodies, monoclonal"[MeSH]', 'Cytokine Inhibitors[MeSH]', 'Immunotherapy[MeSH]']
-treatment_terms = ['rTMS[Title/Abstract]', '"Transcranial Magnetic Stimulation"[MeSH]', 'ECT[Title/Abstract]', '"Electroconvulsive Therapy"[MeSH]', 
+social_terms = ['rTMS[Title/Abstract]', '"Transcranial Magnetic Stimulation"[MeSH]', 'ECT[Title/Abstract]', '"Electroconvulsive Therapy"[MeSH]', 
 'Behavioral Therapy[MeSH]', '"Psychotherapy, Group"[MeSH]', 'Cognitive Therapy[MeSH]', 'Psychosocial Intervention[Title/Abstract]']
+
+biologics_terms = get_terms("biologic_terms.txt", biologics_terms)
+social_terms = get_terms("social_terms.txt", social_terms)
+
+
 treatment_types_terms = ['randomized controlled trial[Publication Type]', 'randomized[Title/Abstract]', 'placebo[Title/Abstract]', '"Clinical Trial"[Publication Type]']
 
-query_boxes = [general_terms, biologics_terms, treatment_terms, treatment_types_terms]
+query_boxes = [general_terms, biologics_terms, social_terms, treatment_types_terms]
 
 for terms in query_boxes:
     topic_queries = ['{}'.format(topic) for topic in terms]
     queries.append('(' + ' OR '.join(topic_queries) + ')')
 
 full_query = queries[0] + ' AND (' + queries[1] + ' OR ' + queries[2] + ') AND ' + queries[3]
-# print(full_query)
+print(full_query)
 
 completePD = pd.DataFrame()
+
+
 
 # Search PubMed for relevant records
 handle = Entrez.esearch(db='pubmed', retmax=1000, term=full_query)
