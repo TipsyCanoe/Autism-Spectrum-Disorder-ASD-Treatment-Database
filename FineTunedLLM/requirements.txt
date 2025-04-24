@@ -2,3 +2,12 @@ datasets
 transformers
 torch
 transformers[torch]
+jupyterlab
+ipykernel
+ipywidgets
+datasets
+torchvision
+torchaudio
+peft
+evaluate
+sentence-transformers

@@ -88,4 +88,11 @@ SELECT * FROM public.treatment_data;
 You should see the treatment data records displayed in the results.
 
 
-
+### Using the medBERT/LLM
+1. Create a virtual environment if it's your first time running
+python -m venv venv
+2. Activate the environment
+source venv/bin/activate
+3. Install the packages
+pip install -r requirements.txt
+4. You should now be able to run the LLM and MedBERT
