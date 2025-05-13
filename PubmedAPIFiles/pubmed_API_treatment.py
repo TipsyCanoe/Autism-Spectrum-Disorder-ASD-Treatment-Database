@@ -1,40 +1,6 @@
 import pandas as pd
-import json
-import re
-from Bio import Entrez
 from pathlib import Path
-
-def expand(text):
-    pattern = r"([^()\sANDOR]+(?: [^()\sANDOR]+)*)(?=\s*(?:AND|OR|\(|\)|$))|([()])|(AND|OR)"
-    #tokens = re.findall(r'\w+|[()]', text)    
-    tokens = re.findall(pattern, text)
-    # print(tokens)
-    result = []
-
-    for token in tokens:
-        if token in {'AND', 'OR', '(', ')'}:
-            result.append(token)
-        else:
-            term = token.strip()
-            # print(term)
-            if term:
-                result.append(f'("{term}"[MeSH terms] OR "{term}"[All Fields])')
-
-    return ' '.join(result)
-
-monthDict = {
-    "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
-    "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
-    "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
-}
-
-'''
-- The main puller for the data
-- Github doesn't like it wihen keys are exposed
-'''
-# Set the email address to avoid any potential issues with Entrez
-Entrez.email = 'loa4@wwu.edu'
-#Entrez.api_key = ''
+from complete_query import importer
 
 # May need to adjust path depending on what directory you run this in
 path = str(Path.cwd()) + '/Treatment_Names.xlsx'
@@ -52,15 +18,11 @@ if treatments:
         if ' and ' in treatments[i] or ' or ' in treatments[i]:
             treatments[i] = treatments[i].replace(' and ', ' AND ')
             treatments[i] = treatments[i].replace(' or ', ' OR ') 
-            # treatment_new = expand(treatments[i]);
-            # print(treatment_new)
     treatment_queries = ['({})'.format(treatment) for treatment in treatments]
-# print(treatment_queries)
-
 
 general_terms = ['Autism Spectrum Disorder[MeSH]', 'Autism[Title/Abstract]', 'Autistic Disorder[Title/Abstract]', 'ASD[Title/Abstract]']
 
-treatment_types_terms = ['randomized controlled trial[Publication Type]', 'randomized[Title/Abstract]', 'placebo[Title/Abstract]', '"Clinical Trial"[Publication Type]']
+treatment_types_terms = ['"randomized controlled trial"[Publication Type]', 'randomized controlled trial[Title/Abstract]']
 
 for terms in [general_terms, treatment_types_terms]:
     topic_queries = ['{}'.format(topic) for topic in terms]
@@ -68,13 +30,18 @@ for terms in [general_terms, treatment_types_terms]:
 
 for treatment in treatment_queries:
     full_queries.append(treatment + ' AND ' + queries[0] + ' AND ' + queries[1])
-#print(full_queries[0])
+# print(full_queries[0])
 
 completePD = pd.DataFrame()
 
 count = 0
 
 for query in full_queries:
+    completePD = importer.importPapers(completePD, query)
+
+completePD.to_excel('Individual_Treatment_Queries_Test.xlsx', index=False)
+
+'''for query in full_queries:
     # Search PubMed for relevant records
     handle = Entrez.esearch(db='pubmed', retmax=1000, term=query)
     record = Entrez.read(handle)
@@ -152,5 +119,6 @@ for query in full_queries:
     
 
 # Save DataFrame to an Excel file
-completePD.to_excel('Individual_Treatment_Queries.xlsx', index=False)
+completePD.to_excel('Individual_Treatment_Queries_Test.xlsx', index=False)
 
+'''
