@@ -29,7 +29,7 @@ if __name__ == "__main__":
     file_heads = ['pubmed_API_ASD_data.py', 'pubmed_API_data.py', 'pubmed_API_treatment']
 
     for file_head in file_heads:
-        path = str(Path.cwd()) + '/PubmedAPIFiles/' + file_head
+        path = str(Path.cwd()) + '/../PubmedAPIFiles/' + file_head
         scripts.append(path)
 
     run_scripts(scripts)
