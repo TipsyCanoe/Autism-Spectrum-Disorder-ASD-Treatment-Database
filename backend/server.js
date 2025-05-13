@@ -1,15 +1,10 @@
 require("dotenv").config(); // Keep for PORT, maybe other future config
 const express = require("express");
 const cors = require("cors");
-require("./scheduler");
-// const { Pool } = require('pg'); // Remove or comment out DB connection for now
+const { runAPIJob } = require("./scheduler"); // Import runAPIJob
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-
-// --- Database Configuration ---
-// Comment out or remove DB pool setup for now
-// const pool = new Pool({ ... });
 
 // --- Middleware ---
 app.use(cors());
@@ -62,6 +57,28 @@ app.post("/api/search", async (req, res) => {
     res
       .status(500)
       .json({ message: "Error in placeholder search", error: error.message });
+  }
+});
+
+// New Endpoint to trigger the API Job
+app.post("/api/run-job", async (req, res) => {
+  console.log("Received request to run API job manually...");
+  try {
+    const result = await runAPIJob(); // runAPIJob now returns a Promise
+    console.log("API Job completed through manual trigger:", result.message);
+    res.status(200).json({ 
+      message: "API Job triggered successfully.", 
+      details: result.message,
+      output: result.output,
+      stderr: result.stderr
+    });
+  } catch (error) {
+    console.error("Error triggering API job manually:", error.message);
+    res.status(500).json({ 
+      message: "Failed to trigger API Job.", 
+      error: error.message,
+      details: error.details // Include any additional details from the error
+    });
   }
 });
 
