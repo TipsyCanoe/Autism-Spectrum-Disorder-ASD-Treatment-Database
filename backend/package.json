@@ -10,14 +10,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "pg": "^8.14.1"
+    "node-cron": "^4.0.4",
+    "pg": "^8.14.1",
+    "python-shell": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
-  }
+    "nodemon": "^3.1.10"
+  },
+  "type": "commonjs",
+  "description": ""
 }

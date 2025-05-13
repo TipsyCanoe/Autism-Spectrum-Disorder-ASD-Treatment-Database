@@ -8,7 +8,7 @@ Entrez.email = 'loa4@wwu.edu'
 #Entrez.api_key = ''
 
 # May need to adjust path depending on what directory you run this in
-path = str(Path.cwd()) + '/Harle - ASD bio tx .xlsx'
+path = str(Path.cwd()) + '/PubmedAPIFiles/Harle - ASD bio tx .xlsx'
 
 oldDf = pd.read_excel(path, 'Tx Data', usecols="A,D")
 

@@ -1,6 +1,7 @@
 require("dotenv").config(); // Keep for PORT, maybe other future config
 const express = require("express");
 const cors = require("cors");
+require("./scheduler");
 // const { Pool } = require('pg'); // Remove or comment out DB connection for now
 
 const app = express();
