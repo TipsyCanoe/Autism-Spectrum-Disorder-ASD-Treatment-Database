@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react"; // Import useState
 import { Link } from "react-router-dom";
 import AutismSociety from "../assets/AutismSociety.png";
 import AutismSpeaksImg from "../assets/AutismSpeaksLink.jpg";
@@ -6,6 +6,35 @@ import NationalAutismAssociation from "../assets/NationalAutismAssociation.png";
 import "../index.css";
 
 const HomePage = () => {
+  const [isJobRunning, setIsJobRunning] = useState(false);
+  const [jobMessage, setJobMessage] = useState("");
+
+  const handleRunJob = async () => {
+    setIsJobRunning(true);
+    setJobMessage("Updating database...");
+    try {
+      const response = await fetch("http://localhost:5001/api/run-job", {
+        // Assuming backend is on port 5001
+        method: "POST",
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setJobMessage(
+          data.message + (data.details ? ` Details: ${data.details}` : "")
+        );
+      } else {
+        setJobMessage(
+          `Error: ${data.message}` +
+            (data.error ? ` Details: ${data.error}` : "")
+        );
+      }
+    } catch (error) {
+      console.error("Failed to trigger API job:", error);
+      setJobMessage("Failed to trigger job. Check console for details.");
+    }
+    setIsJobRunning(false);
+  };
+
   return (
     // Use <main> for the primary content of the page
     <main>
@@ -40,11 +69,23 @@ const HomePage = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Find the Resources You Need
           </h2>
-          <Link to="/search">
-            <button className="mt-4 px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue">
-              Search
+          <div className="flex justify-center items-center space-x-4">
+            <Link to="/search">
+              <button className="px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue">
+                Search
+              </button>
+            </Link>
+            <button
+              onClick={handleRunJob}
+              disabled={isJobRunning}
+              className="px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue disabled:bg-gray-400"
+            >
+              {isJobRunning ? "Updating..." : "Update Database"}
             </button>
-          </Link>
+          </div>
+          {jobMessage && (
+            <p className="mt-4 text-sm text-gray-600">{jobMessage}</p>
+          )}
         </div>
       </section>
 
