@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterPanel from "../features/search/components/FilterPanel";
 import useSearch from "../features/search/hooks/useSearch";
 import "../index.css";
 
 const SearchPage = () => {
-  // Destructure isLoading and error from useSearch
   const {
     selectedOptions,
     setSelectedOptions,
@@ -12,8 +11,13 @@ const SearchPage = () => {
     fetchResults,
     isLoading,
     error,
+    availableFilters
   } = useSearch();
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    fetchResults("");
+  }, []); 
 
   const handleFilterChange = (category, value) => {
     const filterKey = `${category}:${value}`;
@@ -22,17 +26,34 @@ const SearchPage = () => {
         ? prev.filter((item) => item !== filterKey)
         : [...prev, filterKey]
     );
+    
+    //setTimeout(() => fetchResults(searchQuery), 0);
   };
 
   const handleSearch = () => {
-    fetchResults(searchQuery); // Pass the current query
+    fetchResults(searchQuery); 
   };
 
   const clearFilters = () => {
     setSelectedOptions([]);
     setSearchQuery("");
-    // Optionally trigger a search with cleared filters/query
-    // fetchResults('');
+
+  };
+
+  const getOptionsForCategory = (category) => {
+    if (availableFilters && availableFilters[category] && availableFilters[category].length > 0) {
+      return availableFilters[category].map(value => ({
+        value,
+        label: value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ')
+      }));
+    }
+    
+    switch (category) {
+      case 'age': return ageOptions;
+      case 'symptom': return symptomOptions;
+      case 'gender': return genderOptions;
+      default: return [];
+    }
   };
 
   return (
@@ -46,6 +67,10 @@ const SearchPage = () => {
           setSearchQuery={setSearchQuery}
           clearFilters={clearFilters}
           handleSearch={handleSearch} // Pass the handler
+          // Pass the filter options (either from backend or static)
+          ageOptions={getOptionsForCategory('age')}
+          symptomOptions={getOptionsForCategory('symptom')}
+          genderOptions={getOptionsForCategory('gender')}
         />
 
         {/* Results Area */}
@@ -61,7 +86,7 @@ const SearchPage = () => {
               )}
             </div>
 
-            {/* Active filters display (remains the same) */}
+            {/* Active filters display */}
             {selectedOptions.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm text-gray-500 mb-2">Active filters:</p>
@@ -69,20 +94,13 @@ const SearchPage = () => {
                   {selectedOptions.map((filter) => {
                     const [category, value] = filter.split(":");
                     let label = value;
-                    // Find label logic (ensure ageOptions etc. are defined below or imported)
-                    if (category === "age") {
-                      label =
-                        ageOptions.find((opt) => opt.value === value)?.label ||
-                        value;
-                    } else if (category === "symptom") {
-                      label =
-                        symptomOptions.find((opt) => opt.value === value)
-                          ?.label || value;
-                    } else if (category === "gender") {
-                      label =
-                        genderOptions.find((opt) => opt.value === value)
-                          ?.label || value;
+                    // Find label from options
+                    const options = getOptionsForCategory(category);
+                    const option = options.find(opt => opt.value === value);
+                    if (option) {
+                      label = option.label;
                     }
+                    
                     return (
                       <span
                         key={filter}
@@ -111,7 +129,7 @@ const SearchPage = () => {
             {/* Error State */}
             {error && (
               <p className="text-center py-8 text-red-500">
-                Error loading results. Please try again.
+                {error}
               </p>
             )}
 
@@ -166,8 +184,6 @@ const SearchPage = () => {
               </div>
             )}
           </div>
-          {/* Removed Outlet as SearchResults component is likely removed */}
-          {/* <Outlet /> */}
         </div>
       </div>
     </div>
@@ -175,7 +191,7 @@ const SearchPage = () => {
 };
 
 // Define filter options arrays here so they are accessible for the results display logic
-// Ensure these are defined if not imported
+// These will be used as fallbacks if the backend doesn't provide filter options
 const ageOptions = [
   { value: "0-5", label: "Infancy/Early Childhood (0-5 years)" },
   { value: "6-12", label: "Childhood (6-12 years)" },
