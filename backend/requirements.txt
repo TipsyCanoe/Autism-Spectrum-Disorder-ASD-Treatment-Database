@@ -1,0 +1,4 @@
+transformers
+sentence-transformers
+flask
+flask_cors
