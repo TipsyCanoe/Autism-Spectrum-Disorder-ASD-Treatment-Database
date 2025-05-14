@@ -26,7 +26,7 @@ function runAPIJob() {
         let errorMessages = [];
 
         pyshell.on('message', (message) => {
-            console.log(`Python script output: ${message}`);
+            console.log(`Python script output: ${message}\n`);
             outputMessages.push(message);
         });
 

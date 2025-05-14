@@ -3,7 +3,7 @@ from pathlib import Path
 from complete_query import importer
 
 # May need to adjust path depending on what directory you run this in
-path = str(Path.cwd()) + '/Treatment_Names.xlsx'
+path = str(Path.cwd()) + '/../PubmedAPIFiles/Treatment_Names.xlsx'
 
 oldDf = pd.read_excel(path, 'Sheet1', usecols="A")
 
@@ -39,7 +39,7 @@ count = 0
 for query in full_queries:
     completePD = importer.importPapers(completePD, query)
 
-completePD.to_excel('Individual_Treatment_Queries_Test.xlsx', index=False)
+completePD.to_excel('Individual_Treatment_Queries.xlsx', index=False)
 
 '''for query in full_queries:
     # Search PubMed for relevant records

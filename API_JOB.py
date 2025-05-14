@@ -26,7 +26,7 @@ def run_scripts(script_paths):
 
 if __name__ == "__main__":
     scripts = []
-    file_heads = ['pubmed_API_ASD_data.py', 'pubmed_API_data.py', 'pubmed_API_treatment']
+    file_heads = ['pubmed_API_ASD_data.py', 'pubmed_API_data.py', 'pubmed_API_treatment.py', 'convert_excel_to_json.py']
 
     for file_head in file_heads:
         path = str(Path.cwd()) + '/../PubmedAPIFiles/' + file_head
