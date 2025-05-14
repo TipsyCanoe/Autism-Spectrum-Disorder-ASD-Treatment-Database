@@ -39,7 +39,7 @@ for i in range(len(author_queries)):
 completePD = pd.DataFrame()
 
 for query in queries:
-    importer.importPapers(completePD, query)
+    completePD = importer.importPapers(completePD, query)
 
 completePD.to_excel('Adjusted_ASD_Sheet_Info_V2.xlsx', index=False)
 
