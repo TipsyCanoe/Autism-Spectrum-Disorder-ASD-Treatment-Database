@@ -37,7 +37,6 @@ const SearchPage = () => {
   const clearFilters = () => {
     setSelectedOptions([]);
     setSearchQuery("");
-
   };
 
   const getOptionsForCategory = (category) => {
@@ -52,9 +51,31 @@ const SearchPage = () => {
       case 'age': return ageOptions;
       case 'symptom': return symptomOptions;
       case 'gender': return genderOptions;
+      case 'medication': return medicationOptions;
       default: return [];
     }
   };
+
+  // Transform the nested JSON structure into a flat array of studies
+  const getStudiesFromResults = (results) => {
+    if (!results || typeof results !== 'object') return [];
+    
+    const studies = [];
+    Object.entries(results).forEach(([medication, studyArray]) => {
+      if (Array.isArray(studyArray)) {
+        studyArray.forEach(study => {
+          studies.push({
+            ...study,
+            medication: medication,
+            id: `${medication}-${study['Study Title']?.replace(/\s+/g, '-') || Math.random()}`
+          });
+        });
+      }
+    });
+    return studies;
+  };
+
+  const studyList = getStudiesFromResults(results);
 
   return (
     <div className="w-11/12 max-w-7xl mx-auto py-8">
@@ -66,22 +87,23 @@ const SearchPage = () => {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           clearFilters={clearFilters}
-          handleSearch={handleSearch} // Pass the handler
+          handleSearch={handleSearch}
           // Pass the filter options (either from backend or static)
           ageOptions={getOptionsForCategory('age')}
           symptomOptions={getOptionsForCategory('symptom')}
           genderOptions={getOptionsForCategory('gender')}
+          medicationOptions={getOptionsForCategory('medication')}
         />
 
         {/* Results Area */}
         <div className="lg:w-2/3">
           <div className="bg-white p-6 rounded-lg shadow mb-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Results</h2>
+              <h2 className="text-xl font-bold text-gray-800">Study Results</h2>
               {/* Show count only when not loading, no error, and results exist */}
-              {!isLoading && !error && results.length > 0 && (
+              {!isLoading && !error && studyList.length > 0 && (
                 <p className="text-sm text-gray-500">
-                  {results.length} resources found
+                  {studyList.length} studies found
                 </p>
               )}
             </div>
@@ -134,51 +156,93 @@ const SearchPage = () => {
             )}
 
             {/* No Results State (only show if not loading and no error) */}
-            {!isLoading && !error && results.length === 0 && (
+            {!isLoading && !error && studyList.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-500">
                   {selectedOptions.length > 0 || searchQuery
-                    ? "No resources match your criteria"
-                    : "Use the filters or keywords to find resources"}
+                    ? "No studies match your criteria"
+                    : "Use the filters or keywords to find studies"}
                 </p>
               </div>
             )}
 
             {/* Results List (only show if not loading, no error, and results exist) */}
-            {!isLoading && !error && results.length > 0 && (
+            {!isLoading && !error && studyList.length > 0 && (
               <div className="divide-y divide-gray-200">
-                {results.map((result, index) => (
-                  <div key={result.id || index} className="py-4">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {result.title || "Untitled Resource"}
-                    </h3>
-                    <p className="text-sm text-gray-500 mb-2">
-                      {result.type || "Resource"}
-                      {result.publishDate && ` • ${result.publishDate}`}
-                      {result.author && ` • ${result.author}`}
-                    </p>
-                    <p className="text-gray-600 mb-2">{result.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {result.tags &&
-                        result.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                {studyList.map((study) => (
+                  <div key={study.id} className="py-6">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {study['Study Title'] || "Untitled Study"}
+                      </h3>
+                      <span className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
+                        {study.medication}
+                      </span>
                     </div>
-                    {result.url && (
-                      <a
-                        href={result.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 inline-block text-blue-600 hover:underline"
-                      >
-                        View Resource
-                      </a>
+                    
+                    {/* Study metadata */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm text-gray-600">
+                      <div>
+                        <span className="font-medium">Duration:</span> {study.Duration || 'N/A'}
+                      </div>
+                      <div>
+                        <span className="font-medium">Participants:</span> {study.n || 'N/A'}
+                      </div>
+                      <div>
+                        <span className="font-medium">Age:</span> {study['Age range/mean'] || 'N/A'}
+                      </div>
+                      <div>
+                        <span className="font-medium">M:F Ratio:</span> {study['M:F ratio'] || 'N/A'}
+                      </div>
+                    </div>
+
+                    {/* Primary outcomes */}
+                    <div className="mb-3">
+                      <h4 className="font-medium text-gray-800 mb-1">Primary Outcome</h4>
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">{study['Primary Outcome Area']}:</span> {study['Results: Primary measure']}
+                      </p>
+                      {study['Primary Outcome Measures'] && (
+                        <p className="text-xs text-gray-500">Measures: {study['Primary Outcome Measures']}</p>
+                      )}
+                    </div>
+
+                    {/* Secondary outcomes */}
+                    {study['Secondary Outcome Area'] && (
+                      <div className="mb-3">
+                        <h4 className="font-medium text-gray-800 mb-1">Secondary Outcome</h4>
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">{study['Secondary Outcome Area']}:</span> {study['Results: Secondary Measures']}
+                        </p>
+                        {study['Secondary Outcome Measures'] && (
+                          <p className="text-xs text-gray-500">Measures: {study['Secondary Outcome Measures']}</p>
+                        )}
+                      </div>
                     )}
+
+                    {/* Treatment details */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 text-sm">
+                      <div>
+                        <span className="font-medium text-gray-800">Dose Range:</span>
+                        <p className="text-gray-600">{study['Medication/Treatment Dose Range'] || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-800">Drop Out Rate:</span>
+                        <p className="text-gray-600">{study['Drop Out Rate'] || 'N/A'}</p>
+                      </div>
+                    </div>
+
+                    {/* Safety information */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="font-medium text-gray-800">Side Effects:</span>
+                        <p className="text-gray-600">{study['Tolerability/Side Effects'] || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-800">Safety:</span>
+                        <p className="text-gray-600">{study.Safety || 'N/A'}</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -216,6 +280,14 @@ const genderOptions = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
   { value: "nonbinary", label: "Non-binary" },
+];
+
+const medicationOptions = [
+  { value: "aripiprazole", label: "Aripiprazole" },
+  { value: "citalopram", label: "Citalopram" },
+  { value: "fluoxetine", label: "Fluoxetine" },
+  { value: "sertraline", label: "Sertraline" },
+  { value: "risperidone", label: "Risperidone" },
 ];
 
 export default SearchPage;
