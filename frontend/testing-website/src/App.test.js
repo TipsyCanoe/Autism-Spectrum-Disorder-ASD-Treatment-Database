@@ -31,9 +31,6 @@ describe('App Component Rendering and Initial Route', () => {
 
     // This test can check for the button on the HomePage.
     // To be more specific, you could find the main content area first.
-    // const mainContent = screen.getByRole('main'); // Assuming your page content has role="main"
-    // expect(within(mainContent).getByRole('button', { name: /Search/i })).toBeInTheDocument();
-    // Or keep the less specific check if it's sufficient for this test:
     expect(screen.getByRole('button', { name: /Search/i })).toBeInTheDocument();
   });
 });

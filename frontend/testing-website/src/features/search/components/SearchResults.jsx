@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FilterPanel from '../features/search/components/FilterPanel';
 import useSearch from "../features/search/hooks/useSearch";
 import "../index.css";

@@ -1,33 +1,6 @@
 import { useState } from "react";
 import FilterSection from "./FilterSection"; // Assuming FilterSection is in the same directory
 
-// Define filter options centrally
-const ageOptions = [
-  { value: "0-5", label: "Infancy/Early Childhood (0-5 years)" },
-  { value: "6-12", label: "Childhood (6-12 years)" },
-  { value: "13-17", label: "Adolescence (13-17 years)" },
-  { value: "18-25", label: "Young Adult (18-25 years)" },
-  { value: "26-64", label: "Adult (26-64 years)" },
-  { value: "65+", label: "Senior (65+ years)" },
-];
-
-const symptomOptions = [
-  { value: "irritability", label: "Irritability" },
-  { value: "adhd", label: "ADHD symptoms" },
-  { value: "hyperactivity", label: "Hyperactivity" },
-  { value: "social", label: "Social behaviors" },
-  { value: "attention-hyperactivity", label: "Attention and hyperactivity" },
-  { value: "asd-severity", label: "ASD severity" },
-  { value: "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance", label: "Lethargy/social withdrawal, stereotypy, and hyperactivity/noncompliance" },
-  { value: "anxiety-reactivity", label: "Anxiety and reactivity" },
-];
-
-const genderOptions = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "nonbinary", label: "Non-binary" },
-];
-
 const FilterPanel = ({
   selectedOptions,
   handleFilterChange,
@@ -35,6 +8,11 @@ const FilterPanel = ({
   setSearchQuery,
   clearFilters,
   handleSearch,
+  // Receive filter options as props
+  ageOptions,
+  symptomOptions,
+  genderOptions,
+  medicationOptions, // Assuming medicationOptions might be passed for a new filter section
 }) => {
   // Manage expansion state locally within the panel
   const [expandedSections, setExpandedSections] = useState({
@@ -87,7 +65,7 @@ const FilterPanel = ({
         <FilterSection
           title="Age Range"
           category="age"
-          options={ageOptions}
+          options={ageOptions} // Use prop
           selectedOptions={selectedOptions}
           onFilterChange={handleFilterChange}
           isExpanded={expandedSections.age}
@@ -98,7 +76,7 @@ const FilterPanel = ({
         <FilterSection
           title="Symptoms & Behaviors"
           category="symptom"
-          options={symptomOptions}
+          options={symptomOptions} // Use prop
           selectedOptions={selectedOptions}
           onFilterChange={handleFilterChange}
           isExpanded={expandedSections.symptoms}
@@ -109,12 +87,25 @@ const FilterPanel = ({
         <FilterSection
           title="Gender"
           category="gender"
-          options={genderOptions}
+          options={genderOptions} // Use prop
           selectedOptions={selectedOptions}
           onFilterChange={handleFilterChange}
           isExpanded={expandedSections.gender}
           onToggle={() => toggleSection("gender")}
         />
+
+        {/* Example for a new Medication Filter Section, if medicationOptions are provided */}
+        {medicationOptions && medicationOptions.length > 0 && (
+          <FilterSection
+            title="Medication"
+            category="medication"
+            options={medicationOptions}
+            selectedOptions={selectedOptions}
+            onFilterChange={handleFilterChange}
+            isExpanded={expandedSections.medication} // Add 'medication' to expandedSections state if used
+            onToggle={() => toggleSection("medication")} // Add 'medication' to toggleSection logic if used
+          />
+        )}
       </div>
 
       {/* Sticky search button always visible */}

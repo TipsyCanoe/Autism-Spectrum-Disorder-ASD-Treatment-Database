@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react"; // Add useCallback
 
-// Define base API URL to target port 5000
+// Define base API URL to target port 5000 for general API calls
 const API_BASE_URL = "http://localhost:5000";
 
 const useSearch = () => {
@@ -14,11 +14,7 @@ const useSearch = () => {
     gender: []
   });
 
-  useEffect(() => {
-    fetchFilters();
-  }, []);
-
-  const fetchFilters = async () => {
+  const fetchFilters = useCallback(async () => { // Wrap in useCallback
     try {
       const response = await fetch(`${API_BASE_URL}/api/filters`);
       if (!response.ok) {
@@ -30,15 +26,19 @@ const useSearch = () => {
       console.error("Error fetching filters:", err);
       setError("Failed to load filters. Please refresh the page.");
     }
-  };
+  }, []); // Empty dependency array as API_BASE_URL is constant and setAvailableFilters is stable
 
-  const fetchResults = async (query = "") => {
+  useEffect(() => {
+    fetchFilters();
+  }, [fetchFilters]); // Now fetchFilters is stable
+
+  const fetchResults = useCallback(async (query = "") => { // Wrap in useCallback
     setIsLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams();
       params.append("query", query);
-      selectedOptions.forEach(filter => {
+      selectedOptions.forEach(filter => { // selectedOptions is a dependency
         params.append("filters", filter);
       });
       const response = await fetch(`${API_BASE_URL}/api/search?${params.toString()}`);
@@ -53,7 +53,7 @@ const useSearch = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedOptions]); // Add selectedOptions as a dependency
 
   return {
     selectedOptions,
@@ -62,7 +62,8 @@ const useSearch = () => {
     fetchResults,
     isLoading,
     error,
-    availableFilters
+    availableFilters,
+    fetchFilters // Also return fetchFilters if SearchPage needs to call it directly, e.g., for a refresh button
   };
 };
 

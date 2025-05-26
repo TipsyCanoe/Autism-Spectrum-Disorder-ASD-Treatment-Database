@@ -1,23 +1,22 @@
-import { useState, useEffect } from "react";
+import { useCallback, useMemo, useState } from "react"; // Added useCallback, useMemo
 import FilterPanel from "../features/search/components/FilterPanel";
-import useSearch from "../features/search/hooks/useSearch";
+import { allFilterOptions } from "../features/search/constants/filterOptions";
+import useSearch from "../features/search/hooks/useSearch"; // Corrected import
 import "../index.css";
 
 const SearchPage = () => {
   const {
     selectedOptions,
     setSelectedOptions,
-    results,
+    results, // This is the raw JSON object from the backend, e.g., { "aripiprazole": [...] }
     fetchResults,
     isLoading,
     error,
     availableFilters
   } = useSearch();
   const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    fetchResults("");
-  }, []); 
+  const [activeMedicationKey, setActiveMedicationKey] = useState(null); // For outer accordion (medication)
+  const [activeStudyId, setActiveStudyId] = useState(null); // For inner accordion (study details)
 
   const handleFilterChange = (category, value) => {
     const filterKey = `${category}:${value}`;
@@ -26,12 +25,10 @@ const SearchPage = () => {
         ? prev.filter((item) => item !== filterKey)
         : [...prev, filterKey]
     );
-    
-    //setTimeout(() => fetchResults(searchQuery), 0);
   };
 
   const handleSearch = () => {
-    fetchResults(searchQuery); 
+    fetchResults(searchQuery);
   };
 
   const clearFilters = () => {
@@ -42,45 +39,61 @@ const SearchPage = () => {
   const getOptionsForCategory = (category) => {
     if (availableFilters && availableFilters[category] && availableFilters[category].length > 0) {
       return availableFilters[category].map(value => ({
-        value,
+        value: value,
         label: value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ')
       }));
     }
-    
-    switch (category) {
-      case 'age': return ageOptions;
-      case 'symptom': return symptomOptions;
-      case 'gender': return genderOptions;
-      case 'medication': return medicationOptions;
-      default: return [];
-    }
+    return allFilterOptions[category] || [];
   };
 
-  // Transform the nested JSON structure into a flat array of studies
-  const getStudiesFromResults = (results) => {
+  // Transform the nested JSON structure from backend for the multi-level accordion
+  const processResultsForMultiLevelAccordion = useCallback((results) => {
     if (!results || typeof results !== 'object') return [];
-    
-    const studies = [];
-    Object.entries(results).forEach(([medication, studyArray]) => {
-      if (Array.isArray(studyArray)) {
-        studyArray.forEach(study => {
-          studies.push({
-            ...study,
-            medication: medication,
-            id: `${medication}-${study['Study Title']?.replace(/\s+/g, '-') || Math.random()}`
-          });
-        });
+
+    return Object.entries(results).map(([medicationName, studyArray]) => {
+      if (!Array.isArray(studyArray)) {
+        return {
+          medicationName,
+          studies: [],
+          studyCount: 0,
+        };
       }
+      const studies = studyArray.map((rawStudy, index) => { // Added index
+        const title = rawStudy['Study Title'] || 'Untitled Study';
+        // Ensure ID is unique and stable. Prioritize PMID, then NCTID, then a combination using index.
+        const pmidOrNctid = rawStudy.PMID || rawStudy.NCTID;
+        const id = pmidOrNctid ?
+                   `${medicationName}-${title.replace(/\\s+/g, '-')}-${pmidOrNctid}` :
+                   `${medicationName}-${title.replace(/\\s+/g, '-')}-idx${index}`; // Use index as fallback
+        return {
+          ...rawStudy, // Spread all properties from rawStudy
+          title: title, // Explicit title
+          id: id, // Unique ID for the study
+        };
+      });
+      return {
+        medicationName,
+        studies,
+        studyCount: studies.length,
+      };
     });
-    return studies;
+  }, []); // useCallback with empty dependency array as it doesn't rely on component scope variables
+
+  const medicationGroups = useMemo(() => processResultsForMultiLevelAccordion(results), [results, processResultsForMultiLevelAccordion]);
+
+
+  const toggleMedicationAccordion = (medicationKey) => {
+    setActiveMedicationKey(prevKey => (prevKey === medicationKey ? null : medicationKey));
+    setActiveStudyId(null); // Reset active study when a new medication is opened/closed
   };
 
-  const studyList = getStudiesFromResults(results);
+  const toggleStudyAccordion = (studyId) => {
+    setActiveStudyId(prevId => (prevId === studyId ? null : studyId));
+  };
 
   return (
     <div className="w-11/12 max-w-7xl mx-auto py-8">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Filters Panel Component */}
         <FilterPanel
           selectedOptions={selectedOptions}
           handleFilterChange={handleFilterChange}
@@ -88,27 +101,25 @@ const SearchPage = () => {
           setSearchQuery={setSearchQuery}
           clearFilters={clearFilters}
           handleSearch={handleSearch}
-          // Pass the filter options (either from backend or static)
           ageOptions={getOptionsForCategory('age')}
           symptomOptions={getOptionsForCategory('symptom')}
           genderOptions={getOptionsForCategory('gender')}
           medicationOptions={getOptionsForCategory('medication')}
         />
 
-        {/* Results Area */}
         <div className="lg:w-2/3">
           <div className="bg-white p-6 rounded-lg shadow mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-gray-800">Study Results</h2>
               {/* Show count only when not loading, no error, and results exist */}
-              {!isLoading && !error && studyList.length > 0 && (
+              {!isLoading && !error && medicationGroups.length > 0 && (
                 <p className="text-sm text-gray-500">
-                  {studyList.length} studies found
+                  {medicationGroups.reduce((acc, group) => acc + group.studyCount, 0)} studies found across {medicationGroups.length} medication groups
                 </p>
               )}
             </div>
 
-            {/* Active filters display */}
+            {/* Active filters display ... */}
             {selectedOptions.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm text-gray-500 mb-2">Active filters:</p>
@@ -116,13 +127,13 @@ const SearchPage = () => {
                   {selectedOptions.map((filter) => {
                     const [category, value] = filter.split(":");
                     let label = value;
-                    // Find label from options
-                    const options = getOptionsForCategory(category);
-                    const option = options.find(opt => opt.value === value);
-                    if (option) {
-                      label = option.label;
+                    if (allFilterOptions[category]) {
+                      label =
+                        allFilterOptions[category].find((opt) => opt.value === value)?.label ||
+                        value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
+                    } else {
+                      label = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
                     }
-                    
                     return (
                       <span
                         key={filter}
@@ -143,20 +154,11 @@ const SearchPage = () => {
               </div>
             )}
 
-            {/* Loading State */}
-            {isLoading && (
-              <p className="text-center py-8 text-gray-500">Loading...</p>
-            )}
-
-            {/* Error State */}
-            {error && (
-              <p className="text-center py-8 text-red-500">
-                {error}
-              </p>
-            )}
-
+            {isLoading && <p className="text-center py-8 text-gray-500">Loading...</p>}
+            {error && <p className="text-center py-8 text-red-500">{error}</p>}
+            
             {/* No Results State (only show if not loading and no error) */}
-            {!isLoading && !error && studyList.length === 0 && (
+            {!isLoading && !error && medicationGroups.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-500">
                   {selectedOptions.length > 0 || searchQuery
@@ -167,83 +169,106 @@ const SearchPage = () => {
             )}
 
             {/* Results List (only show if not loading, no error, and results exist) */}
-            {!isLoading && !error && studyList.length > 0 && (
+            {!isLoading && !error && medicationGroups.length > 0 && (
               <div className="divide-y divide-gray-200">
-                {studyList.map((study) => (
-                  <div key={study.id} className="py-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {study['Study Title'] || "Untitled Study"}
-                      </h3>
-                      <span className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
-                        {study.medication}
-                      </span>
-                    </div>
-                    
-                    {/* Study metadata */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm text-gray-600">
-                      <div>
-                        <span className="font-medium">Duration:</span> {study.Duration || 'N/A'}
-                      </div>
-                      <div>
-                        <span className="font-medium">Participants:</span> {study.n || 'N/A'}
-                      </div>
-                      <div>
-                        <span className="font-medium">Age:</span> {study['Age range/mean'] || 'N/A'}
-                      </div>
-                      <div>
-                        <span className="font-medium">M:F Ratio:</span> {study['M:F ratio'] || 'N/A'}
-                      </div>
-                    </div>
+                {medicationGroups.map((group) => (
+                  group.studyCount > 0 && ( // Only render medication group if it has studies
+                    <div key={group.medicationName} className="py-2">
+                      {/* Outer Accordion: Medication Name and Study Count */}
+                      <button
+                        onClick={() => toggleMedicationAccordion(group.medicationName)}
+                        className="w-full flex justify-between items-center text-left py-3 px-4 bg-blue-50 hover:bg-blue-100 rounded-md focus:outline-none"
+                      >
+                        <h3 className="text-lg font-semibold text-blue-700">
+                          {group.medicationName} ({group.studyCount} {group.studyCount === 1 ? 'study' : 'studies'})
+                        </h3>
+                        <span className="text-blue-500">
+                          {activeMedicationKey === group.medicationName ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                          )}
+                        </span>
+                      </button>
 
-                    {/* Primary outcomes */}
-                    <div className="mb-3">
-                      <h4 className="font-medium text-gray-800 mb-1">Primary Outcome</h4>
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">{study['Primary Outcome Area']}:</span> {study['Results: Primary measure']}
-                      </p>
-                      {study['Primary Outcome Measures'] && (
-                        <p className="text-xs text-gray-500">Measures: {study['Primary Outcome Measures']}</p>
+                      {/* Inner Accordion: Study Titles (shown if this medication group is active) */}
+                      {activeMedicationKey === group.medicationName && (
+                        <div className="pl-4 mt-2 space-y-1">
+                          {group.studies.map((study) => (
+                            <div key={study.id} className="py-1">
+                              <button
+                                onClick={() => toggleStudyAccordion(study.id)}
+                                className="w-full flex justify-between items-center text-left py-2 px-3 bg-gray-50 hover:bg-gray-100 rounded-md focus:outline-none"
+                              >
+                                <h4 className="text-md font-medium text-gray-700">
+                                  {study.title || "Untitled Study"}
+                                </h4>
+                                <span className="text-gray-400">
+                                  {activeStudyId === study.id ? (
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
+                                     </svg>
+                                  ) : (
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                     </svg>
+                                  )}
+                                </span>
+                              </button>
+
+                              {/* Study Details (shown if this study is active) */}
+                              {activeStudyId === study.id && (
+                                <div className="p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
+                                  {/* Display explicitly mapped/handled fields first */}
+                                  {/* Medication is now part of the outer group, so not repeated here unless desired */}
+                                  {/* <div className="mb-3">
+                                    <strong className="text-sm text-gray-700">Treatment (Medication):</strong>
+                                    <p className="text-sm text-gray-600">{group.medicationName || "N/A"}</p>
+                                  </div> */}
+                                  
+                                  {/* Dynamically render other study properties */}
+                                  {Object.entries(study).map(([key, value]) => {
+                                    const EXCLUDED_KEYS = ['id', 'title', 'Study Title']; // 'medication' is no longer in study object
+                                    if (EXCLUDED_KEYS.includes(key)) {
+                                      return null;
+                                    }
+                                    if (typeof value === 'object' && value !== null) {
+                                      return (
+                                        <div key={key} className="mb-3">
+                                          <strong className="text-sm text-gray-700 capitalize">{key.replace(/_/g, ' ')}:</strong>
+                                          <pre className="text-sm text-gray-600 bg-gray-50 p-2 rounded overflow-x-auto">{JSON.stringify(value, null, 2)}</pre>
+                                        </div>
+                                      );
+                                    }
+                                    return (
+                                      <div key={key} className="mb-3">
+                                        <strong className="text-sm text-gray-700 capitalize">{key.replace(/_/g, ' ')}:</strong>
+                                        <p className="text-sm text-gray-600">{String(value !== null && value !== undefined ? value : "N/A")}</p>
+                                      </div>
+                                    );
+                                  })}
+                                  {study['Full Text URL'] && (
+                                    <a
+                                      href={study['Full Text URL']}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="mt-2 inline-block text-blue-600 hover:underline text-sm"
+                                    >
+                                      View Full Text
+                                    </a>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </div>
-
-                    {/* Secondary outcomes */}
-                    {study['Secondary Outcome Area'] && (
-                      <div className="mb-3">
-                        <h4 className="font-medium text-gray-800 mb-1">Secondary Outcome</h4>
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">{study['Secondary Outcome Area']}:</span> {study['Results: Secondary Measures']}
-                        </p>
-                        {study['Secondary Outcome Measures'] && (
-                          <p className="text-xs text-gray-500">Measures: {study['Secondary Outcome Measures']}</p>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Treatment details */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 text-sm">
-                      <div>
-                        <span className="font-medium text-gray-800">Dose Range:</span>
-                        <p className="text-gray-600">{study['Medication/Treatment Dose Range'] || 'N/A'}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-800">Drop Out Rate:</span>
-                        <p className="text-gray-600">{study['Drop Out Rate'] || 'N/A'}</p>
-                      </div>
-                    </div>
-
-                    {/* Safety information */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="font-medium text-gray-800">Side Effects:</span>
-                        <p className="text-gray-600">{study['Tolerability/Side Effects'] || 'N/A'}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-800">Safety:</span>
-                        <p className="text-gray-600">{study.Safety || 'N/A'}</p>
-                      </div>
-                    </div>
-                  </div>
+                  )
                 ))}
               </div>
             )}
@@ -253,41 +278,5 @@ const SearchPage = () => {
     </div>
   );
 };
-
-// Define filter options arrays here so they are accessible for the results display logic
-// These will be used as fallbacks if the backend doesn't provide filter options
-const ageOptions = [
-  { value: "0-5", label: "Infancy/Early Childhood (0-5 years)" },
-  { value: "6-12", label: "Childhood (6-12 years)" },
-  { value: "13-17", label: "Adolescence (13-17 years)" },
-  { value: "18-25", label: "Young Adult (18-25 years)" },
-  { value: "26-64", label: "Adult (26-64 years)" },
-  { value: "65+", label: "Senior (65+ years)" },
-];
-
-const symptomOptions = [
-  { value: "irritability", label: "Irritability" },
-  { value: "adhd", label: "ADHD symptoms" },
-  { value: "hyperactivity", label: "Hyperactivity" },
-  { value: "social", label: "Social behaviors" },
-  { value: "attention-hyperactivity", label: "Attention and hyperactivity" },
-  { value: "asd-severity", label: "ASD severity" },
-  { value: "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance", label: "Lethargy/social withdrawal, stereotypy, and hyperactivity/noncompliance" },
-  { value: "anxiety-reactivity", label: "Anxiety and reactivity" },
-];
-
-const genderOptions = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "nonbinary", label: "Non-binary" },
-];
-
-const medicationOptions = [
-  { value: "aripiprazole", label: "Aripiprazole" },
-  { value: "citalopram", label: "Citalopram" },
-  { value: "fluoxetine", label: "Fluoxetine" },
-  { value: "sertraline", label: "Sertraline" },
-  { value: "risperidone", label: "Risperidone" },
-];
 
 export default SearchPage;
