@@ -18,3 +18,7 @@ logs/
 *.log
 *.tmp
 
+# Ignore Python virtual environment directories
+venv/
+backend/venv/
+
