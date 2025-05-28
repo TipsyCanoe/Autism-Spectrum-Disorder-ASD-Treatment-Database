@@ -1,0 +1,59 @@
+\copy temp."vectorexamples" FROM '~/Cleaned_VectorExamples.csv' WITH (FORMAT csv, HEADER true)
+
+\copy temp."pubmed_papers_info" FROM '~/clean_pubmed_papers_info.csv' WITH (FORMAT csv, HEADER true)
+
+\copy temp."individual_treatment_queries" FROM '~/Clean_Individual_Treatment_Queries.csv' WITH (FORMAT csv, HEADER true)
+
+\copy temp."adjusted_asd_sheet_info" FROM '~/Adjusted_ASD_Sheet_Info_V2.csv' WITH (FORMAT csv, HEADER true)
+
+
+CREATE TABLE temp.Adjusted_ASD_Sheet_Info (
+    pmid BIGINT PRIMARY KEY, 
+    doi TEXT,
+    title TEXT,
+    pub_date DATE,
+    abstract TEXT,
+    authors TEXT,
+    journal TEXT,
+    keywords TEXT,
+    url TEXT,
+    affiliations TEXT
+);
+
+
+CREATE TABLE temp.Individual_Treatment_Queries (
+    pmid BIGINT PRIMARY KEY, 
+    treatment_name TEXT,
+    duration TEXT,
+    primary_outcome_area TEXT,
+    primary_outcome_measures TEXT,
+    results_primary_measure TEXT,
+    FOREIGN KEY (pmid) REFERENCES Adjusted_ASD_Sheet_Info (pmid) -- Foreign key
+);
+
+
+CREATE TABLE temp.Pubmed_Papers_Info (
+    pmid BIGINT PRIMARY KEY, 
+    doi TEXT,
+    title TEXT,
+    pub_date DATE,
+    abstract TEXT,
+    authors TEXT,
+    journal TEXT,
+    keywords TEXT,
+    url TEXT,
+    affiliations TEXT,
+    FOREIGN KEY (pmid) REFERENCES Adjusted_ASD_Sheet_Info (pmid) -- Foreign key
+);
+
+
+CREATE TABLE temp.VectorExamples (
+    pmid BIGINT PRIMARY KEY,
+    treatment_name TEXT,
+    duration TEXT,
+    primary_outcome_area TEXT,
+    primary_outcome_measures TEXT,
+    results_primary_measure TEXT,
+    vector TEXT,
+    FOREIGN KEY (pmid) REFERENCES Adjusted_ASD_Sheet_Info (pmid) -- Foreign key
+);
