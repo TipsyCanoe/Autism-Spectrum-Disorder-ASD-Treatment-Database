@@ -41,5 +41,5 @@ completePD = pd.DataFrame()
 for query in queries:
     completePD = importer.importPapers(completePD, query)
 
-completePD.to_excel('Adjusted_ASD_Sheet_Info_V2.xlsx', index=False)
+completePD.to_excel('pubmed_ASD_info.xlsx', index=False)
 
