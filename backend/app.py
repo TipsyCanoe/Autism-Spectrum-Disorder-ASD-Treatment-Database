@@ -293,7 +293,7 @@ available_filters = {
     "age": ["0-5", "6-12", "13-17", "18-25", "26-64", "65+"],
     "symptom": [
         "irritability", "adhd", "hyperactivity", "social", 
-        "attention-hyperactivity", "asd-severity", 
+        "attention-hyperactivity",
         "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance", 
         "anxiety-reactivity"
     ],
@@ -373,7 +373,6 @@ def matches_symptom_filter(study, filter_symptoms):
             "hyperactivity": ["hyperactivity", "hyperactive"],
             "social": ["social", "autism", "asd"],
             "attention-hyperactivity": ["attention", "hyperactivity"],
-            "asd-severity": ["autism", "asd"],
             "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance": ["lethargy", "withdrawal", "stereotypy"],
             "anxiety-reactivity": ["anxiety", "anxious", "reactivity"]
         }

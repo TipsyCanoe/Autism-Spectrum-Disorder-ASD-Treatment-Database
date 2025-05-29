@@ -2,3 +2,5 @@ transformers
 sentence-transformers
 flask
 flask_cors
+psycopg2-binary
+dotenv
