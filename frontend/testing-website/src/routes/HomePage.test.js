@@ -1,134 +1,249 @@
-import React from "react";
-import { render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import About from "./About.jsx";
-import Contact from "./Contact.jsx"; // Import Contact to allow rendering
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom"; // Import MemoryRouter
+import HomePage from "./HomePage.jsx";
 
-// --- Test Suite for About Component (Static Content Only) ---
-describe("About Component - Static Content Rendering", () => {
-  // Note: We are NOT mocking Contact here, just ensuring About renders without crashing.
-  // The Contact component itself won't be visible unless its state is triggered,
-  // which we are no longer testing in this file.
+// Mock fetch globally
+global.fetch = jest.fn();
 
-  test("renders main heading and mission statement", () => {
-    render(<About />);
+describe("HomePage Component", () => {
+  beforeEach(() => {
+    // Reset fetch mock before each test
+    fetch.mockClear();
+  });
+
+  test("renders hero section with title and description", () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(
       screen.getByRole("heading", {
-        name: /About the Autism Resources Database/i,
+        name: /Welcome to the Autism Resources Database/i,
         level: 1,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /Our Mission/i, level: 2 })
-    ).toBeInTheDocument();
-    expect(
       screen.getByText(
-        /Our mission is to bridge the gap between research and practice/i
+        /A comprehensive database of resources for professionals and families/i
       )
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        /We believe that reliable information should be accessible/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Sendan Center/i)).toBeInTheDocument();
   });
 
-  test("renders partnership section", () => {
-    render(<About />);
+  test("renders search section with search button and update database button", () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(
       screen.getByRole("heading", {
-        name: /Our Partnership with the Sendan Center/i,
+        name: /Find the Resources You Need/i,
         level: 2,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/developed in collaboration with Jim Harle/i)
+      screen.getByRole("button", { name: /Search/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByText(
-        /process of articles getting added to our database is thoroughly discussed/i
-      )
+      screen.getByRole("button", { name: /Update Database/i })
     ).toBeInTheDocument();
   });
 
-  test('renders "What You\'ll Find" section', () => {
-    render(<About />);
+  describe("handleRunJob function", () => {
+    test("successfully calls API and displays success message", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ message: "Job completed successfully", details: "100 entries added" }),
+      });
+
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
+
+      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      fireEvent.click(updateButton);
+
+      expect(updateButton).toBeDisabled();
+      expect(screen.getByText(/Updating database.../i)).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Job completed successfully Details: 100 entries added/i)
+        ).toBeInTheDocument();
+      });
+      expect(updateButton).not.toBeDisabled();
+    });
+
+    test("handles API error and displays error message", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ message: "Job failed", error: "Database connection error" }),
+      });
+
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
+
+      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      fireEvent.click(updateButton);
+
+      expect(updateButton).toBeDisabled();
+      expect(screen.getByText(/Updating database.../i)).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Error: Job failed Details: Database connection error/i)
+        ).toBeInTheDocument();
+      });
+      expect(updateButton).not.toBeDisabled();
+    });
+
+    test("handles network error during API call and displays fallback message", async () => {
+      fetch.mockRejectedValueOnce(new Error("Network failure"));
+
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
+
+      // Mock console.error to verify it's called
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      fireEvent.click(updateButton);
+
+      expect(updateButton).toBeDisabled();
+      expect(screen.getByText(/Updating database.../i)).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Failed to trigger job. Check console for details./i)
+        ).toBeInTheDocument();
+      });
+      expect(updateButton).not.toBeDisabled();
+      expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to trigger API job:", new Error("Network failure"));
+      
+      // Restore console.error
+      consoleErrorSpy.mockRestore();
+    });
+
+    test("displays success message without details if details are not provided", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ message: "Job completed successfully" }), // No details
+      });
+
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
+
+      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      fireEvent.click(updateButton);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Job completed successfully/i)
+        ).toBeInTheDocument();
+         // Ensure "Details:" is not part of the message
+        expect(screen.queryByText(/Details:/i)).not.toBeInTheDocument();
+      });
+    });
+
+    test("displays error message without details if error details are not provided", async () => {
+      fetch.mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ message: "Job failed" }), // No error details
+      });
+
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
+
+      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      fireEvent.click(updateButton);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Error: Job failed/i)
+        ).toBeInTheDocument();
+        // Ensure "Details:" is not part of the message
+        expect(screen.queryByText(/Details:/i)).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  test("renders features section", () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(
-      screen.getByRole("heading", {
-        name: /What You'll Find in Our Database/i,
-        level: 2,
-      })
+      screen.getByRole("heading", { name: /Features/i, level: 2 })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Extensive Database/i)).toBeInTheDocument();
+    expect(screen.getByText(/Professional Guidance/i)).toBeInTheDocument();
+    expect(screen.getByText(/Family Support/i)).toBeInTheDocument();
+  });
+
+  test("renders testimonials section", () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+    expect(
+      screen.getByRole("heading", { name: /What Our Users Say/i, level: 2 })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /Research Papers/i, level: 3 })
+      screen.getByText(/"This database has been a lifesaver for our family/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Established studies on autism interventions/i)
+      screen.getByText(/"As a professional, I rely on this database/i)
     ).toBeInTheDocument();
   });
 
-  test('renders "Our Team" section', () => {
-    render(<About />);
+  test("renders other resources section", () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(
-      screen.getByRole("heading", { name: /Our Team/i, level: 2 })
+      screen.getByRole("heading", { name: /Other Autism Resources/i, level: 2 })
+    ).toBeInTheDocument();
+    // Be more specific: look for the heading elements for each resource
+    expect(
+      screen.getByRole("heading", { name: /Autism Speaks/i, level: 3 })
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/maintained by a dedicated team of researchers/i)
-    ).toBeInTheDocument();
-    // Check for a few team members to confirm rendering
-    expect(screen.getByText(/James Harle, MD/i)).toBeInTheDocument();
-    expect(screen.getByText(/Shameem Ahmed/i)).toBeInTheDocument();
-    expect(screen.getByText(/Richard Jefferson/i)).toBeInTheDocument();
-    expect(screen.getByText(/Alex Lo/i)).toBeInTheDocument();
-    expect(screen.getByText(/Logan Kalloway/i)).toBeInTheDocument();
-    expect(screen.getByText(/Cole Oliva/i)).toBeInTheDocument();
-    // Check for roles
-    expect(screen.getByText(/Database Architect/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/Frontend and Endpoints Architect/i)
-    ).toBeInTheDocument();
-  });
-
-  test('renders "Resource Vetting Process" section', () => {
-    render(<About />);
-    expect(
-      screen.getByRole("heading", {
-        name: /Our Resource Vetting Process/i,
-        level: 2,
-      })
+      screen.getByRole("heading", { name: /National Autism Association/i, level: 3 })
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/committed to maintaining the highest standards/i)
-    ).toBeInTheDocument();
-    // Check for list items
-    expect(
-      screen.getByText(/Initial screening by 3rd-party scientific databases/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Review by automated queries/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Double checking when categorizing papers/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Regular reassessment to ensure continued relevance/i)
+      screen.getByRole("heading", { name: /Autism Society/i, level: 3 })
     ).toBeInTheDocument();
   });
 
-  test('renders "Get Involved" section with button (button presence only)', () => {
-    render(<About />);
-    const getInvolvedSection = screen
-      .getByRole("heading", { name: /Get Involved/i, level: 2 })
-      .closest("section");
-    expect(getInvolvedSection).toBeInTheDocument();
+  test("renders footer", () => {
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(
-      within(getInvolvedSection).getByText(
-        /We welcome contributions from researchers/i
-      )
-    ).toBeInTheDocument();
-    // Only check that the button exists, not its functionality
-    expect(
-      within(getInvolvedSection).getByRole("button", { name: /Contact Us/i })
+      screen.getByText(/© 2025 Autism Resources Database. All rights reserved./i)
     ).toBeInTheDocument();
   });
 });
