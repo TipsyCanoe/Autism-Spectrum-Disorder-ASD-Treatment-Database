@@ -1,7 +1,7 @@
 import { useState } from "react";
-import FilterPanel from '../features/search/components/FilterPanel';
-import useSearch from "../features/search/hooks/useSearch";
-import "../index.css";
+import "../../../index.css"; // Adjusted path assuming index.css is at src/index.css
+import useSearch from "../hooks/useSearch"; // Adjusted path assuming useSearch is in src/features/search/hooks/
+import FilterPanel from './FilterPanel'; // Corrected path
 
 const SearchPage = () => {
   // Destructure isLoading and error from useSearch
