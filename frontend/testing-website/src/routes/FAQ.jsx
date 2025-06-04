@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../index.css";
 import Contact from "./Contact";
 import FAQItem from "./FAQItem";
@@ -11,6 +11,7 @@ const FAQ = () => {
     setOpenItem(openItem === index ? null : index);
   };
 
+  // just list of FAQ items
   const faqItems = [
     {
       question: "What is the Autism Resources Database?",
@@ -47,7 +48,7 @@ const FAQ = () => {
 
       <div className="w-full max-w-2xl flex flex-col items-center">
         {faqItems.map((item, index) => (
-          <FAQItem // <-- Use the imported component
+          <FAQItem
             key={index}
             question={item.question}
             answer={item.answer}
@@ -57,7 +58,6 @@ const FAQ = () => {
         ))}
       </div>
 
-      {/* ... rest of the component (Contact Us button, Contact modal) ... */}
       <div className="mt-8 text-center">
         <p className="text-black mb-4">Don't see your question here?</p>
         <button

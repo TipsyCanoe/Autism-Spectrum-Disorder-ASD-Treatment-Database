@@ -1,4 +1,3 @@
-import React from "react";
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (

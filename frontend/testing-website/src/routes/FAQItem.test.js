@@ -1,13 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event"; // Import userEvent
-import React from "react";
 
 import "@testing-library/jest-dom"; // Ensure jest-dom matchers are available
 import FAQItem from "./FAQItem.jsx"; // Adjust import path if needed
-
-// Mock the Contact component as it's not relevant to FAQItem rendering itself
-// If FAQItem doesn't import Contact directly, this isn't needed.
-// jest.mock('./Contact', () => () => <div>Mock Contact</div>);
 
 describe("FAQItem Component", () => {
   const mockQuestion = "What is testing?";
@@ -107,7 +102,6 @@ describe("FAQItem Component", () => {
     );
 
     // Check that the answer text is NOT visible initially
-    // queryByText returns null if not found, unlike getByText which throws an error
     expect(screen.queryByText(mockAnswer)).not.toBeVisible();
     // Or check the container's max-height style if relying on that for hiding
     const answerDiv = screen

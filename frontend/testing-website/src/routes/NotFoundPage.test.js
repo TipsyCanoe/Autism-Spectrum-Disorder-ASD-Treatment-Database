@@ -8,7 +8,6 @@ describe("NotFoundPage Component", () => {
     render(<NotFoundPage />);
 
     // Check if the heading text is rendered
-    // Using a case-insensitive regex is often more robust
     const headingElement = screen.getByRole("heading", {
       name: /404 page not found/i,
     });

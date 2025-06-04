@@ -1,14 +1,12 @@
-// IMPORTANT: Place mocks BEFORE imports
 jest.mock("./FAQItem");
 jest.mock("./Contact");
 
-import React from "react";
+import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
+import Contact from "./Contact";
 import FAQ from "./FAQ.jsx";
 import FAQItem from "./FAQItem";
-import Contact from "./Contact";
 
 describe("FAQ Component", () => {
   const user = userEvent.setup(); // Setup user-event for simulating user interactions
@@ -102,13 +100,11 @@ describe("FAQ Component", () => {
       name: firstQuestionRegex,
     });
 
-    // Action 1: Click to open
     await user.click(firstQuestionButton);
 
     // Reset the mock to clear previous calls
     FAQItem.mockClear();
 
-    // Action 2: Click again to close
     await user.click(firstQuestionButton);
 
     // Find the specific call for our question instead of using "lastCalledWith"

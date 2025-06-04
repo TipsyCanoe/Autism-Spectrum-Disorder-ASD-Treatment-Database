@@ -1,10 +1,8 @@
-import React from "react";
+import "@testing-library/jest-dom";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 import About from "./About.jsx";
 // We still need Contact imported so About can render without error, but we don't mock it.
-import Contact from "./Contact.jsx";
 
 // --- Test Suite for About Component (Static Content Only) ---
 describe("About Component - Static Content Rendering", () => {

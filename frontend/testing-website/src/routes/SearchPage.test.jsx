@@ -10,7 +10,11 @@ jest.mock("../features/search/hooks/useSearch", () => () => mockUseSearch());
 jest.mock("../features/search/components/FilterPanel", () =>
   jest.fn(function MockFilterPanel(props) {
     // eslint-disable-next-line react/prop-types
-    return <div data-testid="mock-filter-panel" onClick={props.onSearch}>Mock FilterPanel</div>;
+    return (
+      <div data-testid="mock-filter-panel" onClick={props.onSearch}>
+        Mock FilterPanel
+      </div>
+    );
   })
 );
 
@@ -88,21 +92,20 @@ describe("SearchPage", () => {
   it("handles non-array studyArray (zero studies)", () => {
     mockUseSearch.mockReturnValue({
       ...defaultUseSearch,
-      results: { aripiprazole: null }, // Simulate a medication key with no studies array
+      results: { aripiprazole: null },
     });
     render(<SearchPage />);
-    // Medication name should not be rendered if there are no studies for it
+
     expect(screen.queryByText(/aripiprazole/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/study 1/i)).not.toBeInTheDocument();
-    // Check for the 'no studies' message or the total count message
-    // Depending on other results, the 'no studies' message might not appear if other medications still have studies.
-    // Let's check the study count display, which should reflect 0 studies for 'aripiprazole'
-    // and potentially a total count if other medications were present.
-    // For this specific mock, only aripiprazole is provided and it's null.
+
     expect(
-      screen.getByText((content) =>
-        /0 studies found across 1 medication group/i.test(content) || // if it's the only group
-        /no studies match your criteria|use the filters or keywords to find studies/i.test(content) // if it's truly empty
+      screen.getByText(
+        (content) =>
+          /0 studies found across 1 medication group/i.test(content) ||
+          /no studies match your criteria|use the filters or keywords to find studies/i.test(
+            content
+          )
       )
     ).toBeInTheDocument();
   });
@@ -115,7 +118,9 @@ describe("SearchPage", () => {
     render(<SearchPage />);
     expect(
       screen.getByText((content) =>
-        /no studies match your criteria|use the filters or keywords to find studies/i.test(content)
+        /no studies match your criteria|use the filters or keywords to find studies/i.test(
+          content
+        )
       )
     ).toBeInTheDocument();
   });
@@ -133,12 +138,6 @@ describe("SearchPage", () => {
         fetchResults: mockFetchResults,
       });
       render(<SearchPage />);
-      // If your FilterPanel uses a placeholder for the search input, use that here:
-      // const input = screen.getByPlaceholderText(/search/i);
-      // fireEvent.change(input, { target: { value: "test" } });
-      // fireEvent.click(screen.getByRole("button", { name: /search/i }));
-      // expect(mockFetchResults).toHaveBeenCalled();
-      // If not, you may need to adjust selectors to match your actual UI.
     });
 
     it("calls clearFilters and resets state", () => {
@@ -148,9 +147,6 @@ describe("SearchPage", () => {
         setSelectedOptions: mockSetSelectedOptions,
       });
       render(<SearchPage />);
-      // fireEvent.click(screen.getByRole("button", { name: /clear filters/i }));
-      // expect(mockSetSelectedOptions).toHaveBeenCalledWith([]);
-      // Adjust selectors as needed for your actual UI.
     });
   });
 });

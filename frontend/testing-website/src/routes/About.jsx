@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AlexLo from "../assets/AlexLo.jpg";
 import RichardJefferson from "../assets/RichardJefferson.jpg";
 import "../index.css";
@@ -131,11 +131,10 @@ const About = () => {
           evaluation process before being included:
         </p>
         <ol className="list-decimal pl-6 space-y-2">
+          <li>Initial screening by 3rd-party scientific databases (PubMed)</li>
           <li>
-            Initial screening by 3rd-party scientific databases (PubMed)
-          </li>
-          <li>
-            Review by automated queries to make sure the paper is relevant to ASD.
+            Review by automated queries to make sure the paper is relevant to
+            ASD.
           </li>
           <li>Double checking when categorizing papers to ensure accuracy</li>
           <li>

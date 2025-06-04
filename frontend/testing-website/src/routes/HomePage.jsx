@@ -1,4 +1,4 @@
-import { useState } from "react"; // Import useState
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AutismSociety from "../assets/AutismSociety.png";
 import AutismSpeaksImg from "../assets/AutismSpeaksLink.jpg";
@@ -14,7 +14,6 @@ const HomePage = () => {
     setJobMessage("Updating database...");
     try {
       const response = await fetch("http://localhost:5001/api/run-job", {
-        // Assuming backend is on port 5001
         method: "POST",
       });
       const data = await response.json();
@@ -36,12 +35,9 @@ const HomePage = () => {
   };
 
   return (
-    // Use <main> for the primary content of the page
     <main>
-      {/* Hero Section */}
       <section className="bg-gray-100 py-12">
         <div className="container mx-auto text-center">
-          {/* Use <h1> for the main page title */}
           <h1 className="text-4xl font-bold text-gray-800">
             Welcome to the Autism Resources Database
           </h1>
@@ -54,7 +50,6 @@ const HomePage = () => {
               rel="noopener noreferrer"
             >
               {" "}
-              {/* Added rel attribute */}
               <b>Sendan Center</b>
             </a>{" "}
             to provide the best resources for autism support.
@@ -65,7 +60,6 @@ const HomePage = () => {
       {/* Search Section */}
       <section className="bg-white py-12">
         <div className="container mx-auto text-center">
-          {/* Use <h2> for major section headings */}
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Find the Resources You Need
           </h2>
@@ -92,27 +86,23 @@ const HomePage = () => {
       {/* Features Section */}
       <section className="bg-white py-12">
         <div className="container mx-auto text-center">
-          {/* Use <h2> */}
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
             Features
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-6 bg-gray-100 rounded-lg shadow">
-              {/* Use <h3> for sub-section headings within Features */}
               <h3 className="text-xl font-semibold">Extensive Database</h3>
               <p className="text-gray-600 mt-2">
                 Access a wide range of resources tailored for autism support.
               </p>
             </div>
             <div className="p-6 bg-gray-100 rounded-lg shadow">
-              {/* Use <h3> */}
               <h3 className="text-xl font-semibold">Professional Guidance</h3>
               <p className="text-gray-600 mt-2">
                 Find expert advice and best practices for autism care.
               </p>
             </div>
             <div className="p-6 bg-gray-100 rounded-lg shadow">
-              {/* Use <h3> */}
               <h3 className="text-xl font-semibold">Family Support</h3>
               <p className="text-gray-600 mt-2">
                 Discover resources and support networks for families.
@@ -125,12 +115,10 @@ const HomePage = () => {
       {/* Testimonials Section */}
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto text-center">
-          {/* Use <h2> */}
           <h2 className="text-2xl font-bold text-gray-800 mb-8">
             What Our Users Say
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Testimonials could be <article> or just <div> */}
             <div className="p-6 bg-white rounded-lg shadow">
               <p className="text-gray-600">
                 "This database has been a lifesaver for our family. We found so
@@ -152,19 +140,17 @@ const HomePage = () => {
       {/* Other Resources Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto text-center">
-          {/* Use <h2> */}
           <h2 className="text-2xl font-bold text-gray-800 mb-8">
             Other Autism Resources
           </h2>
           <div className="horizontal-resources justify-center">
-            {/* Resource Card */}
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
                 src={AutismSpeaksImg}
                 alt="Autism Speaks"
                 className="w-16 h-16 object-cover rounded-lg mb-4"
               />
-              {/* Use <h3> */}
+
               <h3 className="text-xl font-semibold">Autism Speaks</h3>
               <p className="text-gray-600 mt-2">
                 Autism Speaks is dedicated to promoting solutions for the needs
@@ -179,14 +165,14 @@ const HomePage = () => {
                 Visit Autism Speaks
               </a>
             </div>
-            {/* Another Resource */}
+
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
                 src={NationalAutismAssociation}
                 alt="National Autism Association"
                 className="w-16 h-16 object-cover rounded-lg mb-4"
               />
-              {/* Use <h3> */}
+
               <h3 className="text-xl font-semibold">
                 National Autism Association
               </h3>
@@ -203,14 +189,14 @@ const HomePage = () => {
                 Visit National Autism Association
               </a>
             </div>
-            {/* Another Resource */}
+
             <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow w-80">
               <img
                 src={AutismSociety}
                 alt="Autism Society"
                 className="w-16 h-16 object-cover rounded-lg mb-4"
               />
-              {/* Use <h3> */}
+
               <h3 className="text-xl font-semibold">Autism Society</h3>
               <p className="text-gray-600 mt-2">
                 The Autism Society aims to improve the lives of all affected by
@@ -229,11 +215,10 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Footer Section - Already semantic */}
       <footer className="bg-gray-800 text-white text-center py-4">
         <p>&copy; 2025 Autism Resources Database. All rights reserved.</p>
       </footer>
-    </main> // Close main tag
+    </main>
   );
 };
 

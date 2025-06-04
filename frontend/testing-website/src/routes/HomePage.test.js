@@ -44,9 +44,7 @@ describe("HomePage Component", () => {
         level: 2,
       })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Search/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Search/i })).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Update Database/i })
     ).toBeInTheDocument();
@@ -56,7 +54,10 @@ describe("HomePage Component", () => {
     test("successfully calls API and displays success message", async () => {
       fetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ message: "Job completed successfully", details: "100 entries added" }),
+        json: async () => ({
+          message: "Job completed successfully",
+          details: "100 entries added",
+        }),
       });
 
       render(
@@ -65,7 +66,9 @@ describe("HomePage Component", () => {
         </MemoryRouter>
       );
 
-      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      const updateButton = screen.getByRole("button", {
+        name: /Update Database/i,
+      });
       fireEvent.click(updateButton);
 
       expect(updateButton).toBeDisabled();
@@ -73,7 +76,9 @@ describe("HomePage Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/Job completed successfully Details: 100 entries added/i)
+          screen.getByText(
+            /Job completed successfully Details: 100 entries added/i
+          )
         ).toBeInTheDocument();
       });
       expect(updateButton).not.toBeDisabled();
@@ -82,7 +87,10 @@ describe("HomePage Component", () => {
     test("handles API error and displays error message", async () => {
       fetch.mockResolvedValueOnce({
         ok: false,
-        json: async () => ({ message: "Job failed", error: "Database connection error" }),
+        json: async () => ({
+          message: "Job failed",
+          error: "Database connection error",
+        }),
       });
 
       render(
@@ -91,7 +99,9 @@ describe("HomePage Component", () => {
         </MemoryRouter>
       );
 
-      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      const updateButton = screen.getByRole("button", {
+        name: /Update Database/i,
+      });
       fireEvent.click(updateButton);
 
       expect(updateButton).toBeDisabled();
@@ -99,7 +109,9 @@ describe("HomePage Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/Error: Job failed Details: Database connection error/i)
+          screen.getByText(
+            /Error: Job failed Details: Database connection error/i
+          )
         ).toBeInTheDocument();
       });
       expect(updateButton).not.toBeDisabled();
@@ -115,9 +127,13 @@ describe("HomePage Component", () => {
       );
 
       // Mock console.error to verify it's called
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 
-      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      const updateButton = screen.getByRole("button", {
+        name: /Update Database/i,
+      });
       fireEvent.click(updateButton);
 
       expect(updateButton).toBeDisabled();
@@ -129,8 +145,11 @@ describe("HomePage Component", () => {
         ).toBeInTheDocument();
       });
       expect(updateButton).not.toBeDisabled();
-      expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to trigger API job:", new Error("Network failure"));
-      
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Failed to trigger API job:",
+        new Error("Network failure")
+      );
+
       // Restore console.error
       consoleErrorSpy.mockRestore();
     });
@@ -147,14 +166,16 @@ describe("HomePage Component", () => {
         </MemoryRouter>
       );
 
-      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      const updateButton = screen.getByRole("button", {
+        name: /Update Database/i,
+      });
       fireEvent.click(updateButton);
 
       await waitFor(() => {
         expect(
           screen.getByText(/Job completed successfully/i)
         ).toBeInTheDocument();
-         // Ensure "Details:" is not part of the message
+        // Ensure "Details:" is not part of the message
         expect(screen.queryByText(/Details:/i)).not.toBeInTheDocument();
       });
     });
@@ -171,13 +192,13 @@ describe("HomePage Component", () => {
         </MemoryRouter>
       );
 
-      const updateButton = screen.getByRole("button", { name: /Update Database/i });
+      const updateButton = screen.getByRole("button", {
+        name: /Update Database/i,
+      });
       fireEvent.click(updateButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/Error: Job failed/i)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Error: Job failed/i)).toBeInTheDocument();
         // Ensure "Details:" is not part of the message
         expect(screen.queryByText(/Details:/i)).not.toBeInTheDocument();
       });
@@ -229,7 +250,10 @@ describe("HomePage Component", () => {
       screen.getByRole("heading", { name: /Autism Speaks/i, level: 3 })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /National Autism Association/i, level: 3 })
+      screen.getByRole("heading", {
+        name: /National Autism Association/i,
+        level: 3,
+      })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /Autism Society/i, level: 3 })
@@ -243,7 +267,9 @@ describe("HomePage Component", () => {
       </MemoryRouter>
     );
     expect(
-      screen.getByText(/© 2025 Autism Resources Database. All rights reserved./i)
+      screen.getByText(
+        /© 2025 Autism Resources Database. All rights reserved./i
+      )
     ).toBeInTheDocument();
   });
 });
