@@ -171,7 +171,7 @@ def search():
     query = request.args.get('query', '').lower()
     selected_filters = request.args.getlist('filters')
     filters_str = ', '.join(selected_filters)
-    limit = int(request.args.get('limit', 10))
+    limit = int(request.args.get('limit', 30))
     
     parsed_filters = {}
     for filter_str in selected_filters:
@@ -220,17 +220,17 @@ def search():
         
         for row in results:
             paper_data = {
+                "Abstract": row[10] if row[10] else "N/A",
+                "Primary Outcome Area": row[7] if row[7] else "N/A",
+                "Primary Outcome Measure": row[8] if row[8] else "N/A",
+                "Treatment Duration": row[6] if row[6] else "N/A",
+                "Publication Date": row[1].isoformat() if row[1] else "N/A",
+                "Author": row[3] if row[3] else "N/A",
                 "Study Title": row[0] if row[0] else "N/A",
                 "PMID": str(row[2]) if row[2] else "N/A",
                 "Full Text URL": row[4] if row[4] else None,
-                "Author": row[3] if row[3] else "N/A",
-                "Publication Date": row[1].isoformat() if row[1].isoformat() else "N/A",
-                "Treatment Duration": row[6] if row[6] else "N/A",
-                "Primary Outcome Area": row[7] if row[7] else "N/A",
-                "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Similarity Score": round(1 - row[9], 3) if row[9] is not None else 0,
-                "Distance": round(row[9], 3) if row[9] is not None else 1,
-                "Abstract": row[10] if row[10] else "N/A"
+                "Distance": round(row[9], 3) if row[9] is not None else 1
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"
