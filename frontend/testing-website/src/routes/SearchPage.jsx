@@ -1,22 +1,22 @@
-import { useCallback, useMemo, useState } from "react"; // Added useCallback, useMemo
+import { useCallback, useMemo, useState } from "react";
 import FilterPanel from "../features/search/components/FilterPanel";
 import { allFilterOptions } from "../features/search/constants/filterOptions";
-import useSearch from "../features/search/hooks/useSearch"; // Corrected import
+import useSearch from "../features/search/hooks/useSearch";
 import "../index.css";
 
 const SearchPage = () => {
   const {
     selectedOptions,
     setSelectedOptions,
-    results, // This is the raw JSON object from the backend, e.g., { "aripiprazole": [...] }
+    results, // This is now an array of objects
     fetchResults,
     isLoading,
     error,
     availableFilters,
   } = useSearch();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeMedicationKey, setActiveMedicationKey] = useState(null); // For outer accordion (medication)
-  const [activeStudyId, setActiveStudyId] = useState(null); // For inner accordion (study details)
+  const [activeMedicationKey, setActiveMedicationKey] = useState(null);
+  const [activeStudyId, setActiveStudyId] = useState(null);
 
   const handleFilterChange = (category, value) => {
     const filterKey = `${category}:${value}`;
@@ -51,44 +51,46 @@ const SearchPage = () => {
     return allFilterOptions[category] || [];
   };
 
-  // Transform the nested JSON structure from backend for the multi-level accordion
   const processResultsForMultiLevelAccordion = useCallback((results) => {
-    if (!results || typeof results !== "object") return [];
+    if (!results || !Array.isArray(results)) return [];
 
-    return Object.entries(results).map(([medicationName, studyArray]) => {
-      // Capitalize each word in the medicationName
-      const capitalizedMedicationName = medicationName
+    return results.map((treatmentGroup) => {
+      const treatmentName = treatmentGroup.treatment || "Unknown Treatment";
+      const studyArray = treatmentGroup.studies || [];
+
+      const capitalizedTreatmentName = treatmentName
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 
-      if (!Array.isArray(studyArray)) {
-        return {
-          medicationName: capitalizedMedicationName,
-          studies: [],
-          studyCount: 0,
-        };
-      }
       const studies = studyArray.map((rawStudy, index) => {
         const title = rawStudy["Study Title"] || "Untitled Study";
-        // Ensure ID is unique and stable. Prioritize PMID, then NCTID, then a combination using index.
         const pmidOrNctid = rawStudy.PMID || rawStudy.NCTID;
         const id = pmidOrNctid
-          ? `${medicationName}-${title.replace(/\\s+/g, "-")}-${pmidOrNctid}`
-          : `${medicationName}-${title.replace(/\\s+/g, "-")}-idx${index}`; // Use index as fallback
+          ? `${treatmentName}-${title.replace(/\s+/g, "-")}-${pmidOrNctid}`
+          : `${treatmentName}-${title.replace(/\s+/g, "-")}-idx${index}`;
+        
+        // Filter out unwanted fields
+        const filteredStudy = Object.fromEntries(
+          Object.entries(rawStudy).filter(([key]) => 
+            !['Similarity Score', 'Distance', 'Year'].includes(key)
+          )
+        );
+
         return {
-          ...rawStudy, // Spread all properties from rawStudy
-          title: title, // Explicit title
-          id: id, // Unique ID for the study
+          ...filteredStudy,
+          title: title,
+          id: id,
         };
       });
+
       return {
-        medicationName: capitalizedMedicationName,
+        medicationName: capitalizedTreatmentName,
         studies,
         studyCount: studies.length,
       };
     });
-  }, []); // useCallback with empty dependency array as it doesn't rely on component scope variables
+  }, []);
 
   const medicationGroups = useMemo(
     () => processResultsForMultiLevelAccordion(results),
@@ -99,7 +101,7 @@ const SearchPage = () => {
     setActiveMedicationKey((prevKey) =>
       prevKey === medicationKey ? null : medicationKey
     );
-    setActiveStudyId(null); // Reset active study when a new medication is opened/closed
+    setActiveStudyId(null);
   };
 
   const toggleStudyAccordion = (studyId) => {
@@ -126,20 +128,19 @@ const SearchPage = () => {
           <div className="bg-white p-6 rounded-lg shadow mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-gray-800">Study Results</h2>
-              {/* Show count only when not loading, no error, and results exist */}
               {!isLoading && !error && medicationGroups.length > 0 && (
                 <p className="text-sm text-gray-500">
                   {medicationGroups.reduce(
                     (acc, group) => acc + group.studyCount,
                     0
                   )}{" "}
-                  studies found across {medicationGroups.length} medication
+                  studies found across {medicationGroups.length} treatment
                   groups
                 </p>
               )}
             </div>
 
-            {/* Active filters display ... */}
+            {/* Active filters display */}
             {selectedOptions.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm text-gray-500 mb-2">Active filters:</p>
@@ -184,7 +185,6 @@ const SearchPage = () => {
             )}
             {error && <p className="text-center py-8 text-red-500">{error}</p>}
 
-            {/* No Results State (only show if not loading and no error) */}
             {!isLoading && !error && medicationGroups.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-500">
@@ -195,14 +195,12 @@ const SearchPage = () => {
               </div>
             )}
 
-            {/* Results List (only show if not loading, no error, and results exist) */}
             {!isLoading && !error && medicationGroups.length > 0 && (
               <div className="divide-y divide-gray-200">
                 {medicationGroups.map(
                   (group) =>
-                    group.studyCount > 0 && ( // Only render medication group if it has studies
+                    group.studyCount > 0 && (
                       <div key={group.medicationName} className="py-2">
-                        {/* Outer Accordion: Medication Name and Study Count */}
                         <button
                           onClick={() =>
                             toggleMedicationAccordion(group.medicationName)
@@ -248,7 +246,6 @@ const SearchPage = () => {
                           </span>
                         </button>
 
-                        {/* Inner Accordion: Study Titles (shown if this medication group is active) */}
                         {activeMedicationKey === group.medicationName && (
                           <div className="pl-4 mt-2 space-y-1">
                             {group.studies.map((study) => (
@@ -295,24 +292,15 @@ const SearchPage = () => {
                                   </span>
                                 </button>
 
-                                {/* Study Details (shown if this study is active) */}
                                 {activeStudyId === study.id && (
                                   <div className="p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
-                                    {/* Display explicitly mapped/handled fields first */}
-                                    {/* Medication is now part of the outer group, so not repeated here unless desired */}
-                                    {/* <div className="mb-3">
-                                    <strong className="text-sm text-gray-700">Treatment (Medication):</strong>
-                                    <p className="text-sm text-gray-600">{group.medicationName || "N/A"}</p>
-                                  </div> */}
-
-                                    {/* Dynamically render other study properties */}
                                     {Object.entries(study).map(
                                       ([key, value]) => {
                                         const EXCLUDED_KEYS = [
                                           "id",
                                           "title",
                                           "Study Title",
-                                        ]; // 'medication' is no longer in study object
+                                        ];
                                         if (EXCLUDED_KEYS.includes(key)) {
                                           return null;
                                         }
