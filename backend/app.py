@@ -44,7 +44,7 @@ available_filters = {
         "anxiety-reactivity"
     ],
     "gender": ["male", "female", "nonbinary"],
-    "medication": ["aripiprazole", "citalopram"]
+    "medication": []
 }
 
 def extract_age_from_range(age_range_str):
