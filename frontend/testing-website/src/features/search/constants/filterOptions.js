@@ -1,4 +1,3 @@
-// /home/coleoliva/senior-proj/frontend/testing-website/src/features/search/constants/filterOptions.js
 export const ageOptions = [
   { value: "0-5", label: "Infancy/Early Childhood (0-5 years)" },
   { value: "6-12", label: "Childhood (6-12 years)" },
@@ -15,7 +14,11 @@ export const symptomOptions = [
   { value: "social", label: "Social behaviors" },
   { value: "attention-hyperactivity", label: "Attention and hyperactivity" },
   { value: "asd-severity", label: "ASD severity" },
-  { value: "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance", label: "Lethargy/social withdrawal, stereotypy, and hyperactivity/noncompliance" },
+  {
+    value: "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance",
+    label:
+      "Lethargy/social withdrawal, stereotypy, and hyperactivity/noncompliance",
+  },
   { value: "anxiety-reactivity", label: "Anxiety and reactivity" },
 ];
 
