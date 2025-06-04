@@ -29,7 +29,7 @@ FRONTEND_PID=$!
 # This assumes your backend/app.py is configured to run on port 5000.
 # If it needs a specific command like 'flask run --port=5000', adjust accordingly.
 echo "Attempting to start Backend Query API server (localhost:5000)..."
-(cd "$SCRIPT_DIR/backend" && $PYTHON_CMD app.py) &
+(cd "$SCRIPT_DIR/backend" && $PYTHON_CMD backend-neon-connection-test.py) &
 BACKEND_QUERY_PID=$!
 
 # Start Backend Job API Server (Node.js on Port 5001)

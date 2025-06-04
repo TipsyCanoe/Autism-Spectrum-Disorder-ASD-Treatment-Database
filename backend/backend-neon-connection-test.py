@@ -135,7 +135,7 @@ def get_db_connection():
     
     # Option 2: Using connection string
     if NEON_DATABASE_URL:
-        conn = psycopg2.connect(NEON_DATABASE_URL, sslmode='require', sslcontext=ssl_context)
+        conn = psycopg2.connect(NEON_DATABASE_URL, sslmode='require')
     else:
         raise ValueError("Database connection information not provided")
         
@@ -192,12 +192,12 @@ def search():
         
         # Build the SQL query with filters
         sql = """
-        SELECT id, title, type, publish_date, author, description, tags, url, age, symptom, gender,
+        SELECT pmid, title, pub_date, authors, url,
                embedding <=> %s AS distance
-        FROM resources
+        FROM updated_treatment_data.semantic_paper_search_view
         WHERE 1=1
         """
-        params = [query_embedding.tolist()]
+        params = [str(query_embedding.tolist())]
         
         # Add filter conditions
         for category, values in parsed_filters.items():
@@ -217,25 +217,27 @@ def search():
             results.append({
                 "id": row[0],
                 "title": row[1],
-                "type": row[2],
-                "publishDate": row[3].strftime('%Y-%m-%d'),
-                "author": row[4],
-                "description": row[5],
-                "tags": row[6],
-                "url": row[7],
-                "age": row[8],
-                "symptom": row[9],
-                "gender": row[10],
-                "similarity_score": 1 - float(row[11])  # Convert distance to similarity score
+                "type": 0,
+                "publishDate": row[2].strftime('%Y-%m-%d'),
+                "author": row[3],
+                "description": 0,
+                "tags": 0,
+                "url": row[4],
+                "age": 0,
+                "symptom": 0,
+                "gender": 0,
+                "similarity_score": 1 - float(row[5])  # Convert distance to similarity score
             })
     else:
         # If no query, just apply filters
         sql = """
-        SELECT id, title, type, publish_date, author, description, tags, url, age, symptom, gender
-        FROM resources
+        SELECT pmid, title, pub_date, authors, url,
+               embedding <=> %s AS distance
+        FROM updated_treatment_data.semantic_paper_search_view
         WHERE 1=1
         """
-        params = []
+        dummy_embed = [0]*768
+        params = [str(dummy_embed)]
         
         # Add filter conditions
         for category, values in parsed_filters.items():
@@ -244,7 +246,8 @@ def search():
                 sql += f" AND {category} IN ({placeholders})"
                 params.extend(values)
         
-        sql += " LIMIT %s"
+        # Order by vector similarity (cosine distance)
+        sql += " ORDER BY distance ASC LIMIT %s"
         params.append(limit)
         
         cursor.execute(sql, params)
@@ -254,19 +257,21 @@ def search():
             results.append({
                 "id": row[0],
                 "title": row[1],
-                "type": row[2],
-                "publishDate": row[3].strftime('%Y-%m-%d'),
-                "author": row[4],
-                "description": row[5],
-                "tags": row[6],
-                "url": row[7],
-                "age": row[8],
-                "symptom": row[9],
-                "gender": row[10]
+                "type": None,
+                "publishDate": row[2].strftime('%Y-%m-%d'),
+                "author": row[3],
+                "description": None,
+                "tags": None,
+                "url": row[4],
+                "age": None,
+                "symptom": None,
+                "gender": None,
+                "similarity_score": 1 - float(row[5])  # Convert distance to similarity score
             })
     
     cursor.close()
     conn.close()
+    # print(results)
     print(jsonify({"results": results, "total": len(results)}))
     return jsonify({"results": results, "total": len(results)})
 
