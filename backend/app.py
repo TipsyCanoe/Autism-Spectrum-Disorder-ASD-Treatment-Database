@@ -146,7 +146,6 @@ def matches_text_query(study, query):
     if not query:
         return True
     
-    # Combine all searchable fields
     searchable_text = " ".join([
         study.get("Study Title", ""),
         study.get("Primary Outcome Area", ""),
@@ -174,7 +173,6 @@ def search():
     filters_str = ', '.join(selected_filters)
     limit = int(request.args.get('limit', 10))
     
-    # Parse filters
     parsed_filters = {}
     for filter_str in selected_filters:
         if ':' in filter_str:
@@ -187,12 +185,10 @@ def search():
     cursor = conn.cursor()
     
     results = []
-    # Generate embedding for the query
     query_embedding = sentence_model.encode(query + filters_str)
 
     similarity_threshold = .999
     
-    # Build the SQL query with filters
     sql = """
         SELECT 
             spv.title,
@@ -220,11 +216,9 @@ def search():
         cursor.execute(sql, params)
         results = cursor.fetchall()
         
-        # Process results into grouped format
         grouped_results = defaultdict(list)
         
         for row in results:
-            # Extract data from row (adjust indices based on your actual column order)
             paper_data = {
                 "Study Title": row[0] if row[0] else "N/A",
                 "PMID": str(row[2]) if row[2] else "N/A",
@@ -234,12 +228,11 @@ def search():
                 "Treatment Duration": row[6] if row[6] else "N/A",
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
-                "Similarity Score": round(1 - row[9], 3) if row[9] is not None else 0,  # Convert distance to similarity
+                "Similarity Score": round(1 - row[9], 3) if row[9] is not None else 0,
                 "Distance": round(row[9], 3) if row[9] is not None else 1,
                 "Abstract": row[10] if row[10] else "N/A"
             }
             
-            # Group by treatment name (convert to lowercase for consistency)
             treatment_name = row[5].lower() if row[5] else "unknown"
             grouped_results[treatment_name].append(paper_data)
         
