@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FilterSection from "./FilterSection"; // Assuming FilterSection is in the same directory
+import FilterSection from "./FilterSection";
 
 const FilterPanel = ({
   selectedOptions,
@@ -8,20 +8,17 @@ const FilterPanel = ({
   setSearchQuery,
   clearFilters,
   handleSearch,
-  // Receive filter options as props
   ageOptions,
   symptomOptions,
   genderOptions,
   medicationOptions, // Assuming medicationOptions might be passed for a new filter section
 }) => {
-  // Manage expansion state locally within the panel
   const [expandedSections, setExpandedSections] = useState({
     age: false,
     symptoms: false,
     gender: false,
   });
 
-  // Toggle section expansion
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -43,7 +40,6 @@ const FilterPanel = ({
 
       {/* Make the filters area scrollable with fixed height */}
       <div className="overflow-y-auto max-h-[60vh] pr-2">
-        {/* Search Query */}
         <div className="mb-6">
           <label
             htmlFor="search-query"
@@ -72,7 +68,6 @@ const FilterPanel = ({
           onToggle={() => toggleSection("age")}
         />
 
-        {/* Symptoms Filter Section */}
         <FilterSection
           title="Symptoms & Behaviors"
           category="symptom"
@@ -83,7 +78,6 @@ const FilterPanel = ({
           onToggle={() => toggleSection("symptoms")}
         />
 
-        {/* Gender Filter Section */}
         <FilterSection
           title="Gender"
           category="gender"

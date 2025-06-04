@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../../index.css"; // Adjusted path assuming index.css is at src/index.css
 import useSearch from "../hooks/useSearch"; // Adjusted path assuming useSearch is in src/features/search/hooks/
-import FilterPanel from './FilterPanel'; // Corrected path
+import FilterPanel from "./FilterPanel"; // Corrected path
 
 const SearchPage = () => {
   // Destructure isLoading and error from useSearch
@@ -166,8 +166,6 @@ const SearchPage = () => {
               </div>
             )}
           </div>
-          {/* Removed Outlet as SearchResults component is likely removed */}
-          {/* <Outlet /> */}
         </div>
       </div>
     </div>
