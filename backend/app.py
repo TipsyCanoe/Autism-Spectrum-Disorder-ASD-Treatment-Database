@@ -171,7 +171,7 @@ def search():
     query = request.args.get('query', '').lower()
     selected_filters = request.args.getlist('filters')
     filters_str = ', '.join(selected_filters)
-    limit = int(request.args.get('limit', 30))
+    limit = int(request.args.get('limit', 70))
     
     parsed_filters = {}
     for filter_str in selected_filters:
@@ -255,5 +255,91 @@ def search():
         print(f"Error executing vector search: {e}")
         return {}
     
+@app.route('/api/initial-results', methods=['GET'])
+def get_initial_results():
+    """Return initial set of results to preload on page load without waiting for user search"""
+    print("Loading initial results")
+    limit = int(request.args.get('limit', 55))  # Smaller limit for faster initial load
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Use a more general query to fetch some initial data
+    # This query just gets recent studies across treatments without any specific search terms
+    sql = """
+        SELECT 
+            spv.title,
+            spv.pub_date,
+            spv.pmid,
+            spv.authors,
+            spv.url,
+            t.treatment_name,
+            t.duration,
+            t.primary_outcome_area,
+            t.primary_outcome_measures,
+            0 AS distance,  -- No distance calculation needed for initial results
+            spv.abstract
+        FROM updated_treatment_data.semantic_paper_search_view spv
+        JOIN updated_treatment_data.treatment_pubmed_link tpl ON spv.pmid = tpl.pmid
+        JOIN updated_treatment_data.treatments t ON tpl.treatment_id = t.id
+        ORDER BY spv.pub_date DESC  -- Get most recent studies
+        LIMIT %s
+    """
+    
+    try:
+        cursor.execute(sql, [limit])
+        results = cursor.fetchall()
+        
+        grouped_results = defaultdict(list)
+        
+        for row in results:
+            paper_data = {
+                "Abstract": row[10] if row[10] else "N/A",
+                "Primary Outcome Area": row[7] if row[7] else "N/A",
+                "Primary Outcome Measure": row[8] if row[8] else "N/A",
+                "Treatment Duration": row[6] if row[6] else "N/A",
+                "Publication Date": row[1].isoformat() if row[1] else "N/A",
+                "Author": row[3] if row[3] else "N/A",
+                "Study Title": row[0] if row[0] else "N/A",
+                "PMID": str(row[2]) if row[2] else "N/A",
+                "Full Text URL": row[4] if row[4] else None,
+                "Similarity Score": 0.5,  # Default similarity score for initial results
+                "Distance": 0.5  # Default distance for initial results
+            }
+            
+            treatment_name = row[5].lower() if row[5] else "unknown"
+            grouped_results[treatment_name].append(paper_data)
+        
+        final_results = dict(grouped_results)
+        final_results = dict(sorted(final_results.items(), 
+                                  key=lambda x: len(x[1]), 
+                                  reverse=True))
+        
+        json_output = []
+        for treatment_name, studies in final_results.items():
+            treatment_entry = {
+                "treatment": treatment_name,
+                "studies": studies
+            }
+            json_output.append(treatment_entry)
+            
+        # Also populate the medication filter while we're at it
+        if len(available_filters["medication"]) == 0:
+            # Extract unique treatment names and add them to the filter options
+            available_treatments = list(set(treatment.lower() for treatment in grouped_results.keys() if treatment != "unknown"))
+            available_filters["medication"] = sorted(available_treatments)
+            print(f"Populated medication filters with {len(available_treatments)} treatments")
+        
+        return json.dumps(json_output, indent=4, sort_keys=False)
+        
+    except Exception as e:
+        print(f"Error fetching initial results: {e}")
+        return json.dumps([])
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

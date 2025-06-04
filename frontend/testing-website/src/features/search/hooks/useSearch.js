@@ -6,7 +6,7 @@ const API_BASE_URL = "http://localhost:5000";
 const useSearch = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [results, setResults] = useState([]); // This should be an array of treatment objects
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Start with loading true
   const [error, setError] = useState(null);
   const [availableFilters, setAvailableFilters] = useState({
     age: [],
@@ -29,9 +29,32 @@ const useSearch = () => {
     }
   }, []);
 
+  const fetchInitialResults = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/initial-results`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch initial results");
+      }
+      const data = await response.json();
+      setResults(data);
+    } catch (err) {
+      console.error("Error fetching initial results:", err);
+      // Don't set error for initial load failures, just leave results empty
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    fetchFilters();
-  }, [fetchFilters]);
+    // Load both filters and initial results when component mounts
+    const loadInitialData = async () => {
+      await fetchFilters();
+      await fetchInitialResults();
+    };
+    
+    loadInitialData();
+  }, [fetchFilters, fetchInitialResults]);
 
   const fetchResults = useCallback(
     async (query = "") => {

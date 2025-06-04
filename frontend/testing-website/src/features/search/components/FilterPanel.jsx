@@ -28,7 +28,7 @@ const FilterPanel = ({
   };
 
   return (
-    <div className="lg:w-1/3 bg-white p-6 rounded-lg shadow relative">
+    <div className="lg:w-1/3 bg-white p-6 rounded-lg shadow sticky top-24 self-start">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Filters</h2>
         <button
