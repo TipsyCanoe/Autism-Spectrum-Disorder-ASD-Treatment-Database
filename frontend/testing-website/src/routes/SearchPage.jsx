@@ -56,9 +56,15 @@ const SearchPage = () => {
     if (!results || typeof results !== "object") return [];
 
     return Object.entries(results).map(([medicationName, studyArray]) => {
+      // Capitalize each word in the medicationName
+      const capitalizedMedicationName = medicationName
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
       if (!Array.isArray(studyArray)) {
         return {
-          medicationName,
+          medicationName: capitalizedMedicationName,
           studies: [],
           studyCount: 0,
         };
@@ -77,7 +83,7 @@ const SearchPage = () => {
         };
       });
       return {
-        medicationName,
+        medicationName: capitalizedMedicationName,
         studies,
         studyCount: studies.length,
       };

@@ -12,6 +12,7 @@ const useSearch = () => {
     age: [],
     symptom: [],
     gender: [],
+    medication: [], // Add medication to initial state
   });
 
   const fetchFilters = useCallback(async () => {

@@ -17,6 +17,7 @@ const FilterPanel = ({
     age: false,
     symptoms: false,
     gender: false,
+    medication: false, // Add medication to initial state
   });
 
   const toggleSection = (section) => {
@@ -96,8 +97,8 @@ const FilterPanel = ({
             options={medicationOptions}
             selectedOptions={selectedOptions}
             onFilterChange={handleFilterChange}
-            isExpanded={expandedSections.medication} // Add 'medication' to expandedSections state if used
-            onToggle={() => toggleSection("medication")} // Add 'medication' to toggleSection logic if used
+            isExpanded={expandedSections.medication} // Ensure this uses the state
+            onToggle={() => toggleSection("medication")} // Ensure this uses the state
           />
         )}
       </div>
