@@ -11,10 +11,11 @@ const useSearch = () => {
   const [availableFilters, setAvailableFilters] = useState({
     age: [],
     symptom: [],
-    gender: []
+    gender: [],
   });
 
-  const fetchFilters = useCallback(async () => { // Wrap in useCallback
+  const fetchFilters = useCallback(async () => {
+    // Wrap in useCallback
     try {
       const response = await fetch(`${API_BASE_URL}/api/filters`);
       if (!response.ok) {
@@ -32,28 +33,35 @@ const useSearch = () => {
     fetchFilters();
   }, [fetchFilters]); // Now fetchFilters is stable
 
-  const fetchResults = useCallback(async (query = "") => { // Wrap in useCallback
-    setIsLoading(true);
-    setError(null);
-    try {
-      const params = new URLSearchParams();
-      params.append("query", query);
-      selectedOptions.forEach(filter => { // selectedOptions is a dependency
-        params.append("filters", filter);
-      });
-      const response = await fetch(`${API_BASE_URL}/api/search?${params.toString()}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch search results");
+  const fetchResults = useCallback(
+    async (query = "") => {
+      // Wrap in useCallback
+      setIsLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams();
+        params.append("query", query);
+        selectedOptions.forEach((filter) => {
+          // selectedOptions is a dependency
+          params.append("filters", filter);
+        });
+        const response = await fetch(
+          `${API_BASE_URL}/api/search?${params.toString()}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch search results");
+        }
+        const data = await response.json();
+        setResults(data.results);
+      } catch (err) {
+        console.error("Error fetching results:", err);
+        setError("Failed to load results. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
-      const data = await response.json();
-      setResults(data.results);
-    } catch (err) {
-      console.error("Error fetching results:", err);
-      setError("Failed to load results. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedOptions]); // Add selectedOptions as a dependency
+    },
+    [selectedOptions]
+  ); // Add selectedOptions as a dependency
 
   return {
     selectedOptions,
@@ -63,7 +71,7 @@ const useSearch = () => {
     isLoading,
     error,
     availableFilters,
-    fetchFilters // Also return fetchFilters if SearchPage needs to call it directly, e.g., for a refresh button
+    fetchFilters, // Also return fetchFilters if SearchPage needs to call it directly, e.g., for a refresh button
   };
 };
 
