@@ -12,7 +12,28 @@ import ssl
 import datetime
 import re
 import json
+import functools  # For the caching decorator
 
+# Simple cache implementation
+class SimpleCache:
+    def __init__(self, max_size=100):
+        self.cache = {}
+        self.max_size = max_size
+    
+    def get(self, key):
+        return self.cache.get(key)
+    
+    def set(self, key, value):
+        # Basic LRU: if cache is full, remove first item (simplistic approach)
+        if len(self.cache) >= self.max_size:
+            # Remove oldest item (first key)
+            oldest_key = next(iter(self.cache))
+            del self.cache[oldest_key]
+        self.cache[key] = value
+
+# Create cache instances
+search_cache = SimpleCache(max_size=75)  # Cache for search results
+filter_cache = SimpleCache(max_size=10)   # Cache for filter options
 
 app = Flask(__name__)
 CORS(app) 
@@ -162,16 +183,66 @@ def matches_text_query(study, query):
 @app.route('/api/filters', methods=['GET'])
 def get_filters():
     """Return available filter options"""
-    return jsonify(available_filters)
+    # Try to get from cache first
+    cached_filters = filter_cache.get('all_filters')
+    if cached_filters:
+        print("Returning filters from cache")
+        return cached_filters
+    
+    # Add code to load medication options if they're empty
+    if not available_filters["medication"]:
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            # Get distinct treatment names
+            cursor.execute("""
+                SELECT DISTINCT treatment_name 
+                FROM updated_treatment_data.treatments 
+                WHERE treatment_name IS NOT NULL AND treatment_name <> '' 
+                ORDER BY treatment_name ASC
+            """)
+            medications = [row[0].lower() for row in cursor.fetchall()]
+            available_filters["medication"] = medications
+            print(f"Loaded {len(medications)} medications for filter")
+        except Exception as e:
+            print(f"Error loading medications for filter: {e}")
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+    
+    # Cache the result
+    result = jsonify(available_filters)
+    filter_cache.set('all_filters', result)
+    return result
 
 @app.route('/api/search', methods=['GET'])
 def search():
     print("trying search")
-    """Search resources based on query and filters using vector similarity"""
     query = request.args.get('query', '').lower()
     selected_filters = request.args.getlist('filters')
     filters_str = ', '.join(selected_filters)
     limit = int(request.args.get('limit', 70))
+    
+    # For empty query and no filters, use the initial results endpoint
+    if not query and not selected_filters:
+        print("Empty search - redirecting to initial results")
+        # Call the initial_results function directly but use the requested limit
+        cached_result = search_cache.get('initial_results')
+        if cached_result:
+            print("Returning initial results from cache for empty search")
+            return cached_result
+            
+        # If not cached, we'll just continue with the regular search flow
+        # This will still be different from initial results due to the vector similarity
+    
+    # Create a cache key from the query parameters
+    cache_key = f"{query}|{filters_str}|{limit}"
+    cached_result = search_cache.get(cache_key)
+    if cached_result:
+        print(f"Returning cached search results for: {cache_key}")
+        return cached_result
     
     parsed_filters = {}
     for filter_str in selected_filters:
@@ -248,18 +319,33 @@ def search():
                 "studies": studies
             }
             json_output.append(treatment_entry)
-        print(json.dumps(json_output, indent=4, sort_keys=False))
-        return json.dumps(json_output, indent=4, sort_keys=False)
+            
+        result = json.dumps(json_output, indent=4, sort_keys=False)
+        # Cache the result before returning
+        search_cache.set(cache_key, result)
+        return result
         
     except Exception as e:
         print(f"Error executing vector search: {e}")
         return {}
-    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 @app.route('/api/initial-results', methods=['GET'])
 def get_initial_results():
     """Return initial set of results to preload on page load without waiting for user search"""
     print("Loading initial results")
-    limit = int(request.args.get('limit', 55))  # Smaller limit for faster initial load
+    
+    # Try to get from cache first
+    cached_result = search_cache.get('initial_results')
+    if cached_result:
+        print("Returning initial results from cache")
+        return cached_result
+    
+    limit = int(request.args.get('limit', 70))  # Use same default limit as search endpoint
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -330,7 +416,10 @@ def get_initial_results():
             available_filters["medication"] = sorted(available_treatments)
             print(f"Populated medication filters with {len(available_treatments)} treatments")
         
-        return json.dumps(json_output, indent=4, sort_keys=False)
+        result = json.dumps(json_output, indent=4, sort_keys=False)
+        # Cache the result before returning
+        search_cache.set('initial_results', result)
+        return result
         
     except Exception as e:
         print(f"Error fetching initial results: {e}")
