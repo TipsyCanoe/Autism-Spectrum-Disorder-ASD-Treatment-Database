@@ -18,7 +18,7 @@ import functools  # For the caching decorator
 class SimpleCache:
     def __init__(self, max_size=100):
         self.cache = {}
-        self.max_size = max_size
+        self.max_size = max(1, max_size)  # Ensure max_size is at least 1
     
     def get(self, key):
         return self.cache.get(key)
@@ -27,8 +27,9 @@ class SimpleCache:
         # Basic LRU: if cache is full, remove first item (simplistic approach)
         if len(self.cache) >= self.max_size:
             # Remove oldest item (first key)
-            oldest_key = next(iter(self.cache))
-            del self.cache[oldest_key]
+            if self.cache:  # Check if cache is not empty
+                oldest_key = next(iter(self.cache))
+                del self.cache[oldest_key]
         self.cache[key] = value
 
 # Create cache instances
