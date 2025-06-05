@@ -1,57 +1,48 @@
 #!/bin/bash
+# filepath: /home/coleoliva/senior-proj/start_all_servers.sh
 
-# Get the directory where the script is located
+# Get script directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+LOGS_DIR="$SCRIPT_DIR/logs"
+mkdir -p "$LOGS_DIR"
 
-echo "Starting all servers from $SCRIPT_DIR..."
+# Choose Python command
+PYTHON_CMD="python3"
+command -v python3 &> /dev/null || PYTHON_CMD="python"
 
-# Determine Python command
-PYTHON_CMD="python"
-if command -v python3 &> /dev/null; then
-    echo "Found python3, using it."
-    PYTHON_CMD="python3"
-elif command -v python &> /dev/null; then
-    echo "Found python, using it."
-    PYTHON_CMD="python"
-else
-    echo "Error: Neither python3 nor python found in PATH. Please install Python."
-    exit 1
-fi
-echo "Using '$PYTHON_CMD' for Python scripts."
-echo ""
+echo "Starting servers using $PYTHON_CMD..."
 
-# Start Frontend Development Server (Port 3000)
-echo "Attempting to start Frontend server (localhost:3000)..."
-(cd "$SCRIPT_DIR/frontend/testing-website" && npm start) &
+# Memory optimization for Flask backend - reduce model cache
+export TRANSFORMERS_CACHE_MAX_ENTRIES=1
+export SENTENCE_TRANSFORMERS_HOME="$SCRIPT_DIR/.cache/sentence_transformers"
+
+# Start Frontend (with reduced memory allocation)
+echo "Starting Frontend server (port 3000)..."
+(cd "$SCRIPT_DIR/frontend/testing-website" && 
+ NODE_OPTIONS="--max-old-space-size=256" npm start > "$LOGS_DIR/frontend.log" 2>&1) &
 FRONTEND_PID=$!
 
-# Start Backend Query API Server (Python/Flask on Port 5000)
-# This assumes your backend/app.py is configured to run on port 5000.
-# If it needs a specific command like 'flask run --port=5000', adjust accordingly.
-echo "Attempting to start Backend Query API server (localhost:5000)..."
-(cd "$SCRIPT_DIR/backend" && $PYTHON_CMD app.py) &
+# Start Flask Backend with memory limits
+echo "Starting Backend Flask API (port 5000)..."
+(cd "$SCRIPT_DIR/backend" && 
+ PYTHONUNBUFFERED=1 $PYTHON_CMD -B app.py > "$LOGS_DIR/backend_flask.log" 2>&1) &
 BACKEND_QUERY_PID=$!
 
-# Start Backend Job API Server (Node.js on Port 5001)
-echo "Attempting to start Backend Job API server (localhost:5001)..."
-(cd "$SCRIPT_DIR/backend" && node server.js) &
+# Start Node Backend with reduced memory limits
+echo "Starting Backend Node.js API (port 5001)..."
+(cd "$SCRIPT_DIR/backend" && 
+ NODE_OPTIONS="--max-old-space-size=256" node server.js > "$LOGS_DIR/backend_node.log" 2>&1) &
 BACKEND_JOB_PID=$!
 
-echo "-----------------------------------------------------------------"
-echo "Servers are attempting to start in the background."
-echo "Monitor their output in this terminal or their respective logs if configured."
-echo ""
-echo "To stop the servers, you can use the following PIDs:"
-echo "  Frontend (npm start): $FRONTEND_PID"
-echo "  Backend Query API (python app.py): $BACKEND_QUERY_PID"
-echo "  Backend Job API (node server.js): $BACKEND_JOB_PID"
-echo ""
-echo "Example command to stop all: kill $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID"
-echo "(If npm start opened a new window/tab, you might need to close that manually or Ctrl+C in it)"
-echo "-----------------------------------------------------------------"
+# Save PIDs
+echo "$FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID" > "$SCRIPT_DIR/.server_pids"
 
-# You can uncomment the 'wait' commands if you want the script to
-# remain active and only exit when all background jobs are done (e.g., by Ctrl+C on this script).
-# wait $FRONTEND_PID
-# wait $BACKEND_QUERY_PID
-# wait $BACKEND_JOB_PID
+echo "All servers started. PIDs: $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID"
+echo "View logs with: tail -f $LOGS_DIR/*.log"
+echo "Stop servers with: ./stop_all_servers.sh"
+
+# Add cleanup trap
+trap 'echo "Stopping servers..."; kill $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID 2>/dev/null; exit' INT
+
+# Keep script running
+wait $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID

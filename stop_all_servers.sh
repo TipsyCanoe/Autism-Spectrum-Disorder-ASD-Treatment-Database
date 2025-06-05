@@ -1,38 +1,30 @@
 #!/bin/bash
+# filepath: /home/coleoliva/senior-proj/stop_all_servers.sh
 
-PORTS_TO_KILL=(3000 5000 5001)
-PIDS_KILLED=0
+# Get script directory and PID file
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PID_FILE="$SCRIPT_DIR/.server_pids"
 
-echo "Attempting to stop servers on ports: ${PORTS_TO_KILL[*]}..."
-echo ""
+echo "Stopping servers..."
 
-for PORT in "${PORTS_TO_KILL[@]}"; do
-    echo "Looking for process on port $PORT..."
-    # Find the PID of the process using the port
-    # -t: Terse output (only PID)
-    # -i:$PORT: Network interface identifier (TCP/UDP on specific port)
-    PID=$(lsof -t -i:$PORT)
-
-    if [ -n "$PID" ]; then
-        echo "Found process with PID $PID on port $PORT. Attempting to kill..."
-        # Kill the process.
-        # You can use 'kill -9 $PID' for a more forceful kill if 'kill $PID' doesn't work.
-        if kill $PID; then
-            echo "Successfully sent kill signal to PID $PID (port $PORT)."
-            PIDS_KILLED=$((PIDS_KILLED + 1))
-        else
-            echo "Failed to send kill signal to PID $PID (port $PORT). It might require sudo or already be stopped."
-        fi
-    else
-        echo "No process found running on port $PORT."
-    fi
-    echo ""
-done
-
-if [ "$PIDS_KILLED" -gt 0 ]; then
-    echo "Finished attempting to kill processes."
+# Kill servers by PID if available
+if [ -f "$PID_FILE" ]; then
+    PIDS=$(cat "$PID_FILE")
+    echo "Found PIDs: $PIDS"
+    kill $PIDS 2>/dev/null
+    sleep 1
+    # Force kill if any are still running
+    for PID in $PIDS; do
+        ps -p "$PID" >/dev/null 2>&1 && kill -9 "$PID" 2>/dev/null
+    done
+    rm -f "$PID_FILE"
+    echo "Servers stopped."
 else
-    echo "No processes were found running on the specified ports."
+    echo "No PID file found. Checking ports..."
+    # Kill by port as fallback
+    for PORT in 3000 5000 5001; do
+        PID=$(lsof -t -i:$PORT 2>/dev/null)
+        [ -n "$PID" ] && kill $PID 2>/dev/null
+    done
+    echo "Done."
 fi
-
-echo "Note: If 'npm start' opened a new terminal window/tab for the frontend server, you might need to close that manually."
