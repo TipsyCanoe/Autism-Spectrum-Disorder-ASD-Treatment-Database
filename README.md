@@ -62,7 +62,7 @@ which should kill the process.
 
 To run the dummy backend, temporarily, in the backend directory, run ``npm run dev``. In a different terminal, for the frontend, run the ``npm start`` command in the correct directory, as detailed above. The backend should run locally on port 5001.
 
-For testing purposes, run ``npm test`` inside the frontend/testing-website/ directory. To visualize code coverage with the tests, run ``npm test -- --coverage --watchAll=false``
+For testing purposes, you can either run ``./run_all_tests.sh`` in the root directory, or for frontend/backend distinction, run ``npm test`` inside the frontend/testing-website/ directory and ``./run_tests.sh`` in the backend/tests directory. Code coverage for the frontend should be visualized in the run all tests script, while the backend is visible when testing the backend individually.
 
 ## PubMed API Extraction
 
