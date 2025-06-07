@@ -1,14 +1,8 @@
 import subprocess
 from pathlib import Path
 
+# runs the designated series of scripts
 def run_scripts(script_paths):
-    """
-    Runs a list of Python scripts.
-
-    Args:
-        script_paths: A list of strings, where each string is the path to a Python script.
-    """
-
     for script_path in script_paths:
         try:
             print("Running " + script_path)

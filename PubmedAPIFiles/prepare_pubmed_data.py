@@ -2,9 +2,9 @@ import pandas as pd
 
 # File paths
 files = [
-    "Adjusted_ASD_Sheet_Info_V2.csv",
+    "pubmed_treatment_info.csv",
     "pubmed_papers_info.csv",
-    "Individual_Treatment_Queries.csv"
+    "pubmed_ASD_info.csv"
 ]
 
 # Load and combine

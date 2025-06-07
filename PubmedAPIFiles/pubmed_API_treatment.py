@@ -1,42 +1,56 @@
 import pandas as pd
 from pathlib import Path
 from complete_query import importer
+import re
+import os
 
-# May need to adjust path depending on what directory you run this in
-path = str(Path.cwd()) + '/../PubmedAPIFiles/Treatment_Names.xlsx'
+def get_treatments_queries(treatments):
+    treatment_queries = []
+    if treatments:
+        for i in range(len(treatments)):
+            for keyword in ["AND", "OR"]:
+                treatments[i] = re.sub(fr"\b{keyword}\b", keyword, treatments[i], flags=re.IGNORECASE)
+        treatment_queries = ['({})'.format(treatment) for treatment in treatments]
+    return treatment_queries
 
-oldDf = pd.read_excel(path, 'Sheet1', usecols="A")
+def get_full_treatment_queries(treatment_queries, queries):
+    full_queries = []
+    for treatment in treatment_queries:
+        full_queries.append(treatment + ' AND ' + queries[0] + ' AND ' + queries[1])
+    return full_queries
 
-treatments = oldDf['Treatment name'].tolist() 
+if __name__ == '__main__':
+    # May need to adjust path depending on what directory you run this in
+    path = str(Path.cwd()) + '/../PubmedAPIFiles/Treatment_Names.xlsx'
 
-queries = []
-treatment_queries = []
-full_queries = []
+    # Null check
+    if not os.path.isfile(path):
+        print(f"File not found: {path}; skipping")
+        exit(1)
 
-if treatments:
-    for i in range(len(treatments)):
-        if ' and ' in treatments[i] or ' or ' in treatments[i]:
-            treatments[i] = treatments[i].replace(' and ', ' AND ')
-            treatments[i] = treatments[i].replace(' or ', ' OR ') 
-    treatment_queries = ['({})'.format(treatment) for treatment in treatments]
+    oldDf = pd.read_excel(path, 'Sheet1', usecols="A")
 
-general_terms = ['Autism Spectrum Disorder[MeSH]', 'Autism[Title/Abstract]', 'Autistic Disorder[Title/Abstract]', 'ASD[Title/Abstract]']
+    treatments = oldDf['Treatment name'].tolist() 
 
-treatment_types_terms = ['"randomized controlled trial"[Publication Type]', 'randomized controlled trial[Title/Abstract]']
+    queries = []
 
-for terms in [general_terms, treatment_types_terms]:
-    topic_queries = ['{}'.format(topic) for topic in terms]
-    queries.append('(' + ' OR '.join(topic_queries) + ')')
+    full_queries = []
 
-for treatment in treatment_queries:
-    full_queries.append(treatment + ' AND ' + queries[0] + ' AND ' + queries[1])
-# print(full_queries[0])
+    treatment_queries = get_treatments_queries(treatments)
 
-completePD = pd.DataFrame()
+    general_terms = ['Autism Spectrum Disorder[MeSH]', 'Autism[Title/Abstract]', 'Autistic Disorder[Title/Abstract]', 'ASD[Title/Abstract]']
 
-count = 0
+    treatment_types_terms = ['"randomized controlled trial"[Publication Type]', 'randomized controlled trial[Title/Abstract]']
 
-for query in full_queries:
-    completePD = importer.importPapers(completePD, query)
+    for terms in [general_terms, treatment_types_terms]:
+        topic_queries = ['{}'.format(topic) for topic in terms]
+        queries.append('(' + ' OR '.join(topic_queries) + ')')
+    
+    full_queries = get_full_treatment_queries(treatment_queries, queries)
 
-completePD.to_excel('pubmed_treatment_info.xlsx', index=False)
+    completePD = pd.DataFrame()
+
+    for query in full_queries:
+        completePD = importer.importPapers(completePD, query)
+
+    completePD.to_excel('pubmed_treatment_info.xlsx', index=False)

@@ -2,44 +2,55 @@ import pandas as pd
 from Bio import Entrez
 from pathlib import Path
 from complete_query import importer
+import os
 
-# Set the email address to avoid any potential issues with Entrez
-Entrez.email = 'loa4@wwu.edu'
-#Entrez.api_key = ''
-
-# May need to adjust path depending on what directory you run this in
-path = str(Path.cwd()) + '/../PubmedAPIFiles/Harle - ASD bio tx .xlsx'
-
-oldDf = pd.read_excel(path, 'Tx Data', usecols="A,D")
-
-# Getting file info
-authors = oldDf['First Author'].tolist() 
-topics = oldDf['Treatment name'].tolist()  
-
-# Query initialization
-queries = []
-author_queries = []
-topic_queries = []
-
-# Get all authors...
-if authors:
-    author_queries = ['{}'.format(author) for author in authors]
-
-# Get all topics...
-if topics:
-    for treatment in topics:
-        if 'and' in treatment:
-            treatment.replace('and', '')
-    topic_queries = ['{}'.format(topic) for topic in topics]
+# Get all topics from df
+def get_topics(topics):
+    if topics:
+        for i in range(len(topics)):
+            if 'and' in topics[i]:
+                # Remove 'and' for Pubmed
+                topics[i] = topics[i].replace('and', '')
+        topic_queries = ['{}'.format(topic) for topic in topics]
+    return topic_queries
 
 # Building full query
-for i in range(len(author_queries)):
-    queries.append(author_queries[i] + ' AND ' + topic_queries[i] + ' AND ' + '(randomized controlled trial[Publication Type] OR "Clinical Trial"[Publication Type])')
+def build_ASD_query(author_queries, topic_queries):
+    queries = []
+    for i in range(max(len(author_queries), len(topic_queries))):
+        author = author_queries
+        if('Unknown' in author):
+            author = ''
+        topic = topic_queries[i]
+        if('Unknown' in topic):
+            topic = ''
+        queries.append(author_queries[i] + ' AND ' + topic + ' AND ' + '(randomized controlled trial[Publication Type] OR "Clinical Trial"[Publication Type])')
+    return queries
 
-completePD = pd.DataFrame()
+if __name__ == '__main__':
+    # May need to adjust path depending on what directory you run this in
+    path = str(Path.cwd()) + '/../PubmedAPIFiles/Harle - ASD bio tx .xlsx'
 
-for query in queries:
-    completePD = importer.importPapers(completePD, query)
+    # Null check
+    if not os.path.isfile(path):
+        print(f"File not found: {path}; skipping")
+        exit(1)
 
-completePD.to_excel('pubmed_ASD_info.xlsx', index=False)
+    oldDf = pd.read_excel(path, 'Tx Data', usecols="A,D")
+
+    # Getting file info
+    oldDf.fillna("Unknown")
+    authors = oldDf['First Author'].tolist() 
+    topics = oldDf['Treatment name'].tolist()  
+
+    topic_queries = get_topics(topics)
+    
+    queries = build_ASD_query(authors, topic_queries)
+
+    completePD = pd.DataFrame()
+
+    for query in queries:
+        completePD = importer.importPapers(completePD, query)
+
+    completePD.to_excel('pubmed_ASD_info.xlsx', index=False)
 
