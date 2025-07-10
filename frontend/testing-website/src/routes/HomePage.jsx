@@ -13,7 +13,7 @@ const HomePage = () => {
     setIsJobRunning(true);
     setJobMessage("Updating database...");
     try {
-      const response = await fetch("/jobapi/run-job", {
+      const response = await fetch("http://localhost:5001/api/run-job", {
         method: "POST",
       });
       const data = await response.json();

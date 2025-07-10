@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 // Define base API URL to target port 5000 for general API calls
-const API_BASE_URL = ""; // Use relative paths for production
+const API_BASE_URL = "http://localhost:5000";
 
 const useSearch = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
