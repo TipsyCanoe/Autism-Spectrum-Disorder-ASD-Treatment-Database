@@ -2,6 +2,28 @@
 
 Vision: To enhance the mental health of individuals with Autism Spectrum Disorder (ASD) and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families.
 
+## Prerequisites
+
+Before you begin, make sure you have the following installed on your system:
+
+- **Python 3.8+**
+  - [Download for Windows/macOS/Linux](https://www.python.org/downloads/)
+  - On Linux:
+    ```bash
+    sudo apt update
+    sudo apt install python3 python3-venv python3-pip
+    ```
+  - On macOS (with Homebrew):
+    ```bash
+    brew install python
+    ```
+  - On Windows: Download and run the installer from the Python website above.
+
+- **Node.js & npm**
+  - [Download for all platforms](https://nodejs.org/)
+
+---
+
 ## Quick Start Guide
 
 ### 1. First-Time Setup
