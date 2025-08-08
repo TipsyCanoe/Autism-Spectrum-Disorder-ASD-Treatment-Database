@@ -79,8 +79,35 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "${YELLOW}Installing required packages...${NC}"
+
 # Install pytest and coverage packages if not installed
 pip install pytest pytest-cov || pip3 install pytest pytest-cov
+
+# Locate and activate the project's top-level virtual environment
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_PATH")")"
+VENV_ACTIVATE="$PROJECT_ROOT/venv/bin/activate"
+# Activate venv if present, otherwise warn and continue using system python
+if [ -f "$VENV_ACTIVATE" ]; then
+    source "$VENV_ACTIVATE"
+else
+    echo -e "${YELLOW}WARNING: venv not found at $VENV_ACTIVATE, proceeding with system python${NC}"
+fi
+
+# Locate and activate the project's virtual environment
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_PATH")")"
+VENV_ACTIVATE="$PROJECT_ROOT/venv/bin/activate"
+if [ -f "$VENV_ACTIVATE" ]; then
+    source "$VENV_ACTIVATE"
+else
+    echo -e "${RED}ERROR: venv not found at $VENV_ACTIVATE${NC}"
+    exit 1
+fi
+
+## Change to the backend directory to scope pytest to only backend/tests
+BACKEND_DIR="$(dirname "$(dirname "${SCRIPT_PATH}")")/backend"
+cd "$BACKEND_DIR" || { echo "Failed to cd to $BACKEND_DIR"; exit 1; }
 
 # Determine which Python command to use (python or python3)
 if command -v python3 &>/dev/null; then
@@ -92,8 +119,8 @@ else
     exit 1
 fi
 
-# Build the pytest command
-pytest_cmd="$python_cmd -m pytest"
+# Build the pytest command to run only backend/tests
+pytest_cmd="$python_cmd -m pytest tests"
 
 # Add marker if specified
 if [[ -n "$marker" ]]; then
