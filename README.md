@@ -1,12 +1,15 @@
 # Autism-Spectrum-Disorder-ASD-Treatment-Database
 
-Vision: To enhance the mental health of individuals with Autism Spectrum Disorder (ASD) and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families.
+Welcome to the ASD Treatment Database Documentation! This project aims to enhance the mental health of individuals with Autism Spectrum Disorder (ASD) and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families. 
+
+The project currently lives on a server generously provided by Western Washington University, with hosting of the database provided by Neon Database. The document here aims to inform the user of what the separate modules of the database does, and how to fix any common issues that may arise.
 
 ## Prerequisites
 
 Before you begin, make sure you have the following installed on your system:
 
 - **Python 3.8+**
+
   - [Download for Windows/macOS/Linux](https://www.python.org/downloads/)
   - On Linux:
     ```bash
@@ -18,17 +21,18 @@ Before you begin, make sure you have the following installed on your system:
     brew install python
     ```
   - On Windows: Download and run the installer from the Python website above.
-
 - **Node.js & npm**
+
   - [Download for all platforms](https://nodejs.org/)
 
 ---
 
-## Quick Start Guide
+## Quick Start Guide (if downloading locally)
 
 ### 1. First-Time Setup
 
 **A. Python Backend**
+
 1. Open a terminal in the project root after cloning the project locally.
 2. Create and activate a Python virtual environment:
    ```bash
@@ -41,6 +45,7 @@ Before you begin, make sure you have the following installed on your system:
    ```
 
 **B. Frontend**
+
 1. Go to the frontend directory:
    ```bash
    cd frontend/testing-website
@@ -53,34 +58,37 @@ Before you begin, make sure you have the following installed on your system:
 ### 2. Running the Project
 
 **A. Start All Servers (from project root):**
+
 ```bash
 chmod +x start_all_servers.sh stop_all_servers.sh  # One-time
 ./start_all_servers.sh
 ```
+
 - This starts:
   - Frontend (port 3000)
   - Python backend (port 5000)
   - Node.js job backend (port 5001)
 
 **B. Stop All Servers:**
+
 ```bash
 ./stop_all_servers.sh
 ```
 
 ### 3. Manual Server Control
 
-- **Frontend only:**  
+- **Frontend only:**
   ```bash
   cd frontend/testing-website
   npm start
   ```
-- **Python backend only:**  
+- **Python backend only:**
   ```bash
   cd backend
   source ../venv/bin/activate
   python app.py
   ```
-- **Node.js backend only:**  
+- **Node.js backend only:**
   ```bash
   cd backend
   npm run dev
@@ -88,16 +96,16 @@ chmod +x start_all_servers.sh stop_all_servers.sh  # One-time
 
 ### 4. Testing
 
-- **All tests:**  
+- **All tests:**
   ```bash
   ./run_all_tests.sh
   ```
-- **Frontend tests:**  
+- **Frontend tests:**
   ```bash
   cd frontend/testing-website
   npm test
   ```
-- **Backend tests:**  
+- **Backend tests:**
   ```bash
   cd backend/tests
   ./run_tests.sh
@@ -105,12 +113,20 @@ chmod +x start_all_servers.sh stop_all_servers.sh  # One-time
 
 ---
 
+## Website
+
+Our website was created with React, and maintains a connection to our database for queries. 
+
 ## PubMed API Extraction
 
 - See `pubmed_API_data.py`, `pubmed_API_ASD_data.py`, and `pubmed_API_treatment.py` for extraction scripts.
 - Convert Excel to JSON with `convert_excel_to_json.py`.
 - Run `API_JOB.py` to manually update the database or use the website's update feature.
 - Change scheduled update time in `/backend/scheduler.js` (see [crontab.guru](https://crontab.guru)).
+
+## Database
+
+Our database is hosted on Neon, and stores our queries from Pubmed and our summarization results.
 
 ## Using medBERT/LLM
 
