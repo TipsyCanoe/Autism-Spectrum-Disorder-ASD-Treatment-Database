@@ -1,143 +1,187 @@
-# Autism-Spectrum-Disorder-ASD-Treatment-Database
+# Autism Spectrum Disorder (ASD) Treatment Database
 
-Welcome to the ASD Treatment Database Documentation! This project aims to enhance the mental health of individuals with Autism Spectrum Disorder (ASD) and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families. 
+**Enhancing mental health outcomes for individuals with Autism Spectrum Disorder and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families.**
 
-The project currently lives on a server generously provided by Western Washington University, with hosting of the database provided by Neon Database. The document here aims to inform the user of what the separate modules of the database does, and how to fix any common issues that may arise.
+[![Live Website](https://img.shields.io/badge/Live-Website-blue?style=for-the-badge)](https://star.cs.wwu.edu)
+[![Environment Config](https://img.shields.io/badge/Multi-Environment-green?style=for-the-badge)](#environment-configuration)
+[![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=for-the-badge)](#production-deployment)
 
-## Prerequisites
+## 🎯 **Project Overview**
 
-Before you begin, make sure you have the following installed on your system:
+This comprehensive database system provides:
+- **Research Synthesis**: Automated extraction and analysis of ASD treatment literature from PubMed
+- **Treatment Database**: Structured database of evidence-based interventions
+- **Interactive Interface**: React-based web application for healthcare professionals
+- **AI-Powered Analysis**: MedBERT integration for advanced text processing
 
-- **Python 3.8+**
+**Live System**: Hosted by Western Washington University | Database: Neon PostgreSQL
 
-  - [Download for Windows/macOS/Linux](https://www.python.org/downloads/)
-  - On Linux:
-    ```bash
-    sudo apt update
-    sudo apt install python3 python3-venv python3-pip
-    ```
-  - On macOS (with Homebrew):
-    ```bash
-    brew install python
-    ```
-  - On Windows: Download and run the installer from the Python website above.
-- **Node.js & npm**
+## 🚀 **Quick Start (Local Development)**
 
-  - [Download for all platforms](https://nodejs.org/)
+### Prerequisites
 
----
+- **Python 3.8+** ([Download](https://www.python.org/downloads/))
+- **Node.js 16+** ([Download](https://nodejs.org/))
+- **Git** ([Download](https://git-scm.com/))
 
-## Quick Start Guide (if downloading locally)
-
-### 1. First-Time Setup
-
-**A. Python Backend**
-
-1. Open a terminal in the project root after cloning the project locally.
-2. Create and activate a Python virtual environment:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. Install backend dependencies:
-   ```bash
-   pip install -r backend/requirements.txt
-   ```
-
-**B. Frontend**
-
-1. Go to the frontend directory:
-   ```bash
-   cd frontend/testing-website
-   ```
-2. Install frontend dependencies:
-   ```bash
-   npm install
-   ```
-
-### 2. Running the Project
-
-**A. Start All Servers (from project root):**
+### One-Command Setup
 
 ```bash
-chmod +x start_all_servers.sh stop_all_servers.sh  # One-time
+# Clone and setup
+git clone https://github.com/TipsyCanoe/Autism-Spectrum-Disorder-ASD-Treatment-Database.git
+cd Autism-Spectrum-Disorder-ASD-Treatment-Database
+
+# Install dependencies and start
+python3 -m venv venv && source venv/bin/activate
+pip install -r backend/requirements.txt
+cd frontend/testing-website && npm install && cd ../..
+
+# Start all services
 ./start_all_servers.sh
 ```
 
-- This starts:
-  - Frontend (port 3000)
-  - Python backend (port 5000)
-  - Node.js job backend (port 5001)
+**That's it!** 🎉 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-**B. Stop All Servers:**
+### Services Started
+- **Frontend**: React app on port 3000
+- **Python API**: Flask backend on port 5000  
+- **Node.js API**: Job scheduler on port 5001
 
+## 🔧 **Environment Configuration**
+
+This project supports multiple environments with automatic configuration:
+
+### Available Environments
+- **`local`** (default): Development with ports 3000, 5000, 5001
+- **`staging`**: Pre-production testing environment
+- **`production`**: Live deployment environment
+
+### Environment Commands
 ```bash
-./stop_all_servers.sh
+# Local development (default)
+./start_all_servers.sh
+
+# Staging environment
+ENVIRONMENT=staging ./start_all_servers.sh
+
+# Load specific environment manually
+source load-env.sh  # Loads local by default
+ENVIRONMENT=production source load-env.sh
 ```
 
-### 3. Manual Server Control
+### Configuration Files
+- `config/local.env` - Local development settings
+- `config/staging.env` - Staging environment template
+- `config/production.env.template` - Production template (copy to `production.env`)
 
-- **Frontend only:**
-  ```bash
-  cd frontend/testing-website
-  npm start
-  ```
-- **Python backend only:**
-  ```bash
-  cd backend
-  source ../venv/bin/activate
-  python app.py
-  ```
-- **Node.js backend only:**
-  ```bash
-  cd backend
-  npm run dev
-  ```
+📚 **Detailed Guide**: See [ENVIRONMENT_GUIDE.md](ENVIRONMENT_GUIDE.md)
 
-### 4. Testing
+## 🏗️ **Production Deployment**
 
-- **All tests:**
-  ```bash
-  ./run_all_tests.sh
-  ```
-- **Frontend tests:**
-  ```bash
-  cd frontend/testing-website
-  npm test
-  ```
-- **Backend tests:**
-  ```bash
-  cd backend/tests
-  ./run_tests.sh
-  ```
+### Automated Production Deployment
+```bash
+# One-command production deployment
+./deploy-production.sh
+```
 
----
+This handles:
+- ✅ Environment setup and validation
+- ✅ Frontend build process
+- ✅ Service restarts and health checks
+- ✅ Nginx configuration reload
 
-## Website
+📚 **Production Guide**: See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md)
 
-Our website was created with React, and maintains a connection to our database for queries. 
+## 🧪 **Testing**
 
-## PubMed API Extraction
+**Run all tests:**
+```bash
+./run_all_tests.sh
+```
 
-- See `pubmed_API_data.py`, `pubmed_API_ASD_data.py`, and `pubmed_API_treatment.py` for extraction scripts.
-- Convert Excel to JSON with `convert_excel_to_json.py`.
-- Run `API_JOB.py` to manually update the database or use the website's update feature.
-- Change scheduled update time in `/backend/scheduler.js` (see [crontab.guru](https://crontab.guru)).
+**Individual test suites:**
+```bash
+# Frontend tests
+cd frontend/testing-website && npm test
 
-## Database
+# Backend tests  
+cd backend/tests && ./run_tests.sh
+```
 
-Our database is hosted on Neon, and stores our queries from Pubmed and our summarization results.
+## 🏛️ **Architecture**
 
-## Using medBERT/LLM
+### System Components
+- **Frontend**: React.js with Tailwind CSS
+- **Backend APIs**: 
+  - Flask (Python) - Main application logic
+  - Express (Node.js) - Job scheduling and automation
+- **Database**: Neon PostgreSQL (cloud-hosted)
+- **AI/ML**: MedBERT integration for text analysis
+- **Deployment**: Nginx + Gunicorn + Systemd (production)
 
-1. Create a virtual environment (see above).
-2. Activate the environment.
-3. Install packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. You can now run the LLM and MedBERT scripts.
+### Data Pipeline
+1. **PubMed API Integration** → Automated literature extraction
+2. **MedBERT Processing** → AI-powered text analysis and classification
+3. **Database Storage** → Structured treatment and outcome data
+4. **Web Interface** → Healthcare professional access and search
 
----
+## 📊 **Features**
 
-For more details, see comments in the code and scripts in the repository.
+- **🔍 Advanced Search**: Filter treatments by age, symptoms, medications
+- **📈 Evidence Synthesis**: Automated analysis of treatment effectiveness  
+- **🤖 AI-Powered**: MedBERT integration for intelligent text processing
+- **📱 Responsive Design**: Works on desktop, tablet, and mobile
+- **🔄 Auto-Updates**: Scheduled PubMed data refresh
+- **⚡ Fast Performance**: Optimized queries and caching
+
+## 🗄️ **Database & APIs**
+
+### PubMed Integration
+- **Automated Extraction**: `pubmed_API_data.py`, `pubmed_API_ASD_data.py`
+- **Manual Updates**: Run `API_JOB.py` or use web interface
+- **Scheduling**: Configure in `/backend/scheduler.js` ([cron reference](https://crontab.guru))
+
+### Database
+- **Host**: Neon PostgreSQL (cloud)
+- **Content**: Treatment studies, outcomes, patient demographics
+- **Updates**: Automated nightly refresh from PubMed
+
+### MedBERT/LLM Usage
+```bash
+# Activate environment
+source venv/bin/activate
+
+# Install ML dependencies
+pip install -r FineTunedLLM/requirements.txt
+
+# Run analysis scripts
+python FineTunedLLM/MedBERT.py
+```
+
+## 📚 **Documentation**
+
+- **[Environment Setup Guide](ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
+- **[Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures  
+- **[File Overview](ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
+- **Code Documentation** - Inline comments throughout codebase
+
+## 🤝 **Contributing**
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Set up local environment (`./start_all_servers.sh`)
+4. Make your changes and test thoroughly
+5. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+6. Push to the branch (`git push origin feature/AmazingFeature`)
+7. Open a Pull Request
+
+## 📄 **License**
+
+This project is part of academic research at Western Washington University. Please contact the maintainers for usage permissions.
+
+## 🏥 **Acknowledgments**
+
+- **Western Washington University** - Infrastructure and hosting support
+- **Neon Database** - Cloud database hosting
+- **PubMed/NCBI** - Research literature access
+- **Hugging Face** - MedBERT model hosting
