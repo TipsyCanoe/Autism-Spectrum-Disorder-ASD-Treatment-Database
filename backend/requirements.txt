@@ -3,4 +3,5 @@ sentence-transformers
 flask
 flask_cors
 psycopg2-binary
-dotenvgunicorn==23.0.0
+python-dotenv
+gunicorn==23.0.0
