@@ -3,8 +3,6 @@ from flask_cors import CORS
 import psycopg2
 from psycopg2.extras import execute_values
 import numpy as np
-from transformers import AutoModel, AutoTokenizer
-from sentence_transformers import SentenceTransformer, models
 from collections import defaultdict
 import os
 from dotenv import load_dotenv
@@ -35,6 +33,9 @@ class SimpleCache:
 # Load environment variables
 load_dotenv()
 
+# Allow disabling heavy model loading for CI/tests via env var
+DISABLE_MODEL_LOADING = os.getenv("DISABLE_MODEL_LOADING", "").lower() in ("1", "true", "yes")
+
 # Create cache instances
 search_cache = SimpleCache(max_size=75)  # Cache for search results
 filter_cache = SimpleCache(max_size=10)   # Cache for filter options
@@ -45,21 +46,31 @@ CORS(app)
 # Get database URL from environment variable with fallback
 NEON_DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require")
 
-from transformers import AutoModel, AutoTokenizer
-from sentence_transformers import SentenceTransformer, models
+if DISABLE_MODEL_LOADING:
+    class _StubSentenceModel:
+        def encode(self, text):
+            # Return a small fixed-size vector to satisfy downstream code
+            import numpy as _np
+            return _np.zeros(4, dtype=float)
 
-medbert_model = AutoModel.from_pretrained("Charangan/MedBERT")
-tokenizer = AutoTokenizer.from_pretrained("Charangan/MedBERT")
+    sentence_model = _StubSentenceModel()
+else:
+    # Import heavy ML libraries only when model loading is enabled
+    from transformers import AutoModel, AutoTokenizer
+    from sentence_transformers import SentenceTransformer, models
 
-word_embedding_model = models.Transformer("Charangan/MedBERT")
-pooling_model = models.Pooling(
-    word_embedding_model.get_word_embedding_dimension(),
-    pooling_mode_mean_tokens=True,
-    pooling_mode_cls_token=False,
-    pooling_mode_max_tokens=False
-)
+    medbert_model = AutoModel.from_pretrained("Charangan/MedBERT")
+    tokenizer = AutoTokenizer.from_pretrained("Charangan/MedBERT")
 
-sentence_model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
+    word_embedding_model = models.Transformer("Charangan/MedBERT")
+    pooling_model = models.Pooling(
+        word_embedding_model.get_word_embedding_dimension(),
+        pooling_mode_mean_tokens=True,
+        pooling_mode_cls_token=False,
+        pooling_mode_max_tokens=False
+    )
+
+    sentence_model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
 
 available_filters = {
     "age": ["0-5", "6-12", "13-17", "18-25", "26-64", "65+"],
