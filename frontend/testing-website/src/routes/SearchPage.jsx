@@ -110,6 +110,10 @@ const SearchPage = () => {
 
   return (
     <div className="w-11/12 max-w-7xl mx-auto py-8">
+      {/* Disclaimer Banner */}
+      <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded">
+        <strong>Disclaimer:</strong> This website is in development and does not provide medical advice or recommendations. For medical decisions, consult a qualified healthcare professional.
+      </div>
       <div className="flex flex-col lg:flex-row gap-8">
         <FilterPanel
           selectedOptions={selectedOptions}
@@ -360,6 +364,13 @@ const SearchPage = () => {
           </div>
         </div>
       </div>
+            {/* Add extra padding and smaller font for mobile */}
+      <style>{`
+        @media (max-width: 640px) {
+          .search-page-banner { font-size: 0.95rem; padding: 0.5rem; }
+          .search-page-results { padding: 0.5rem; }
+        }
+      `}</style>
     </div>
   );
 };

@@ -32,6 +32,9 @@ class SimpleCache:
                 del self.cache[oldest_key]
         self.cache[key] = value
 
+# Load environment variables
+load_dotenv()
+
 # Create cache instances
 search_cache = SimpleCache(max_size=75)  # Cache for search results
 filter_cache = SimpleCache(max_size=10)   # Cache for filter options
@@ -39,7 +42,8 @@ filter_cache = SimpleCache(max_size=10)   # Cache for filter options
 app = Flask(__name__)
 CORS(app) 
 
-NEON_DATABASE_URL = "postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require"
+# Get database URL from environment variable with fallback
+NEON_DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require")
 
 from transformers import AutoModel, AutoTokenizer
 from sentence_transformers import SentenceTransformer, models
@@ -291,8 +295,11 @@ def search():
         grouped_results = defaultdict(list)
         
         for row in results:
+            abstract_text = row[10] if row[10] else "N/A"
             paper_data = {
-                "Abstract": row[10] if row[10] else "N/A",
+                "Abstract": abstract_text,
+                "description": abstract_text,  # Add description field for frontend compatibility
+                "title": row[0] if row[0] else "Untitled Study",  # Add title field
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Treatment Duration": row[6] if row[6] else "N/A",
@@ -380,8 +387,11 @@ def get_initial_results():
         grouped_results = defaultdict(list)
         
         for row in results:
+            abstract_text = row[10] if row[10] else "N/A"
             paper_data = {
-                "Abstract": row[10] if row[10] else "N/A",
+                "Abstract": abstract_text,
+                "description": abstract_text,  # Add description field for frontend compatibility
+                "title": row[0] if row[0] else "Untitled Study",  # Add title field
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Treatment Duration": row[6] if row[6] else "N/A",
@@ -432,4 +442,7 @@ def get_initial_results():
             conn.close()
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Get port and debug settings from environment variables
+    port = int(os.getenv('PYTHON_BACKEND_PORT', 5000))
+    debug = os.getenv('DEBUG', 'true').lower() == 'true'
+    app.run(debug=debug, port=port)

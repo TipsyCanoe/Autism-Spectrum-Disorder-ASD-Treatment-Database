@@ -18,6 +18,12 @@ logs/
 *.log
 *.tmp
 
+# Environment and deployment files (contain sensitive/local info)
+config/production.env
+frontend/testing-website/.env
+.server_pids
+*.backup
+
 # Ignore Python virtual environment directories
 venv/
 backend/venv/

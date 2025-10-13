@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
-// Define base API URL to target port 5000 for general API calls
-const API_BASE_URL = "http://localhost:5000";
+// Get API URL from environment variable with fallback
+const API_BASE_URL = process.env.REACT_APP_PYTHON_API_URL || "";
 
 const useSearch = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -78,8 +78,9 @@ const useSearch = () => {
         }
         
         const data = await response.json();
-
-        setResults(data.results || data); 
+        // Transform raw API results into treatment groups
+        const formatted = transformApiResponseToTreatmentGroups(data.results || data);
+        setResults(formatted);
         
       } catch (err) {
         console.error("Error fetching results:", err);

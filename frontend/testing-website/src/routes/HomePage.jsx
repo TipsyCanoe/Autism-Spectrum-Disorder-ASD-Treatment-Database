@@ -13,7 +13,8 @@ const HomePage = () => {
     setIsJobRunning(true);
     setJobMessage("Updating database...");
     try {
-      const response = await fetch("http://localhost:5001/api/run-job", {
+      const apiUrl = process.env.REACT_APP_NODE_API_URL || "http://localhost:5001";
+      const response = await fetch(`${apiUrl}/api/run-job`, {
         method: "POST",
       });
       const data = await response.json();

@@ -1,10 +1,11 @@
-require("dotenv").config(); // Keep for PORT, maybe other future config
+require("dotenv").config(); // Load environment variables
 const express = require("express");
 const cors = require("cors");
 const { runAPIJob } = require("./scheduler"); // Import runAPIJob
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+// Use NODE_BACKEND_PORT from environment, fallback to PORT, then 5001
+const PORT = process.env.NODE_BACKEND_PORT || process.env.PORT || 5001;
 
 // --- Middleware ---
 app.use(cors());

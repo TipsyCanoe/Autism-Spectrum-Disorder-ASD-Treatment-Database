@@ -9,7 +9,7 @@ const NavBar = () => {
     >
       <div className="absolute left-5 py-2.5 text-white select-none m-0">
         {" "}
-        ARD
+        STAR
       </div>
       <div className="flex-1 flex justify-center">
         {" "}
