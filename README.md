@@ -1,22 +1,23 @@
 # Autism Spectrum Disorder (ASD) Treatment Database
 
-**Enhancing mental health outcomes for individuals with Autism Spectrum Disorder and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families.**
+**Welcome to the ASD Treatment Database Github! Our vision is to enhance mental health outcomes for individuals with Autism Spectrum Disorder and their families by synthesizing psychiatric treatment knowledge for healthcare professionals, patients, and families. We aim to provide a comprehensive location for users of all kinds that allows for summarization of critical information of up-to-date medical papers to streamline your needs.**
 
 [![Live Website](https://img.shields.io/badge/Live-Website-blue?style=for-the-badge)](https://star.cs.wwu.edu)
 [![Environment Config](https://img.shields.io/badge/Multi-Environment-green?style=for-the-badge)](#environment-configuration)
 [![Production Ready](https://img.shields.io/badge/Production-Ready-success?style=for-the-badge)](#production-deployment)
 
-## 🎯 **Project Overview**
+## **Project Overview**
 
 This comprehensive database system provides:
+
 - **Research Synthesis**: Automated extraction and analysis of ASD treatment literature from PubMed
 - **Treatment Database**: Structured database of evidence-based interventions
-- **Interactive Interface**: React-based web application for healthcare professionals
+- **Interactive Interface**: React-based web application for easy user access
 - **AI-Powered Analysis**: MedBERT integration for advanced text processing
 
-**Live System**: Hosted by Western Washington University | Database: Neon PostgreSQL
+**Live System**: Generously hosted by Western Washington University | Database: Neon PostgreSQL
 
-## 🚀 **Quick Start (Local Development)**
+## **Quick Start (Local Development)**
 
 ### Prerequisites
 
@@ -24,7 +25,7 @@ This comprehensive database system provides:
 - **Node.js 16+** ([Download](https://nodejs.org/))
 - **Git** ([Download](https://git-scm.com/))
 
-### One-Command Setup
+### Command Line Setup
 
 ```bash
 # Clone and setup
@@ -40,11 +41,12 @@ cd frontend/testing-website && npm install && cd ../..
 ./start_all_servers.sh
 ```
 
-**That's it!** 🎉 Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ### Services Started
+
 - **Frontend**: React app on port 3000
-- **Python API**: Flask backend on port 5000  
+- **Python API**: Flask backend on port 5000
 - **Node.js API**: Job scheduler on port 5001
 
 ## 🔧 **Environment Configuration**
@@ -52,11 +54,13 @@ cd frontend/testing-website && npm install && cd ../..
 This project supports multiple environments with automatic configuration:
 
 ### Available Environments
+
 - **`local`** (default): Development with ports 3000, 5000, 5001
 - **`staging`**: Pre-production testing environment
 - **`production`**: Live deployment environment
 
 ### Environment Commands
+
 ```bash
 # Local development (default)
 ./start_all_servers.sh
@@ -70,36 +74,41 @@ ENVIRONMENT=production source load-env.sh
 ```
 
 ### Configuration Files
+
 - `config/local.env` - Local development settings
 - `config/staging.env` - Staging environment template
 - `config/production.env.template` - Production template (copy to `production.env`)
 
 📚 **Detailed Guide**: See [ENVIRONMENT_GUIDE.md](ENVIRONMENT_GUIDE.md)
 
-## 🏗️ **Production Deployment**
+## **Production Deployment**
 
 ### Automated Production Deployment
+
 ```bash
 # One-command production deployment
 ./deploy-production.sh
 ```
 
 This handles:
-- ✅ Environment setup and validation
-- ✅ Frontend build process
-- ✅ Service restarts and health checks
-- ✅ Nginx configuration reload
 
-📚 **Production Guide**: See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md)
+- Environment setup and validation
+- Frontend build process
+- Service restarts and health checks
+- Nginx configuration reload
 
-## 🧪 **Testing**
+For a more detailed guide, see [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md)
+
+## **Testing**
 
 **Run all tests:**
+
 ```bash
 ./run_all_tests.sh
 ```
 
 **Individual test suites:**
+
 ```bash
 # Frontend tests
 cd frontend/testing-website && npm test
@@ -108,11 +117,12 @@ cd frontend/testing-website && npm test
 cd backend/tests && ./run_tests.sh
 ```
 
-## 🏛️ **Architecture**
+## **Architecture**
 
 ### System Components
+
 - **Frontend**: React.js with Tailwind CSS
-- **Backend APIs**: 
+- **Backend APIs**:
   - Flask (Python) - Main application logic
   - Express (Node.js) - Job scheduling and automation
 - **Database**: Neon PostgreSQL (cloud-hosted)
@@ -120,33 +130,37 @@ cd backend/tests && ./run_tests.sh
 - **Deployment**: Nginx + Gunicorn + Systemd (production)
 
 ### Data Pipeline
+
 1. **PubMed API Integration** → Automated literature extraction
 2. **MedBERT Processing** → AI-powered text analysis and classification
 3. **Database Storage** → Structured treatment and outcome data
 4. **Web Interface** → Healthcare professional access and search
 
-## 📊 **Features**
+## **Features**
 
-- **🔍 Advanced Search**: Filter treatments by age, symptoms, medications
-- **📈 Evidence Synthesis**: Automated analysis of treatment effectiveness  
-- **🤖 AI-Powered**: MedBERT integration for intelligent text processing
-- **📱 Responsive Design**: Works on desktop, tablet, and mobile
-- **🔄 Auto-Updates**: Scheduled PubMed data refresh
-- **⚡ Fast Performance**: Optimized queries and caching
+- **Advanced Search**: Filter treatments by age, symptoms, medications
+- **Evidence Synthesis**: Automated analysis of treatment effectiveness
+- **AI-Powered**: MedBERT integration for intelligent text processing
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Auto-Updates**: Scheduled PubMed data refresh
+- **Fast Performance**: Optimized queries and caching
 
-## 🗄️ **Database & APIs**
+## **Database & APIs**
 
 ### PubMed Integration
+
 - **Automated Extraction**: `pubmed_API_data.py`, `pubmed_API_ASD_data.py`
 - **Manual Updates**: Run `API_JOB.py` or use web interface
 - **Scheduling**: Configure in `/backend/scheduler.js` ([cron reference](https://crontab.guru))
 
 ### Database
+
 - **Host**: Neon PostgreSQL (cloud)
 - **Content**: Treatment studies, outcomes, patient demographics
 - **Updates**: Automated nightly refresh from PubMed
 
 ### MedBERT/LLM Usage
+
 ```bash
 # Activate environment
 source venv/bin/activate
@@ -158,14 +172,14 @@ pip install -r FineTunedLLM/requirements.txt
 python FineTunedLLM/MedBERT.py
 ```
 
-## 📚 **Documentation**
+## **Documentation**
 
 - **[Environment Setup Guide](ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
-- **[Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures  
+- **[Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
 - **[File Overview](ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
 - **Code Documentation** - Inline comments throughout codebase
 
-## 🤝 **Contributing**
+## **Contributing**
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -179,7 +193,7 @@ python FineTunedLLM/MedBERT.py
 
 This project is part of academic research at Western Washington University. Please contact the maintainers for usage permissions.
 
-## 🏥 **Acknowledgments**
+## **Acknowledgments**
 
 - **Western Washington University** - Infrastructure and hosting support
 - **Neon Database** - Cloud database hosting
