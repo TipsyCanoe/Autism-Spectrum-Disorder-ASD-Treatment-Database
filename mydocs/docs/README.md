@@ -49,7 +49,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 - **Python API**: Flask backend on port 5000
 - **Node.js API**: Job scheduler on port 5001
 
-## 🔧 **Environment Configuration**
+## **Environment Configuration**
 
 This project supports multiple environments with automatic configuration:
 
@@ -79,7 +79,7 @@ ENVIRONMENT=production source load-env.sh
 - `config/staging.env` - Staging environment template
 - `config/production.env.template` - Production template (copy to `production.env`)
 
-📚 **Detailed Guide**: See [ENVIRONMENT_GUIDE.md](ENVIRONMENT_GUIDE.md)
+📚 **Detailed Guide**: See [Environment File Overview](advanced/ENVIRONMENT_FILES_OVERVIEW.md)
 
 ## **Production Deployment**
 
@@ -97,7 +97,7 @@ This handles:
 - Service restarts and health checks
 - Nginx configuration reload
 
-For a more detailed guide, see [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md)
+For a more detailed guide, see [Deployment](getting_started/PRODUCTION_DEPLOYMENT.md)
 
 ## **Testing**
 
@@ -174,9 +174,9 @@ python FineTunedLLM/MedBERT.py
 
 ## **Documentation**
 
-- **[Environment Setup Guide](ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
-- **[Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
-- **[File Overview](ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
+- **[Environment Setup Guide](getting_started/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
+- **[Production Deployment](getting_started/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
+- **[File Overview](advanced/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
 - **Code Documentation** - Inline comments throughout codebase
 
 ## **Contributing**
@@ -189,7 +189,7 @@ python FineTunedLLM/MedBERT.py
 6. Push to the branch (`git push origin feature/AmazingFeature`)
 7. Open a Pull Request
 
-## 📄 **License**
+## **License**
 
 This project is part of academic research at Western Washington University. Please contact the maintainers for usage permissions.
 

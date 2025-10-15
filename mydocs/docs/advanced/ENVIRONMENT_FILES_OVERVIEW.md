@@ -30,7 +30,7 @@ This document provides an overview of all files created for the environment conf
 | `start_all_servers.sh`        | **Environment-aware startup**       | `./start_all_servers.sh` |
 | `start_all_servers.sh.backup` | Original backup                           | Reference only             |
 
-## 📚 Documentation
+## Documentation
 
 | File                              | Purpose                     | Audience          |
 | --------------------------------- | --------------------------- | ----------------- |
@@ -107,7 +107,7 @@ ENVIRONMENT=staging ./start_all_servers.sh
 ENVIRONMENT=production ./start_all_servers.sh
 ```
 
-## 🔄 Migration Notes
+## Migration Notes
 
 ### What Changed
 
