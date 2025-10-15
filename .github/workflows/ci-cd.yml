@@ -70,7 +70,8 @@ jobs:
   deploy:
     name: Deploy to Production
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # TEMPORARILY DISABLED - production isolated for testing
+    if: false
     runs-on: ubuntu-latest
     environment:
       name: production
