@@ -7,7 +7,7 @@ describe('App Component Rendering and Initial Route', () => {
     render(<App />);
 
     // Verify NavBar title is rendered (already present)
-    const navTitle = screen.getByText(/ARD/i);
+    const navTitle = screen.getByText(/STAR/i);
     expect(navTitle).toBeInTheDocument();
 
     // Find the navigation bar element first
