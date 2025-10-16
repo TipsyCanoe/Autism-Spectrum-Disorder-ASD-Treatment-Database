@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
       
       
 
@@ -432,6 +432,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#automated-deployment-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Deployment (CI/CD)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       Troubleshooting
@@ -590,6 +599,52 @@
   
   <span class="md-ellipsis">
     Environment File Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/NGINX_CONFIGURATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nginx Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/CI_CD_PIPELINE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Pipeline
     
   </span>
   
@@ -760,6 +815,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#automated-deployment-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Deployment (CI/CD)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       Troubleshooting
@@ -912,10 +976,20 @@ sudo systemctl restart asd-backend.service asd-node-backend.service
 <li><code>/etc/nginx/sites-available/asd-db.conf</code> - Main site config</li>
 <li><code>/etc/nginx/sites-enabled/asd-db.conf</code> - Enabled site (symlink)</li>
 </ul>
+<p>For detailed nginx configuration documentation, see <a href="../../advanced/NGINX_CONFIGURATION/">Nginx Configuration</a>.</p>
 <h3 id="application-configuration">Application Configuration</h3>
 <ul>
 <li><code>/opt/asd-db/config/production.env</code> - Production environment variables</li>
 </ul>
+<h2 id="automated-deployment-cicd">Automated Deployment (CI/CD)</h2>
+<p>The project supports automated deployment via GitHub Actions. When enabled, pushing to the <code>main</code> branch will automatically:</p>
+<ol>
+<li>Run tests</li>
+<li>Deploy to production if tests pass</li>
+<li>Restart services and reload nginx</li>
+</ol>
+<p>For detailed CI/CD documentation, see <a href="../../advanced/CI_CD_PIPELINE/">CI/CD Pipeline</a>.</p>
+<p>Note: Auto-deployment is currently disabled to isolate production during active development.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="services-wont-start">Services Won't Start</h3>
 <pre><code class="language-bash"># Check detailed error logs

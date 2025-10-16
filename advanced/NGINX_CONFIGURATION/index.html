@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../../getting_started/ENVIRONMENT_GUIDE/">
+        <link rel="prev" href="../ENVIRONMENT_FILES_OVERVIEW/">
       
       
-        <link rel="next" href="../NGINX_CONFIGURATION/">
+        <link rel="next" href="../CI_CD_PIPELINE/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Environment File Overview - STAR</title>
+        <title>Nginx Configuration - STAR</title>
       
     
     
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#environment-configuration-system-file-overview" class="md-skip">
+        <a href="#nginx-configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Environment File Overview
+              Nginx Configuration
             
           </span>
         </div>
@@ -344,6 +344,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../ENVIRONMENT_FILES_OVERVIEW/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environment File Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -361,7 +384,7 @@
   
   
   <span class="md-ellipsis">
-    Environment File Overview
+    Nginx Configuration
     
   </span>
   
@@ -374,7 +397,7 @@
   
   
   <span class="md-ellipsis">
-    Environment File Overview
+    Nginx Configuration
     
   </span>
   
@@ -397,19 +420,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-files" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration Files
+      Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configuration Files">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Location
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#url-routing-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL Routing Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="URL Routing Explained">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#config-directory" class="md-nav__link">
+  <a href="#frontend-react" class="md-nav__link">
     <span class="md-ellipsis">
-      /config/ Directory
+      Frontend (React)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-api-flask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python API (Flask)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs-api-job-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node.js API (Job Scheduler)
     </span>
   </a>
   
@@ -421,28 +489,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#utility-scripts" class="md-nav__link">
+  <a href="#trailing-slash-behavior" class="md-nav__link">
     <span class="md-ellipsis">
-      Utility Scripts
+      Trailing Slash Behavior
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Utility Scripts">
+    <nav class="md-nav" aria-label="Trailing Slash Behavior">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#environment-management" class="md-nav__link">
+  <a href="#without-trailing-slash" class="md-nav__link">
     <span class="md-ellipsis">
-      Environment Management
+      Without Trailing Slash
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployment-scripts" class="md-nav__link">
+  <a href="#with-trailing-slash" class="md-nav__link">
     <span class="md-ellipsis">
-      Deployment Scripts
+      With Trailing Slash
     </span>
   </a>
   
@@ -454,46 +522,64 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#frontend-environment-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation
+      Frontend Environment Configuration
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture-integration" class="md-nav__link">
+  <a href="#modifying-the-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Architecture Integration
+      Modifying the Configuration
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Architecture Integration">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Endpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Issues">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#with-systemd-services" class="md-nav__link">
+  <a href="#502-bad-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      With Systemd Services
+      502 Bad Gateway
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#with-nginx" class="md-nav__link">
+  <a href="#404-not-found-on-api-routes" class="md-nav__link">
     <span class="md-ellipsis">
-      With Nginx
+      404 Not Found on API Routes
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#with-application-code" class="md-nav__link">
+  <a href="#react-router-not-working" class="md-nav__link">
     <span class="md-ellipsis">
-      With Application Code
+      React Router Not Working
     </span>
   </a>
   
@@ -505,46 +591,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#best-practices-implemented" class="md-nav__link">
+  <a href="#performance-tuning" class="md-nav__link">
     <span class="md-ellipsis">
-      Best Practices Implemented
+      Performance Tuning
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Best Practices Implemented">
+    <nav class="md-nav" aria-label="Performance Tuning">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
+  <a href="#increase-timeout-for-long-requests" class="md-nav__link">
     <span class="md-ellipsis">
-      Security
+      Increase Timeout for Long Requests
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#maintainability" class="md-nav__link">
+  <a href="#enable-gzip-compression" class="md-nav__link">
     <span class="md-ellipsis">
-      Maintainability
+      Enable Gzip Compression
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#development-experience" class="md-nav__link">
+  <a href="#static-asset-caching" class="md-nav__link">
     <span class="md-ellipsis">
-      Development Experience
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Ready
+      Static Asset Caching
     </span>
   </a>
   
@@ -556,37 +633,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage-summary" class="md-nav__link">
+  <a href="#security-considerations" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage Summary
+      Security Considerations
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Usage Summary">
+    <nav class="md-nav" aria-label="Security Considerations">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#local-development" class="md-nav__link">
+  <a href="#rate-limiting" class="md-nav__link">
     <span class="md-ellipsis">
-      Local Development
+      Rate Limiting
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#production-deployment" class="md-nav__link">
+  <a href="#ssltls-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Production Deployment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#environment-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Testing
+      SSL/TLS Configuration
     </span>
   </a>
   
@@ -598,44 +666,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#migration-notes" class="md-nav__link">
+  <a href="#backup-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Migration Notes
+      Backup Configuration
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Migration Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-changed" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Changed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-stayed-the-same" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Stayed the Same
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#backward-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backward Compatibility
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -643,29 +678,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../NGINX_CONFIGURATION/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Nginx Configuration
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -728,19 +740,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-files" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration Files
+      Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configuration Files">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Location
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#url-routing-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL Routing Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="URL Routing Explained">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#config-directory" class="md-nav__link">
+  <a href="#frontend-react" class="md-nav__link">
     <span class="md-ellipsis">
-      /config/ Directory
+      Frontend (React)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-api-flask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python API (Flask)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs-api-job-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node.js API (Job Scheduler)
     </span>
   </a>
   
@@ -752,28 +809,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#utility-scripts" class="md-nav__link">
+  <a href="#trailing-slash-behavior" class="md-nav__link">
     <span class="md-ellipsis">
-      Utility Scripts
+      Trailing Slash Behavior
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Utility Scripts">
+    <nav class="md-nav" aria-label="Trailing Slash Behavior">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#environment-management" class="md-nav__link">
+  <a href="#without-trailing-slash" class="md-nav__link">
     <span class="md-ellipsis">
-      Environment Management
+      Without Trailing Slash
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployment-scripts" class="md-nav__link">
+  <a href="#with-trailing-slash" class="md-nav__link">
     <span class="md-ellipsis">
-      Deployment Scripts
+      With Trailing Slash
     </span>
   </a>
   
@@ -785,46 +842,64 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#frontend-environment-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation
+      Frontend Environment Configuration
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture-integration" class="md-nav__link">
+  <a href="#modifying-the-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Architecture Integration
+      Modifying the Configuration
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Architecture Integration">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Endpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Issues">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#with-systemd-services" class="md-nav__link">
+  <a href="#502-bad-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      With Systemd Services
+      502 Bad Gateway
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#with-nginx" class="md-nav__link">
+  <a href="#404-not-found-on-api-routes" class="md-nav__link">
     <span class="md-ellipsis">
-      With Nginx
+      404 Not Found on API Routes
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#with-application-code" class="md-nav__link">
+  <a href="#react-router-not-working" class="md-nav__link">
     <span class="md-ellipsis">
-      With Application Code
+      React Router Not Working
     </span>
   </a>
   
@@ -836,46 +911,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#best-practices-implemented" class="md-nav__link">
+  <a href="#performance-tuning" class="md-nav__link">
     <span class="md-ellipsis">
-      Best Practices Implemented
+      Performance Tuning
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Best Practices Implemented">
+    <nav class="md-nav" aria-label="Performance Tuning">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
+  <a href="#increase-timeout-for-long-requests" class="md-nav__link">
     <span class="md-ellipsis">
-      Security
+      Increase Timeout for Long Requests
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#maintainability" class="md-nav__link">
+  <a href="#enable-gzip-compression" class="md-nav__link">
     <span class="md-ellipsis">
-      Maintainability
+      Enable Gzip Compression
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#development-experience" class="md-nav__link">
+  <a href="#static-asset-caching" class="md-nav__link">
     <span class="md-ellipsis">
-      Development Experience
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Ready
+      Static Asset Caching
     </span>
   </a>
   
@@ -887,37 +953,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage-summary" class="md-nav__link">
+  <a href="#security-considerations" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage Summary
+      Security Considerations
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Usage Summary">
+    <nav class="md-nav" aria-label="Security Considerations">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#local-development" class="md-nav__link">
+  <a href="#rate-limiting" class="md-nav__link">
     <span class="md-ellipsis">
-      Local Development
+      Rate Limiting
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#production-deployment" class="md-nav__link">
+  <a href="#ssltls-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Production Deployment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#environment-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Testing
+      SSL/TLS Configuration
     </span>
   </a>
   
@@ -929,44 +986,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#migration-notes" class="md-nav__link">
+  <a href="#backup-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Migration Notes
+      Backup Configuration
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Migration Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-changed" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Changed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-stayed-the-same" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Stayed the Same
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#backward-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backward Compatibility
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -986,198 +1010,254 @@
 
 
 
-<h1 id="environment-configuration-system-file-overview">Environment Configuration System - File Overview</h1>
-<p>This document provides an overview of all files created for the environment configuration system and their purposes.</p>
-<h2 id="configuration-files">Configuration Files</h2>
-<h3 id="config-directory"><code>/config/</code> Directory</h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>local.env</code></td>
-<td>Local development configuration</td>
-<td>Default ports: 3000, 5000, 5001</td>
-</tr>
-<tr>
-<td><code>production.env</code></td>
-<td>Production server configuration</td>
-<td>Configured for star.cs.wwu.edu</td>
-</tr>
-<tr>
-<td><code>staging.env</code></td>
-<td>Staging environment configuration</td>
-<td>Alternative testing environment</td>
-</tr>
-<tr>
-<td><code>README.md</code></td>
-<td>Configuration documentation</td>
-<td>Usage instructions</td>
-</tr>
-</tbody>
-</table>
-<h2 id="utility-scripts">Utility Scripts</h2>
-<h3 id="environment-management">Environment Management</h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>load-env.sh</code></td>
-<td>Loads environment variables</td>
-<td><code>source load-env.sh</code></td>
-</tr>
-<tr>
-<td><code>setup-frontend-env.sh</code></td>
-<td>Creates React .env file</td>
-<td>Called automatically</td>
-</tr>
-</tbody>
-</table>
-<h3 id="deployment-scripts">Deployment Scripts</h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>deploy-production.sh</code></td>
-<td><strong>Automated production deployment</strong></td>
-<td><code>./deploy-production.sh</code></td>
-</tr>
-<tr>
-<td><code>start_all_servers.sh</code></td>
-<td><strong>Environment-aware startup</strong></td>
-<td><code>./start_all_servers.sh</code></td>
-</tr>
-<tr>
-<td><code>start_all_servers.sh.backup</code></td>
-<td>Original backup</td>
-<td>Reference only</td>
-</tr>
-</tbody>
-</table>
-<h2 id="documentation">Documentation</h2>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Audience</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ENVIRONMENT_GUIDE.md</code></td>
-<td>Complete usage guide</td>
-<td>Developers</td>
-</tr>
-<tr>
-<td><code>PRODUCTION_DEPLOYMENT.md</code></td>
-<td>Production deployment guide</td>
-<td>DevOps/Deployment</td>
-</tr>
-<tr>
-<td><code>ENVIRONMENT_FILES_OVERVIEW.md</code></td>
-<td>This file</td>
-<td>Reference</td>
-</tr>
-</tbody>
-</table>
-<h2 id="architecture-integration">Architecture Integration</h2>
-<h3 id="with-systemd-services">With Systemd Services</h3>
-<ul>
-<li><strong><code>asd-backend.service</code></strong>: Python Flask API (updated to use environment file)</li>
-<li><strong><code>asd-node-backend.service</code></strong>: Node.js API (created for production stability)</li>
-</ul>
-<h3 id="with-nginx">With Nginx</h3>
-<ul>
-<li>Configuration automatically uses correct ports from environment</li>
-<li>Frontend build process integrates with environment variables</li>
-<li>API routing matches environment URL patterns</li>
-</ul>
-<h3 id="with-application-code">With Application Code</h3>
-<ul>
-<li><strong>Backend</strong>: <code>app.py</code> and <code>server.js</code> load environment variables</li>
-<li><strong>Frontend</strong>: React components use <code>REACT_APP_*</code> environment variables</li>
-<li><strong>Database</strong>: Connection string configurable per environment</li>
-</ul>
-<h2 id="best-practices-implemented">Best Practices Implemented</h2>
-<h3 id="security">Security</h3>
-<ul>
-<li>Production secrets can be overridden via environment variables</li>
-<li>Debug modes disabled in production</li>
-<li>Database URLs configurable per environment</li>
-</ul>
-<h3 id="maintainability">Maintainability</h3>
-<ul>
-<li>Single source of truth for configuration</li>
-<li>Environment-specific settings clearly separated</li>
-<li>Automated deployment reduces human error</li>
-</ul>
-<h3 id="development-experience">Development Experience</h3>
-<ul>
-<li>Local development remains unchanged</li>
-<li>Easy switching between environments</li>
-<li>Clear documentation and usage guides</li>
-</ul>
-<h3 id="production-ready">Production Ready</h3>
-<ul>
-<li>Systemd service integration</li>
-<li>Nginx reverse proxy compatibility</li>
-<li>Automated health checks and verification</li>
-</ul>
-<h2 id="usage-summary">Usage Summary</h2>
-<h3 id="local-development">Local Development</h3>
-<pre><code class="language-bash"># Just works as before
-./start_all_servers.sh
-</code></pre>
-<h3 id="production-deployment">Production Deployment</h3>
-<pre><code class="language-bash"># One command deployment
-./deploy-production.sh
-</code></pre>
-<h3 id="environment-testing">Environment Testing</h3>
-<pre><code class="language-bash"># Test different environments
-ENVIRONMENT=staging ./start_all_servers.sh
-ENVIRONMENT=production ./start_all_servers.sh
-</code></pre>
-<h2 id="migration-notes">Migration Notes</h2>
-<h3 id="what-changed">What Changed</h3>
+<h1 id="nginx-configuration">Nginx Configuration</h1>
+<p>This document explains the nginx reverse proxy configuration for the ASD Treatment Database production deployment.</p>
+<h2 id="overview">Overview</h2>
+<p>Nginx serves multiple roles in the production architecture:</p>
 <ol>
-<li><strong>Added</strong>: Environment configuration system</li>
-<li><strong>Updated</strong>: Application code to use environment variables</li>
-<li><strong>Enhanced</strong>: Startup scripts to be environment-aware</li>
-<li><strong>Fixed</strong>: JSON parsing issue (description field)</li>
-<li><strong>Added</strong>: Systemd service for Node.js backend</li>
+<li>Static file server for the React frontend build</li>
+<li>Reverse proxy for the Python Flask API</li>
+<li>Reverse proxy for the Node.js job scheduler API</li>
+<li>SSL/TLS termination (if configured)</li>
 </ol>
-<h3 id="what-stayed-the-same">What Stayed the Same</h3>
+<h2 id="configuration-location">Configuration Location</h2>
+<p>The main configuration file is located at:</p>
+<pre><code>/etc/nginx/sites-available/asd-db.conf
+</code></pre>
+<p>It is symlinked to <code>/etc/nginx/sites-enabled/asd-db.conf</code> to enable the site.</p>
+<h2 id="current-configuration">Current Configuration</h2>
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name star.cs.wwu.edu;
+
+    root /opt/asd-db/frontend/testing-website/build;
+    index index.html;
+
+    # Serve React app
+    location / {
+      try_files $uri $uri/ /index.html;
+    }
+
+    # Flask API
+    location /api/ {
+      proxy_pass http://127.0.0.1:5000;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Node job backend
+    location /jobs/ {
+      proxy_pass http://127.0.0.1:5001/;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection &quot;upgrade&quot;;
+    }
+
+    # Increase timeout for long requests
+    proxy_read_timeout 90s;
+}
+</code></pre>
+<h2 id="url-routing-explained">URL Routing Explained</h2>
+<h3 id="frontend-react">Frontend (React)</h3>
+<p>All requests to the root path are served from the static build directory:</p>
 <ul>
-<li>Local development workflow (no changes needed)</li>
-<li>Database structure and connections</li>
-<li>Core application functionality</li>
-<li>Nginx and Gunicorn setup (just enhanced)</li>
+<li><code>https://star.cs.wwu.edu/</code> → <code>/opt/asd-db/frontend/testing-website/build/index.html</code></li>
+<li><code>https://star.cs.wwu.edu/search</code> → <code>index.html</code> (React Router handles client-side routing)</li>
 </ul>
-<h3 id="backward-compatibility">Backward Compatibility</h3>
+<p>The <code>try_files</code> directive ensures that all routes fallback to <code>index.html</code>, allowing React Router to work properly.</p>
+<h3 id="python-api-flask">Python API (Flask)</h3>
+<p>API requests starting with <code>/api/</code> are proxied to the Flask backend:</p>
 <ul>
-<li>Original startup scripts backed up</li>
-<li>Local development unchanged</li>
-<li>Existing systemd services enhanced, not replaced</li>
+<li><code>https://star.cs.wwu.edu/api/filters</code> → <code>http://127.0.0.1:5000/api/filters</code></li>
+<li><code>https://star.cs.wwu.edu/api/search</code> → <code>http://127.0.0.1:5000/api/search</code></li>
+<li><code>https://star.cs.wwu.edu/api/initial-results</code> → <code>http://127.0.0.1:5000/api/initial-results</code></li>
 </ul>
-<p>This system provides a robust, production-ready configuration management approach while maintaining simplicity for local development.</p>
+<p><strong>Note:</strong> The <code>/api/</code> prefix is preserved and forwarded to Flask because <code>proxy_pass</code> does not have a trailing slash.</p>
+<h3 id="nodejs-api-job-scheduler">Node.js API (Job Scheduler)</h3>
+<p>Job-related requests starting with <code>/jobs/</code> are proxied to the Node backend:</p>
+<ul>
+<li><code>https://star.cs.wwu.edu/jobs/api/run-job</code> → <code>http://127.0.0.1:5001/api/run-job</code></li>
+</ul>
+<p><strong>Important:</strong> The trailing slash in <code>proxy_pass http://127.0.0.1:5001/;</code> strips the <code>/jobs/</code> prefix before forwarding to the Node server. This is critical because the Node server defines routes as <code>/api/run-job</code>, not <code>/jobs/api/run-job</code>.</p>
+<h2 id="trailing-slash-behavior">Trailing Slash Behavior</h2>
+<p>The trailing slash in <code>proxy_pass</code> directives controls path rewriting:</p>
+<h3 id="without-trailing-slash">Without Trailing Slash</h3>
+<pre><code class="language-nginx">location /api/ {
+  proxy_pass http://127.0.0.1:5000;
+}
+</code></pre>
+<p><strong>Behavior:</strong> Full path is preserved
+- Request: <code>/api/filters</code>
+- Forwarded to: <code>http://127.0.0.1:5000/api/filters</code></p>
+<h3 id="with-trailing-slash">With Trailing Slash</h3>
+<pre><code class="language-nginx">location /jobs/ {
+  proxy_pass http://127.0.0.1:5001/;
+}
+</code></pre>
+<p><strong>Behavior:</strong> Location prefix is stripped
+- Request: <code>/jobs/api/run-job</code>
+- Forwarded to: <code>http://127.0.0.1:5001/api/run-job</code> (the <code>/jobs/</code> prefix is removed)</p>
+<h2 id="frontend-environment-configuration">Frontend Environment Configuration</h2>
+<p>The React frontend is configured to use these base URLs:</p>
+<pre><code class="language-env">REACT_APP_PYTHON_API_URL=https://star.cs.wwu.edu
+REACT_APP_NODE_API_URL=https://star.cs.wwu.edu/jobs
+</code></pre>
+<p>The frontend code then appends specific endpoints:</p>
+<p><strong>Python API:</strong>
+- Appends <code>/api/filters</code> → <code>https://star.cs.wwu.edu/api/filters</code>
+- Appends <code>/api/search</code> → <code>https://star.cs.wwu.edu/api/search</code></p>
+<p><strong>Node API:</strong>
+- Appends <code>/api/run-job</code> → <code>https://star.cs.wwu.edu/jobs/api/run-job</code></p>
+<h2 id="modifying-the-configuration">Modifying the Configuration</h2>
+<p>If you need to change the nginx configuration:</p>
+<ol>
+<li>
+<p>Edit the configuration file:
+   <code>bash
+   sudo nano /etc/nginx/sites-available/asd-db.conf</code></p>
+</li>
+<li>
+<p>Test the configuration:
+   <code>bash
+   sudo nginx -t</code></p>
+</li>
+<li>
+<p>If the test passes, reload nginx:
+   <code>bash
+   sudo systemctl reload nginx</code></p>
+</li>
+<li>
+<p>If the test fails, review error messages and fix syntax issues before reloading.</p>
+</li>
+</ol>
+<h2 id="testing-endpoints">Testing Endpoints</h2>
+<p>Verify that all proxies are working correctly:</p>
+<pre><code class="language-bash"># Test Python API
+curl https://star.cs.wwu.edu/api/filters
+
+# Test Node API
+curl -X POST https://star.cs.wwu.edu/jobs/api/run-job
+
+# Test frontend
+curl https://star.cs.wwu.edu
+</code></pre>
+<p>All should return HTTP 200 status codes with appropriate content.</p>
+<h2 id="common-issues">Common Issues</h2>
+<h3 id="502-bad-gateway">502 Bad Gateway</h3>
+<p><strong>Symptoms:</strong> Nginx returns a 502 error when accessing API endpoints.</p>
+<p><strong>Causes:</strong>
+- Backend service is not running
+- Backend service is listening on the wrong port
+- Firewall blocking localhost connections</p>
+<p><strong>Solutions:</strong></p>
+<pre><code class="language-bash"># Check if services are running
+sudo systemctl status asd-backend.service
+sudo systemctl status asd-node-backend.service
+
+# Check if services are listening on correct ports
+sudo netstat -tlnp | grep -E '5000|5001'
+
+# Restart services
+sudo systemctl restart asd-backend.service asd-node-backend.service
+</code></pre>
+<h3 id="404-not-found-on-api-routes">404 Not Found on API Routes</h3>
+<p><strong>Symptoms:</strong> API requests return 404, but direct service access works.</p>
+<p><strong>Causes:</strong>
+- Incorrect <code>proxy_pass</code> configuration
+- Missing or incorrect trailing slash
+- Route not defined in backend application</p>
+<p><strong>Solutions:</strong>
+1. Verify the backend route exists:
+   ```bash
+   # For Python API
+   grep -r "route.*filters" /opt/asd-db/backend/app.py</p>
+<p># For Node API
+   grep -r "post.*run-job" /opt/asd-db/backend/server.js
+   ```</p>
+<ol>
+<li>
+<p>Test backend directly:
+   <code>bash
+   curl http://localhost:5000/api/filters
+   curl -X POST http://localhost:5001/api/run-job</code></p>
+</li>
+<li>
+<p>If direct access works but proxied access fails, check the <code>proxy_pass</code> trailing slash.</p>
+</li>
+</ol>
+<h3 id="react-router-not-working">React Router Not Working</h3>
+<p><strong>Symptoms:</strong> Direct navigation to <code>/search</code> returns 404.</p>
+<p><strong>Cause:</strong> Missing <code>try_files</code> directive or incorrect configuration.</p>
+<p><strong>Solution:</strong> Ensure the location block has:</p>
+<pre><code class="language-nginx">location / {
+  try_files $uri $uri/ /index.html;
+}
+</code></pre>
+<p>This ensures all unmatched routes fallback to <code>index.html</code>, allowing React Router to handle routing.</p>
+<h2 id="performance-tuning">Performance Tuning</h2>
+<h3 id="increase-timeout-for-long-requests">Increase Timeout for Long Requests</h3>
+<p>If API requests take longer than the default timeout:</p>
+<pre><code class="language-nginx">proxy_read_timeout 120s;
+proxy_connect_timeout 120s;
+proxy_send_timeout 120s;
+</code></pre>
+<h3 id="enable-gzip-compression">Enable Gzip Compression</h3>
+<p>To reduce bandwidth usage:</p>
+<pre><code class="language-nginx">gzip on;
+gzip_vary on;
+gzip_min_length 1000;
+gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+</code></pre>
+<h3 id="static-asset-caching">Static Asset Caching</h3>
+<p>To improve frontend performance:</p>
+<pre><code class="language-nginx">location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+    expires 1y;
+    add_header Cache-Control &quot;public, immutable&quot;;
+}
+</code></pre>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="rate-limiting">Rate Limiting</h3>
+<p>Protect against abuse by limiting request rates:</p>
+<pre><code class="language-nginx">limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
+
+location /api/ {
+    limit_req zone=api_limit burst=20 nodelay;
+    proxy_pass http://127.0.0.1:5000;
+}
+</code></pre>
+<h3 id="ssltls-configuration">SSL/TLS Configuration</h3>
+<p>For production deployments, configure SSL:</p>
+<pre><code class="language-nginx">server {
+    listen 443 ssl http2;
+    server_name star.cs.wwu.edu;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    # Strong SSL settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    # ... rest of configuration
+}
+
+# Redirect HTTP to HTTPS
+server {
+    listen 80;
+    server_name star.cs.wwu.edu;
+    return 301 https://$server_name$request_uri;
+}
+</code></pre>
+<h2 id="backup-configuration">Backup Configuration</h2>
+<p>Before making changes, always backup the current configuration:</p>
+<pre><code class="language-bash">sudo cp /etc/nginx/sites-available/asd-db.conf /etc/nginx/sites-available/asd-db.conf.backup
+</code></pre>
+<p>To restore from backup:</p>
+<pre><code class="language-bash">sudo cp /etc/nginx/sites-available/asd-db.conf.backup /etc/nginx/sites-available/asd-db.conf
+sudo nginx -t
+sudo systemctl reload nginx
+</code></pre>
 
 
 

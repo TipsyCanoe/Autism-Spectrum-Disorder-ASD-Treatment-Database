@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../../getting_started/ENVIRONMENT_GUIDE/">
+        <link rel="prev" href="../NGINX_CONFIGURATION/">
       
-      
-        <link rel="next" href="../NGINX_CONFIGURATION/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>Environment File Overview - STAR</title>
+        <title>CI/CD Pipeline - STAR</title>
       
     
     
@@ -62,7 +60,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#environment-configuration-system-file-overview" class="md-skip">
+        <a href="#cicd-pipeline" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Environment File Overview
+              CI/CD Pipeline
             
           </span>
         </div>
@@ -344,32 +342,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Environment File Overview
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../ENVIRONMENT_FILES_OVERVIEW/" class="md-nav__link">
         
   
   
@@ -380,269 +356,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration Files
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration Files">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#config-directory" class="md-nav__link">
-    <span class="md-ellipsis">
-      /config/ Directory
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#utility-scripts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Utility Scripts
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Utility Scripts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#environment-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Management
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deployment-scripts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deployment Scripts
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architecture Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Architecture Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#with-systemd-services" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Systemd Services
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-nginx" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Nginx
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-application-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Application Code
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#best-practices-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      Best Practices Implemented
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Best Practices Implemented">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#maintainability" class="md-nav__link">
-    <span class="md-ellipsis">
-      Maintainability
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#development-experience" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development Experience
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Ready
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage Summary
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage Summary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#local-development" class="md-nav__link">
-    <span class="md-ellipsis">
-      Local Development
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Deployment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#environment-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Testing
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Notes
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-changed" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Changed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-stayed-the-same" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Stayed the Same
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#backward-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backward Compatibility
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -675,10 +388,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../CI_CD_PIPELINE/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Pipeline
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -689,6 +424,155 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Triggers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Job
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Job">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purpose-of-disable_model_loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose of DISABLE_MODEL_LOADING
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy Job
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Deployment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Concurrency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Before Merging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branch Protection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-tagging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version Tagging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -728,19 +612,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-files" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration Files
+      Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configuration Files">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Triggers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Job
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Job">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#config-directory" class="md-nav__link">
+  <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
-      /config/ Directory
+      Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purpose-of-disable_model_loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose of DISABLE_MODEL_LOADING
     </span>
   </a>
   
@@ -752,214 +672,64 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#utility-scripts" class="md-nav__link">
+  <a href="#deploy-job" class="md-nav__link">
     <span class="md-ellipsis">
-      Utility Scripts
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Utility Scripts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#environment-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Management
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deployment-scripts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deployment Scripts
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
+      Deploy Job
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture-integration" class="md-nav__link">
+  <a href="#manual-deployment" class="md-nav__link">
     <span class="md-ellipsis">
-      Architecture Integration
+      Manual Deployment
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Architecture Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#with-systemd-services" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Systemd Services
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-nginx" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Nginx
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-application-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Application Code
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#best-practices-implemented" class="md-nav__link">
+  <a href="#workflow-concurrency" class="md-nav__link">
     <span class="md-ellipsis">
-      Best Practices Implemented
+      Workflow Concurrency
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Best Practices Implemented">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#maintainability" class="md-nav__link">
-    <span class="md-ellipsis">
-      Maintainability
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#development-experience" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development Experience
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Ready
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage-summary" class="md-nav__link">
+  <a href="#best-practices" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage Summary
+      Best Practices
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Usage Summary">
+    <nav class="md-nav" aria-label="Best Practices">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#local-development" class="md-nav__link">
+  <a href="#before-merging" class="md-nav__link">
     <span class="md-ellipsis">
-      Local Development
+      Before Merging
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#production-deployment" class="md-nav__link">
+  <a href="#branch-protection" class="md-nav__link">
     <span class="md-ellipsis">
-      Production Deployment
+      Branch Protection
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#environment-testing" class="md-nav__link">
+  <a href="#version-tagging" class="md-nav__link">
     <span class="md-ellipsis">
-      Environment Testing
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Notes
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-changed" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Changed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-stayed-the-same" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Stayed the Same
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#backward-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backward Compatibility
+      Version Tagging
     </span>
   </a>
   
@@ -986,198 +756,75 @@
 
 
 
-<h1 id="environment-configuration-system-file-overview">Environment Configuration System - File Overview</h1>
-<p>This document provides an overview of all files created for the environment configuration system and their purposes.</p>
-<h2 id="configuration-files">Configuration Files</h2>
-<h3 id="config-directory"><code>/config/</code> Directory</h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>local.env</code></td>
-<td>Local development configuration</td>
-<td>Default ports: 3000, 5000, 5001</td>
-</tr>
-<tr>
-<td><code>production.env</code></td>
-<td>Production server configuration</td>
-<td>Configured for star.cs.wwu.edu</td>
-</tr>
-<tr>
-<td><code>staging.env</code></td>
-<td>Staging environment configuration</td>
-<td>Alternative testing environment</td>
-</tr>
-<tr>
-<td><code>README.md</code></td>
-<td>Configuration documentation</td>
-<td>Usage instructions</td>
-</tr>
-</tbody>
-</table>
-<h2 id="utility-scripts">Utility Scripts</h2>
-<h3 id="environment-management">Environment Management</h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>load-env.sh</code></td>
-<td>Loads environment variables</td>
-<td><code>source load-env.sh</code></td>
-</tr>
-<tr>
-<td><code>setup-frontend-env.sh</code></td>
-<td>Creates React .env file</td>
-<td>Called automatically</td>
-</tr>
-</tbody>
-</table>
-<h3 id="deployment-scripts">Deployment Scripts</h3>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>deploy-production.sh</code></td>
-<td><strong>Automated production deployment</strong></td>
-<td><code>./deploy-production.sh</code></td>
-</tr>
-<tr>
-<td><code>start_all_servers.sh</code></td>
-<td><strong>Environment-aware startup</strong></td>
-<td><code>./start_all_servers.sh</code></td>
-</tr>
-<tr>
-<td><code>start_all_servers.sh.backup</code></td>
-<td>Original backup</td>
-<td>Reference only</td>
-</tr>
-</tbody>
-</table>
-<h2 id="documentation">Documentation</h2>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Purpose</th>
-<th>Audience</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ENVIRONMENT_GUIDE.md</code></td>
-<td>Complete usage guide</td>
-<td>Developers</td>
-</tr>
-<tr>
-<td><code>PRODUCTION_DEPLOYMENT.md</code></td>
-<td>Production deployment guide</td>
-<td>DevOps/Deployment</td>
-</tr>
-<tr>
-<td><code>ENVIRONMENT_FILES_OVERVIEW.md</code></td>
-<td>This file</td>
-<td>Reference</td>
-</tr>
-</tbody>
-</table>
-<h2 id="architecture-integration">Architecture Integration</h2>
-<h3 id="with-systemd-services">With Systemd Services</h3>
+<h1 id="cicd-pipeline">CI/CD Pipeline</h1>
+<p>This document provides an overview of the Continuous Integration and Continuous Deployment pipeline for the ASD Treatment Database.</p>
+<h2 id="overview">Overview</h2>
+<p>The project uses GitHub Actions to automate testing. The workflow is defined in <code>.github/workflows/ci-cd.yml</code>.</p>
+<h2 id="workflow-triggers">Workflow Triggers</h2>
 <ul>
-<li><strong><code>asd-backend.service</code></strong>: Python Flask API (updated to use environment file)</li>
-<li><strong><code>asd-node-backend.service</code></strong>: Node.js API (created for production stability)</li>
+<li>Push to <code>main</code> branch</li>
+<li>Pull requests to <code>main</code> branch</li>
+<li>Manual workflow dispatch via GitHub Actions UI</li>
 </ul>
-<h3 id="with-nginx">With Nginx</h3>
+<h2 id="test-job">Test Job</h2>
+<p>The automated test job performs the following:</p>
+<h3 id="setup">Setup</h3>
 <ul>
-<li>Configuration automatically uses correct ports from environment</li>
-<li>Frontend build process integrates with environment variables</li>
-<li>API routing matches environment URL patterns</li>
+<li>Python 3.10</li>
+<li>Node.js 18</li>
+<li>Dependency caching for faster builds</li>
 </ul>
-<h3 id="with-application-code">With Application Code</h3>
+<h3 id="testing">Testing</h3>
 <ul>
-<li><strong>Backend</strong>: <code>app.py</code> and <code>server.js</code> load environment variables</li>
-<li><strong>Frontend</strong>: React components use <code>REACT_APP_*</code> environment variables</li>
-<li><strong>Database</strong>: Connection string configurable per environment</li>
+<li>Installs minimal dependencies from <code>backend/requirements-test.txt</code></li>
+<li>Runs backend pytest with <code>DISABLE_MODEL_LOADING=1</code> to skip heavy ML model loading</li>
+<li>Excludes end-to-end and performance tests for speed</li>
 </ul>
-<h2 id="best-practices-implemented">Best Practices Implemented</h2>
-<h3 id="security">Security</h3>
-<ul>
-<li>Production secrets can be overridden via environment variables</li>
-<li>Debug modes disabled in production</li>
-<li>Database URLs configurable per environment</li>
-</ul>
-<h3 id="maintainability">Maintainability</h3>
-<ul>
-<li>Single source of truth for configuration</li>
-<li>Environment-specific settings clearly separated</li>
-<li>Automated deployment reduces human error</li>
-</ul>
-<h3 id="development-experience">Development Experience</h3>
-<ul>
-<li>Local development remains unchanged</li>
-<li>Easy switching between environments</li>
-<li>Clear documentation and usage guides</li>
-</ul>
-<h3 id="production-ready">Production Ready</h3>
-<ul>
-<li>Systemd service integration</li>
-<li>Nginx reverse proxy compatibility</li>
-<li>Automated health checks and verification</li>
-</ul>
-<h2 id="usage-summary">Usage Summary</h2>
-<h3 id="local-development">Local Development</h3>
-<pre><code class="language-bash"># Just works as before
-./start_all_servers.sh
-</code></pre>
-<h3 id="production-deployment">Production Deployment</h3>
-<pre><code class="language-bash"># One command deployment
+<h3 id="purpose-of-disable_model_loading">Purpose of DISABLE_MODEL_LOADING</h3>
+<p>This environment variable prevents loading MedBERT and sentence transformer models during tests, significantly reducing:
+- Test execution time
+- Memory usage
+- Dependency download size</p>
+<p>Mock objects are used instead for testing API logic.</p>
+<h2 id="deploy-job">Deploy Job</h2>
+<p><strong>Current Status:</strong> Deployment is currently disabled (<code>if: false</code>) in the workflow.</p>
+<p>The deployment strategy is being updated to use a non-SSH approach. Documentation will be updated once the new deployment method is implemented.</p>
+<h2 id="manual-deployment">Manual Deployment</h2>
+<p>To deploy manually to production:</p>
+<pre><code class="language-bash">cd /path/to/project
+git fetch origin
+git reset --hard origin/main
 ./deploy-production.sh
 </code></pre>
-<h3 id="environment-testing">Environment Testing</h3>
-<pre><code class="language-bash"># Test different environments
-ENVIRONMENT=staging ./start_all_servers.sh
-ENVIRONMENT=production ./start_all_servers.sh
+<p>The <code>deploy-production.sh</code> script handles:
+- Environment setup
+- Frontend build
+- Service restarts
+- Nginx reload
+- Health checks</p>
+<h2 id="workflow-concurrency">Workflow Concurrency</h2>
+<p>The workflow prevents multiple simultaneous runs:</p>
+<pre><code class="language-yaml">concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 </code></pre>
-<h2 id="migration-notes">Migration Notes</h2>
-<h3 id="what-changed">What Changed</h3>
-<ol>
-<li><strong>Added</strong>: Environment configuration system</li>
-<li><strong>Updated</strong>: Application code to use environment variables</li>
-<li><strong>Enhanced</strong>: Startup scripts to be environment-aware</li>
-<li><strong>Fixed</strong>: JSON parsing issue (description field)</li>
-<li><strong>Added</strong>: Systemd service for Node.js backend</li>
-</ol>
-<h3 id="what-stayed-the-same">What Stayed the Same</h3>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="before-merging">Before Merging</h3>
 <ul>
-<li>Local development workflow (no changes needed)</li>
-<li>Database structure and connections</li>
-<li>Core application functionality</li>
-<li>Nginx and Gunicorn setup (just enhanced)</li>
+<li>Run tests locally: <code>./run_all_tests.sh</code></li>
+<li>Verify tests pass in GitHub Actions</li>
+<li>Get code review approval</li>
 </ul>
-<h3 id="backward-compatibility">Backward Compatibility</h3>
-<ul>
-<li>Original startup scripts backed up</li>
-<li>Local development unchanged</li>
-<li>Existing systemd services enhanced, not replaced</li>
-</ul>
-<p>This system provides a robust, production-ready configuration management approach while maintaining simplicity for local development.</p>
+<h3 id="branch-protection">Branch Protection</h3>
+<p>Configure on <code>main</code> branch:
+- Require pull request reviews
+- Require status checks to pass
+- Require conversation resolution</p>
+<h3 id="version-tagging">Version Tagging</h3>
+<p>Tag releases for tracking:</p>
+<pre><code class="language-bash">git tag -a v1.0.0 -m &quot;Release version 1.0.0&quot;
+git push origin v1.0.0
+</code></pre>
 
 
 
