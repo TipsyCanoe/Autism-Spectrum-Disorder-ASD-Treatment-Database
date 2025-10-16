@@ -8,4 +8,6 @@ nav:
     - Configuring Environments: getting_started/ENVIRONMENT_GUIDE.md
   - Advanced:
     - Environment File Overview: advanced/ENVIRONMENT_FILES_OVERVIEW.md
+    - Nginx Configuration: advanced/NGINX_CONFIGURATION.md
+    - CI/CD Pipeline: advanced/CI_CD_PIPELINE.md
 

@@ -176,6 +176,8 @@ python FineTunedLLM/MedBERT.py
 
 - **[Environment Setup Guide](getting_started/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
 - **[Production Deployment](getting_started/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
+- **[Nginx Configuration](advanced/NGINX_CONFIGURATION.md)** - Reverse proxy and routing setup
+- **[CI/CD Pipeline](advanced/CI_CD_PIPELINE.md)** - Automated testing and deployment
 - **[File Overview](advanced/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
 - **Code Documentation** - Inline comments throughout codebase
 
