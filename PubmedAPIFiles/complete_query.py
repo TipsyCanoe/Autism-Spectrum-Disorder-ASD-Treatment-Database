@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import re
+import os
 from Bio import Entrez
 from pathlib import Path
 
@@ -10,9 +11,12 @@ monthDict = {
         "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
     }
 
+ENTREZ_EMAIL = os.getenv('ENTREZ_EMAIL')
+ENTREZ_API_KEY = os.getenv('ENTREZ_API_KEY')
+
 class importer:
-    Entrez.email = 'loa4@wwu.edu'
-    Entrez.api_key = 'c301edeca095efe481ce5e2a727560444908'
+    Entrez.email = ENTREZ_EMAIL
+    Entrez.api_key = ENTREZ_API_KEY
 
     def importPapers(completePD, query):
         # Search PubMed for relevant records

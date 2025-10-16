@@ -15,7 +15,7 @@ This comprehensive database system provides:
 - **Interactive Interface**: React-based web application for easy user access
 - **AI-Powered Analysis**: MedBERT integration for advanced text processing
 
-**Live System**: Generously hosted by Western Washington University | Database: Neon PostgreSQL
+**Live System**: Hosted by Western Washington University | Database: Neon PostgreSQL
 
 ## **Quick Start (Local Development)**
 
@@ -180,6 +180,8 @@ python FineTunedLLM/MedBERT.py
 - **[CI/CD Pipeline](advanced/CI_CD_PIPELINE.md)** - Automated testing and deployment
 - **[File Overview](advanced/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
 - **Code Documentation** - Inline comments throughout codebase
+
+Update documentation by navigating to `mydocs`, then typing the command `mkdocs gh-deploy`.
 
 ## **Contributing**
 

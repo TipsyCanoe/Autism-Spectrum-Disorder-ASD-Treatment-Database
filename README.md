@@ -17,6 +17,17 @@ This comprehensive database system provides:
 
 **Live System**: Generously hosted by Western Washington University | Database: Neon PostgreSQL
 
+View our official docs [here](https://tipsycanoe.github.io/Autism-Spectrum-Disorder-ASD-Treatment-Database/)!
+
+We also feature:
+
+- **Advanced Search**: Filter treatments by age, symptoms, medications
+- **Evidence Synthesis**: Automated analysis of treatment effectiveness
+- **AI-Powered**: MedBERT integration for intelligent text processing
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Auto-Updates**: Scheduled PubMed data refresh
+- **Fast Performance**: Optimized queries and caching
+
 ## **Quick Start (Local Development)**
 
 ### Prerequisites
@@ -43,41 +54,16 @@ cd frontend/testing-website && npm install && cd ../..
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-### Services Started
-
-- **Frontend**: React app on port 3000
-- **Python API**: Flask backend on port 5000
-- **Node.js API**: Job scheduler on port 5001
-
-## 🔧 **Environment Configuration**
-
-This project supports multiple environments with automatic configuration:
-
-### Available Environments
-
-- **`local`** (default): Development with ports 3000, 5000, 5001
-- **`staging`**: Pre-production testing environment
-- **`production`**: Live deployment environment
-
 ### Environment Commands
 
 ```bash
 # Local development (default)
 ./start_all_servers.sh
-
-# Staging environment
-ENVIRONMENT=staging ./start_all_servers.sh
-
-# Load specific environment manually
-source load-env.sh  # Loads local by default
-ENVIRONMENT=production source load-env.sh
 ```
 
 ### Configuration Files
 
 - `config/local.env` - Local development settings
-- `config/staging.env` - Staging environment template
-- `config/production.env.template` - Production template (copy to `production.env`)
 
 📚 **Detailed Guide**: See [ENVIRONMENT_GUIDE.md](ENVIRONMENT_GUIDE.md)
 
@@ -97,25 +83,7 @@ This handles:
 - Service restarts and health checks
 - Nginx configuration reload
 
-For a more detailed guide, see [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md)
-
-## **Testing**
-
-**Run all tests:**
-
-```bash
-./run_all_tests.sh
-```
-
-**Individual test suites:**
-
-```bash
-# Frontend tests
-cd frontend/testing-website && npm test
-
-# Backend tests  
-cd backend/tests && ./run_tests.sh
-```
+For a more detailed guide and to see other deployment methods, please visit our dedicated deployment [page](https://tipsycanoe.github.io/Autism-Spectrum-Disorder-ASD-Treatment-Database/).
 
 ## **Architecture**
 
@@ -128,22 +96,6 @@ cd backend/tests && ./run_tests.sh
 - **Database**: Neon PostgreSQL (cloud-hosted)
 - **AI/ML**: MedBERT integration for text analysis
 - **Deployment**: Nginx + Gunicorn + Systemd (production)
-
-### Data Pipeline
-
-1. **PubMed API Integration** → Automated literature extraction
-2. **MedBERT Processing** → AI-powered text analysis and classification
-3. **Database Storage** → Structured treatment and outcome data
-4. **Web Interface** → Healthcare professional access and search
-
-## **Features**
-
-- **Advanced Search**: Filter treatments by age, symptoms, medications
-- **Evidence Synthesis**: Automated analysis of treatment effectiveness
-- **AI-Powered**: MedBERT integration for intelligent text processing
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Auto-Updates**: Scheduled PubMed data refresh
-- **Fast Performance**: Optimized queries and caching
 
 ## **Database & APIs**
 
@@ -174,10 +126,9 @@ python FineTunedLLM/MedBERT.py
 
 ## **Documentation**
 
-- **[Environment Setup Guide](ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
-- **[Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
-- **[File Overview](ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
-- **Code Documentation** - Inline comments throughout codebase
+- **[Environment Setup Guide](mydocs/docs/getting_started/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
+- **[Production Deployment](mydocs/docs/getting_started/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
+- **[File Overview](mydocs/docs/advanced/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
 
 ## **Contributing**
 
