@@ -6,8 +6,15 @@ nav:
   - Getting Started:
     - Deployment: getting_started/PRODUCTION_DEPLOYMENT.md
     - Configuring Environments: getting_started/ENVIRONMENT_GUIDE.md
+  - Using Our Site:
+    - Navigating the Site: users/NAV_SITE.md
+    - How to Search: users/SEARCH_GUIDE.md
+    - Contact Us: users/CONTACT_US.md
   - Advanced:
     - Environment File Overview: advanced/ENVIRONMENT_FILES_OVERVIEW.md
     - Nginx Configuration: advanced/NGINX_CONFIGURATION.md
     - CI/CD Pipeline: advanced/CI_CD_PIPELINE.md
+markdown_extensions:
+  - attr_list
+  - md_in_html
 
