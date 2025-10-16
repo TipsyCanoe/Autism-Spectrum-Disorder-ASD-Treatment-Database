@@ -128,39 +128,54 @@ const SearchPage = () => {
 
             {/* Results List (only show if not loading, no error, and results exist) */}
             {!isLoading && !error && results.length > 0 && (
-              <div className="divide-y divide-gray-200">
-                {results.map((result, index) => (
-                  <div key={result.id || index} className="py-4">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {result.title || "Untitled Resource"}
+              <div className="space-y-6">
+                {results.map((treatmentGroup, groupIndex) => (
+                  <div key={groupIndex} className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="text-xl font-bold text-gray-800 mb-4 capitalize">
+                      {treatmentGroup.treatment}
                     </h3>
-                    <p className="text-sm text-gray-500 mb-2">
-                      {result.type || "Resource"}
-                      {result.publishDate && ` • ${result.publishDate}`}
-                      {result.author && ` • ${result.author}`}
-                    </p>
-                    <p className="text-gray-600 mb-2">{result.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {result.tags &&
-                        result.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                    <div className="divide-y divide-gray-200 bg-white rounded">
+                      {treatmentGroup.studies && treatmentGroup.studies.map((study, studyIndex) => (
+                        <div key={studyIndex} className="p-4">
+                          <h4 className="text-lg font-semibold text-gray-800 mb-2">
+                            {study.title || study["Study Title"] || "Untitled Study"}
+                          </h4>
+                          <p className="text-sm text-gray-500 mb-2">
+                            {study["Publication Date"] && `Published: ${study["Publication Date"]}`}
+                            {study.Author && ` • ${study.Author}`}
+                            {study.PMID && ` • PMID: ${study.PMID}`}
+                          </p>
+                          <p className="text-gray-600 mb-3">
+                            {study.description || study.Abstract || "No description available"}
+                          </p>
+                          {study["Primary Outcome Area"] && (
+                            <p className="text-sm text-gray-600 mb-2">
+                              <span className="font-medium">Outcome:</span> {study["Primary Outcome Area"]}
+                            </p>
+                          )}
+                          {study["Treatment Duration"] && (
+                            <p className="text-sm text-gray-600 mb-2">
+                              <span className="font-medium">Duration:</span> {study["Treatment Duration"]}
+                            </p>
+                          )}
+                          {study["Similarity Score"] !== undefined && (
+                            <p className="text-sm text-gray-500 mb-2">
+                              Relevance: {(study["Similarity Score"] * 100).toFixed(0)}%
+                            </p>
+                          )}
+                          {study["Full Text URL"] && (
+                            <a
+                              href={study["Full Text URL"]}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-block text-blue-600 hover:underline"
+                            >
+                              View Full Study →
+                            </a>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    {result.url && (
-                      <a
-                        href={result.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 inline-block text-blue-600 hover:underline"
-                      >
-                        View Resource
-                      </a>
-                    )}
                   </div>
                 ))}
               </div>

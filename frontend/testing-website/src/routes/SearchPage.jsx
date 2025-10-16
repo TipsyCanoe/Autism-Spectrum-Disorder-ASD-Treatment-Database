@@ -298,47 +298,63 @@ const SearchPage = () => {
 
                                 {activeStudyId === study.id && (
                                   <div className="p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
-                                    {Object.entries(study).map(
-                                      ([key, value]) => {
-                                        const EXCLUDED_KEYS = [
-                                          "id",
-                                          "title",
-                                          "Study Title",
-                                        ];
-                                        if (EXCLUDED_KEYS.includes(key)) {
-                                          return null;
-                                        }
-                                        if (
-                                          typeof value === "object" &&
-                                          value !== null
-                                        ) {
-                                          return (
-                                            <div key={key} className="mb-3">
-                                              <strong className="text-sm text-gray-700 capitalize">
-                                                {key.replace(/_/g, " ")}:
-                                              </strong>
-                                              <pre className="text-sm text-gray-600 bg-gray-50 p-2 rounded overflow-x-auto">
-                                                {JSON.stringify(value, null, 2)}
-                                              </pre>
-                                            </div>
-                                          );
-                                        }
-                                        return (
-                                          <div key={key} className="mb-3">
-                                            <strong className="text-sm text-gray-700 capitalize">
-                                              {key.replace(/_/g, " ")}:
-                                            </strong>
-                                            <p className="text-sm text-gray-600">
-                                              {String(
-                                                value !== null &&
-                                                  value !== undefined
-                                                  ? value
-                                                  : "N/A"
-                                              )}
-                                            </p>
-                                          </div>
-                                        );
-                                      }
+                                    {/* Publication Info */}
+                                    {(study["Publication Date"] || study.Author || study.PMID) && (
+                                      <div className="mb-4 text-sm text-gray-600">
+                                        {study["Publication Date"] && (
+                                          <span>Published: {study["Publication Date"]}</span>
+                                        )}
+                                        {study.Author && (
+                                          <span> • {study.Author}</span>
+                                        )}
+                                        {study.PMID && (
+                                          <span> • PMID: {study.PMID}</span>
+                                        )}
+                                      </div>
+                                    )}
+                                    
+                                    {/* Abstract/Description */}
+                                    {(study.description || study.Abstract) && (
+                                      <div className="mb-4">
+                                        <strong className="text-sm text-gray-700 block mb-1">Abstract:</strong>
+                                        <p className="text-sm text-gray-600">
+                                          {study.description || study.Abstract}
+                                        </p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Primary Outcome */}
+                                    {study["Primary Outcome Area"] && study["Primary Outcome Area"] !== "N/A" && (
+                                      <div className="mb-3">
+                                        <strong className="text-sm text-gray-700">Primary Outcome Area:</strong>
+                                        <p className="text-sm text-gray-600">{study["Primary Outcome Area"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Primary Outcome Measure */}
+                                    {study["Primary Outcome Measure"] && study["Primary Outcome Measure"] !== "N/A" && (
+                                      <div className="mb-3">
+                                        <strong className="text-sm text-gray-700">Primary Outcome Measure:</strong>
+                                        <p className="text-sm text-gray-600">{study["Primary Outcome Measure"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Treatment Duration */}
+                                    {study["Treatment Duration"] && study["Treatment Duration"] !== "N/A" && (
+                                      <div className="mb-3">
+                                        <strong className="text-sm text-gray-700">Treatment Duration:</strong>
+                                        <p className="text-sm text-gray-600">{study["Treatment Duration"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Similarity Score */}
+                                    {study["Similarity Score"] !== undefined && (
+                                      <div className="mb-3">
+                                        <strong className="text-sm text-gray-700">Relevance Score:</strong>
+                                        <p className="text-sm text-gray-600">
+                                          {(study["Similarity Score"] * 100).toFixed(0)}%
+                                        </p>
+                                      </div>
                                     )}
                                     {study["Full Text URL"] && (
                                       <a

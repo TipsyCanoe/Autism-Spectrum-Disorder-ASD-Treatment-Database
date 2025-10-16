@@ -78,9 +78,8 @@ const useSearch = () => {
         }
         
         const data = await response.json();
-        // Transform raw API results into treatment groups
-        const formatted = transformApiResponseToTreatmentGroups(data.results || data);
-        setResults(formatted);
+        // API already returns data in the correct format: [{ treatment: "...", studies: [...] }]
+        setResults(data);
         
       } catch (err) {
         console.error("Error fetching results:", err);
@@ -91,32 +90,6 @@ const useSearch = () => {
     },
     [selectedOptions]
   );
-
-  const transformApiResponseToTreatmentGroups = (apiResults) => {
-    if (Array.isArray(apiResults) && apiResults.length > 0 && apiResults[0].treatment) {
-      // Group studies by treatment
-      const treatmentMap = new Map();
-      
-      apiResults.forEach(study => {
-        const treatmentName = study.treatment || 'Unknown Treatment';
-        
-        if (!treatmentMap.has(treatmentName)) {
-          treatmentMap.set(treatmentName, {
-            treatment: treatmentName,
-            studies: []
-          });
-        }
-        
-        // Remove treatment field from study object to avoid duplication
-        const { treatment, ...studyData } = study;
-        treatmentMap.get(treatmentName).studies.push(studyData);
-      });
-      
-      return Array.from(treatmentMap.values());
-    }
-    
-    return apiResults;
-  };
 
   return {
     selectedOptions,
