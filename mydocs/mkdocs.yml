@@ -1,6 +1,20 @@
 site_name: STAR
 theme:
   name: material
+  icon:
+    repo: fontawesome/brands/github
+  palette: 
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
 nav:
   - Home: README.md
   - Getting Started:
@@ -17,4 +31,5 @@ nav:
 markdown_extensions:
   - attr_list
   - md_in_html
+repo_url: https://github.com/TipsyCanoe/Autism-Spectrum-Disorder-ASD-Treatment-Database?tab=readme-ov-file
 
