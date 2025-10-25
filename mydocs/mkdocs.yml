@@ -28,6 +28,10 @@ nav:
     - Environment File Overview: advanced/ENVIRONMENT_FILES_OVERVIEW.md
     - Nginx Configuration: advanced/NGINX_CONFIGURATION.md
     - CI/CD Pipeline: advanced/CI_CD_PIPELINE.md
+    - Security & Permissions: advanced/SECURITY_AND_PERMISSIONS.md
+  - Operations:
+    - Troubleshooting: advanced/TROUBLESHOOTING_GUIDE.md
+    - Monitoring & Logging: advanced/MONITORING_AND_LOGGING.md
 markdown_extensions:
   - attr_list
   - md_in_html
