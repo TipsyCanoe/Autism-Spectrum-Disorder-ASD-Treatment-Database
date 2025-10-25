@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../ENVIRONMENT_FILES_OVERVIEW/">
+        <link rel="prev" href="../SECURITY_AND_PERMISSIONS/">
       
       
-        <link rel="next" href="../CI_CD_PIPELINE/">
+        <link rel="next" href="../MONITORING_AND_LOGGING/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Nginx Configuration - STAR</title>
+        <title>Troubleshooting - STAR</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#nginx-configuration" class="md-skip">
+        <a href="#troubleshooting-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Nginx Configuration
+              Troubleshooting
             
           </span>
         </div>
@@ -478,20 +478,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -507,7 +505,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Advanced
@@ -541,32 +539,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Nginx Configuration
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../NGINX_CONFIGURATION/" class="md-nav__link">
         
   
   
@@ -577,281 +553,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-location" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration Location
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#current-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Current Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#url-routing-explained" class="md-nav__link">
-    <span class="md-ellipsis">
-      URL Routing Explained
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="URL Routing Explained">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#frontend-react" class="md-nav__link">
-    <span class="md-ellipsis">
-      Frontend (React)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python-api-flask" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python API (Flask)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodejs-api-job-scheduler" class="md-nav__link">
-    <span class="md-ellipsis">
-      Node.js API (Job Scheduler)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#trailing-slash-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      Trailing Slash Behavior
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Trailing Slash Behavior">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#without-trailing-slash" class="md-nav__link">
-    <span class="md-ellipsis">
-      Without Trailing Slash
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-trailing-slash" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Trailing Slash
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#frontend-environment-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Frontend Environment Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modifying-the-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Modifying the Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-endpoints" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Endpoints
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Common Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#502-bad-gateway" class="md-nav__link">
-    <span class="md-ellipsis">
-      502 Bad Gateway
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#404-not-found-on-api-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      404 Not Found on API Routes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#react-router-not-working" class="md-nav__link">
-    <span class="md-ellipsis">
-      React Router Not Working
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Performance Tuning
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Performance Tuning">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#increase-timeout-for-long-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Increase Timeout for Long Requests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enable-gzip-compression" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enable Gzip Compression
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#static-asset-caching" class="md-nav__link">
-    <span class="md-ellipsis">
-      Static Asset Caching
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security Considerations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Security Considerations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rate-limiting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rate Limiting
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ssltls-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      SSL/TLS Configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#backup-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backup Configuration
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -914,18 +615,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -941,7 +644,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -952,10 +655,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../TROUBLESHOOTING_GUIDE/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -966,6 +691,140 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-issues-and-resolutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues and Resolutions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Issues and Resolutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#services-will-not-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services will not start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-returns-empty-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      API returns empty results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database connection errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-still-shows-old-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend still shows old build
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx-404-or-double-apiapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      nginx 404 or double /api/api
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-script-fails-mid-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy script fails mid-run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#long-startup-times-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Long startup times / timeouts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission-denied-writing-logs-or-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission denied writing logs or builds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stuck-git-worktree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stuck Git worktree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-escalate" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Escalate
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1028,64 +887,100 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#quick-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      Quick Checklist
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-location" class="md-nav__link">
+  <a href="#common-issues-and-resolutions" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration Location
+      Common Issues and Resolutions
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#current-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Current Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#url-routing-explained" class="md-nav__link">
-    <span class="md-ellipsis">
-      URL Routing Explained
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="URL Routing Explained">
+    <nav class="md-nav" aria-label="Common Issues and Resolutions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#frontend-react" class="md-nav__link">
+  <a href="#services-will-not-start" class="md-nav__link">
     <span class="md-ellipsis">
-      Frontend (React)
+      Services will not start
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#python-api-flask" class="md-nav__link">
+  <a href="#api-returns-empty-results" class="md-nav__link">
     <span class="md-ellipsis">
-      Python API (Flask)
+      API returns empty results
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodejs-api-job-scheduler" class="md-nav__link">
+  <a href="#database-connection-errors" class="md-nav__link">
     <span class="md-ellipsis">
-      Node.js API (Job Scheduler)
+      Database connection errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-still-shows-old-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend still shows old build
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx-404-or-double-apiapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      nginx 404 or double /api/api
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-script-fails-mid-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy script fails mid-run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#long-startup-times-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Long startup times / timeouts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission-denied-writing-logs-or-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permission denied writing logs or builds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stuck-git-worktree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stuck Git worktree
     </span>
   </a>
   
@@ -1097,186 +992,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#trailing-slash-behavior" class="md-nav__link">
+  <a href="#when-to-escalate" class="md-nav__link">
     <span class="md-ellipsis">
-      Trailing Slash Behavior
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Trailing Slash Behavior">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#without-trailing-slash" class="md-nav__link">
-    <span class="md-ellipsis">
-      Without Trailing Slash
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-trailing-slash" class="md-nav__link">
-    <span class="md-ellipsis">
-      With Trailing Slash
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#frontend-environment-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Frontend Environment Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modifying-the-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Modifying the Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-endpoints" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Endpoints
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Common Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#502-bad-gateway" class="md-nav__link">
-    <span class="md-ellipsis">
-      502 Bad Gateway
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#404-not-found-on-api-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      404 Not Found on API Routes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#react-router-not-working" class="md-nav__link">
-    <span class="md-ellipsis">
-      React Router Not Working
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Performance Tuning
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Performance Tuning">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#increase-timeout-for-long-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Increase Timeout for Long Requests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enable-gzip-compression" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enable Gzip Compression
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#static-asset-caching" class="md-nav__link">
-    <span class="md-ellipsis">
-      Static Asset Caching
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security Considerations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Security Considerations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rate-limiting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rate Limiting
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ssltls-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      SSL/TLS Configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#backup-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backup Configuration
+      When to Escalate
     </span>
   </a>
   
@@ -1301,254 +1019,119 @@
   
 
 
-<h1 id="nginx-configuration">Nginx Configuration</h1>
-<p>This document explains the nginx reverse proxy configuration for the ASD Treatment Database production deployment.</p>
-<h2 id="overview">Overview</h2>
-<p>Nginx serves multiple roles in the production architecture:</p>
+<h1 id="troubleshooting-guide">Troubleshooting Guide</h1>
+<p>This guide highlights common production issues for the ASD Treatment Database and the steps to resolve them quickly. Follow the quick checklist first, then dive into the specific scenario that matches the symptoms you are seeing.</p>
+<h2 id="quick-checklist">Quick Checklist</h2>
 <ol>
-<li>Static file server for the React frontend build</li>
-<li>Reverse proxy for the Python Flask API</li>
-<li>Reverse proxy for the Node.js job scheduler API</li>
-<li>SSL/TLS termination (if configured)</li>
+<li><strong>Confirm services are running</strong>
+   <code>bash
+   sudo systemctl status asd-backend.service
+   sudo systemctl status asd-node-backend.service
+   sudo systemctl status nginx.service</code></li>
+<li><strong>Inspect recent logs</strong>
+   <code>bash
+   sudo journalctl -u asd-backend.service --since "15 minutes ago"
+   sudo journalctl -u asd-node-backend.service --since "15 minutes ago"
+   sudo journalctl -u nginx.service --since "15 minutes ago"</code></li>
+<li><strong>Verify database connectivity</strong>
+   <code>bash
+   cd /opt/asd-db/backend
+   source ../venv/bin/activate
+   python3 -c "import psycopg2; psycopg2.connect('postgresql://...'); print('DB OK')"</code></li>
+<li><strong>Check disk space and CPU</strong>
+   <code>bash
+   df -h
+   top -c</code></li>
 </ol>
-<h2 id="configuration-location">Configuration Location</h2>
-<p>The main configuration file is located at:</p>
-<pre><code>/etc/nginx/sites-available/asd-db.conf
-</code></pre>
-<p>It is symlinked to <code>/etc/nginx/sites-enabled/asd-db.conf</code> to enable the site.</p>
-<h2 id="current-configuration">Current Configuration</h2>
-<pre><code class="language-nginx">server {
-    listen 80;
-    server_name star.cs.wwu.edu;
-
-    root /opt/asd-db/frontend/testing-website/build;
-    index index.html;
-
-    # Serve React app
-    location / {
-      try_files $uri $uri/ /index.html;
-    }
-
-    # Flask API
-    location /api/ {
-      proxy_pass http://127.0.0.1:5000;
-      proxy_set_header Host $host;
-      proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    # Node job backend
-    location /jobs/ {
-      proxy_pass http://127.0.0.1:5001/;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection &quot;upgrade&quot;;
-    }
-
-    # Increase timeout for long requests
-    proxy_read_timeout 90s;
-}
-</code></pre>
-<h2 id="url-routing-explained">URL Routing Explained</h2>
-<h3 id="frontend-react">Frontend (React)</h3>
-<p>All requests to the root path are served from the static build directory:</p>
+<h2 id="common-issues-and-resolutions">Common Issues and Resolutions</h2>
+<h3 id="services-will-not-start">Services will not start</h3>
 <ul>
-<li><code>https://star.cs.wwu.edu/</code> → <code>/opt/asd-db/frontend/testing-website/build/index.html</code></li>
-<li><code>https://star.cs.wwu.edu/search</code> → <code>index.html</code> (React Router handles client-side routing)</li>
+<li><strong>Symptom:</strong> <code>systemctl status</code> shows <code>failed</code> or crash loop.</li>
+<li><strong>Cause:</strong> Deploy script interrupted, missing dependencies, or syntax errors.</li>
+<li><strong>Fix:</strong></li>
+<li>Run <code>sudo journalctl -xe -u asd-backend.service</code> to find the stack trace.</li>
+<li>If dependency missing, rerun <code>pip install -r backend/requirements.txt</code> inside the virtualenv.</li>
+<li>Rebuild frontend if the Node service fails due to missing build: <code>npm install &amp;&amp; npm run build</code> in <code>frontend/testing-website</code>.</li>
 </ul>
-<p>The <code>try_files</code> directive ensures that all routes fallback to <code>index.html</code>, allowing React Router to work properly.</p>
-<h3 id="python-api-flask">Python API (Flask)</h3>
-<p>API requests starting with <code>/api/</code> are proxied to the Flask backend:</p>
+<h3 id="api-returns-empty-results">API returns empty results</h3>
 <ul>
-<li><code>https://star.cs.wwu.edu/api/filters</code> → <code>http://127.0.0.1:5000/api/filters</code></li>
-<li><code>https://star.cs.wwu.edu/api/search</code> → <code>http://127.0.0.1:5000/api/search</code></li>
-<li><code>https://star.cs.wwu.edu/api/initial-results</code> → <code>http://127.0.0.1:5000/api/initial-results</code></li>
+<li><strong>Symptom:</strong> <code>/api/search</code> or <code>/api/initial-results</code> returns only a few studies.</li>
+<li><strong>Cause:</strong> The in-memory cache stored a small dataset during testing (for example when using <code>?limit=2</code>).</li>
+<li><strong>Fix:</strong> Restart the backend to clear cache:
+  <code>bash
+  sudo systemctl restart asd-backend.service</code></li>
+<li><strong>Prevention:</strong> Avoid hitting the API with extremely small limits in production, or extend cache logic to key by limit.</li>
 </ul>
-<p><strong>Note:</strong> The <code>/api/</code> prefix is preserved and forwarded to Flask because <code>proxy_pass</code> does not have a trailing slash.</p>
-<h3 id="nodejs-api-job-scheduler">Node.js API (Job Scheduler)</h3>
-<p>Job-related requests starting with <code>/jobs/</code> are proxied to the Node backend:</p>
+<h3 id="database-connection-errors">Database connection errors</h3>
 <ul>
-<li><code>https://star.cs.wwu.edu/jobs/api/run-job</code> → <code>http://127.0.0.1:5001/api/run-job</code></li>
+<li><strong>Symptom:</strong> Logs contain <code>psycopg2.OperationalError</code> or timeout messages.</li>
+<li><strong>Cause:</strong> Incorrect credentials, rotated password, Neon outage, or firewall.</li>
+<li><strong>Fix:</strong></li>
+<li>Confirm <code>DATABASE_URL</code> in <code>config/production.env</code> matches Neon dashboard.</li>
+<li>Test connectivity from server:
+     <code>bash
+     psql "$DATABASE_URL" -c "SELECT 1;"</code></li>
+<li>If using new schema, ensure migrations ran and permissions set.</li>
 </ul>
-<p><strong>Important:</strong> The trailing slash in <code>proxy_pass http://127.0.0.1:5001/;</code> strips the <code>/jobs/</code> prefix before forwarding to the Node server. This is critical because the Node server defines routes as <code>/api/run-job</code>, not <code>/jobs/api/run-job</code>.</p>
-<h2 id="trailing-slash-behavior">Trailing Slash Behavior</h2>
-<p>The trailing slash in <code>proxy_pass</code> directives controls path rewriting:</p>
-<h3 id="without-trailing-slash">Without Trailing Slash</h3>
-<pre><code class="language-nginx">location /api/ {
-  proxy_pass http://127.0.0.1:5000;
-}
-</code></pre>
-<p><strong>Behavior:</strong> Full path is preserved
-- Request: <code>/api/filters</code>
-- Forwarded to: <code>http://127.0.0.1:5000/api/filters</code></p>
-<h3 id="with-trailing-slash">With Trailing Slash</h3>
-<pre><code class="language-nginx">location /jobs/ {
-  proxy_pass http://127.0.0.1:5001/;
-}
-</code></pre>
-<p><strong>Behavior:</strong> Location prefix is stripped
-- Request: <code>/jobs/api/run-job</code>
-- Forwarded to: <code>http://127.0.0.1:5001/api/run-job</code> (the <code>/jobs/</code> prefix is removed)</p>
-<h2 id="frontend-environment-configuration">Frontend Environment Configuration</h2>
-<p>The React frontend is configured to use these base URLs:</p>
-<pre><code class="language-env">REACT_APP_PYTHON_API_URL=https://star.cs.wwu.edu
-REACT_APP_NODE_API_URL=https://star.cs.wwu.edu/jobs
-</code></pre>
-<p>The frontend code then appends specific endpoints:</p>
-<p><strong>Python API:</strong>
-- Appends <code>/api/filters</code> → <code>https://star.cs.wwu.edu/api/filters</code>
-- Appends <code>/api/search</code> → <code>https://star.cs.wwu.edu/api/search</code></p>
-<p><strong>Node API:</strong>
-- Appends <code>/api/run-job</code> → <code>https://star.cs.wwu.edu/jobs/api/run-job</code></p>
-<h2 id="modifying-the-configuration">Modifying the Configuration</h2>
-<p>If you need to change the nginx configuration:</p>
-<ol>
-<li>
-<p>Edit the configuration file:
-   <code>bash
-   sudo nano /etc/nginx/sites-available/asd-db.conf</code></p>
-</li>
-<li>
-<p>Test the configuration:
-   <code>bash
-   sudo nginx -t</code></p>
-</li>
-<li>
-<p>If the test passes, reload nginx:
-   <code>bash
-   sudo systemctl reload nginx</code></p>
-</li>
-<li>
-<p>If the test fails, review error messages and fix syntax issues before reloading.</p>
-</li>
-</ol>
-<h2 id="testing-endpoints">Testing Endpoints</h2>
-<p>Verify that all proxies are working correctly:</p>
-<pre><code class="language-bash"># Test Python API
-curl https://star.cs.wwu.edu/api/filters
-
-# Test Node API
-curl -X POST https://star.cs.wwu.edu/jobs/api/run-job
-
-# Test frontend
-curl https://star.cs.wwu.edu
-</code></pre>
-<p>All should return HTTP 200 status codes with appropriate content.</p>
-<h2 id="common-issues">Common Issues</h2>
-<h3 id="502-bad-gateway">502 Bad Gateway</h3>
-<p><strong>Symptoms:</strong> Nginx returns a 502 error when accessing API endpoints.</p>
-<p><strong>Causes:</strong>
-- Backend service is not running
-- Backend service is listening on the wrong port
-- Firewall blocking localhost connections</p>
-<p><strong>Solutions:</strong></p>
-<pre><code class="language-bash"># Check if services are running
-sudo systemctl status asd-backend.service
-sudo systemctl status asd-node-backend.service
-
-# Check if services are listening on correct ports
-sudo netstat -tlnp | grep -E '5000|5001'
-
-# Restart services
-sudo systemctl restart asd-backend.service asd-node-backend.service
-</code></pre>
-<h3 id="404-not-found-on-api-routes">404 Not Found on API Routes</h3>
-<p><strong>Symptoms:</strong> API requests return 404, but direct service access works.</p>
-<p><strong>Causes:</strong>
-- Incorrect <code>proxy_pass</code> configuration
-- Missing or incorrect trailing slash
-- Route not defined in backend application</p>
-<p><strong>Solutions:</strong>
-1. Verify the backend route exists:
-   ```bash
-   # For Python API
-   grep -r "route.*filters" /opt/asd-db/backend/app.py</p>
-<p># For Node API
-   grep -r "post.*run-job" /opt/asd-db/backend/server.js
-   ```</p>
-<ol>
-<li>
-<p>Test backend directly:
-   <code>bash
-   curl http://localhost:5000/api/filters
-   curl -X POST http://localhost:5001/api/run-job</code></p>
-</li>
-<li>
-<p>If direct access works but proxied access fails, check the <code>proxy_pass</code> trailing slash.</p>
-</li>
-</ol>
-<h3 id="react-router-not-working">React Router Not Working</h3>
-<p><strong>Symptoms:</strong> Direct navigation to <code>/search</code> returns 404.</p>
-<p><strong>Cause:</strong> Missing <code>try_files</code> directive or incorrect configuration.</p>
-<p><strong>Solution:</strong> Ensure the location block has:</p>
-<pre><code class="language-nginx">location / {
-  try_files $uri $uri/ /index.html;
-}
-</code></pre>
-<p>This ensures all unmatched routes fallback to <code>index.html</code>, allowing React Router to handle routing.</p>
-<h2 id="performance-tuning">Performance Tuning</h2>
-<h3 id="increase-timeout-for-long-requests">Increase Timeout for Long Requests</h3>
-<p>If API requests take longer than the default timeout:</p>
-<pre><code class="language-nginx">proxy_read_timeout 120s;
-proxy_connect_timeout 120s;
-proxy_send_timeout 120s;
-</code></pre>
-<h3 id="enable-gzip-compression">Enable Gzip Compression</h3>
-<p>To reduce bandwidth usage:</p>
-<pre><code class="language-nginx">gzip on;
-gzip_vary on;
-gzip_min_length 1000;
-gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
-</code></pre>
-<h3 id="static-asset-caching">Static Asset Caching</h3>
-<p>To improve frontend performance:</p>
-<pre><code class="language-nginx">location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-    expires 1y;
-    add_header Cache-Control &quot;public, immutable&quot;;
-}
-</code></pre>
-<h2 id="security-considerations">Security Considerations</h2>
-<h3 id="rate-limiting">Rate Limiting</h3>
-<p>Protect against abuse by limiting request rates:</p>
-<pre><code class="language-nginx">limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
-
-location /api/ {
-    limit_req zone=api_limit burst=20 nodelay;
-    proxy_pass http://127.0.0.1:5000;
-}
-</code></pre>
-<h3 id="ssltls-configuration">SSL/TLS Configuration</h3>
-<p>For production deployments, configure SSL:</p>
-<pre><code class="language-nginx">server {
-    listen 443 ssl http2;
-    server_name star.cs.wwu.edu;
-
-    ssl_certificate /path/to/cert.pem;
-    ssl_certificate_key /path/to/key.pem;
-
-    # Strong SSL settings
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
-    ssl_prefer_server_ciphers on;
-
-    # ... rest of configuration
-}
-
-# Redirect HTTP to HTTPS
-server {
-    listen 80;
-    server_name star.cs.wwu.edu;
-    return 301 https://$server_name$request_uri;
-}
-</code></pre>
-<h2 id="backup-configuration">Backup Configuration</h2>
-<p>Before making changes, always backup the current configuration:</p>
-<pre><code class="language-bash">sudo cp /etc/nginx/sites-available/asd-db.conf /etc/nginx/sites-available/asd-db.conf.backup
-</code></pre>
-<p>To restore from backup:</p>
-<pre><code class="language-bash">sudo cp /etc/nginx/sites-available/asd-db.conf.backup /etc/nginx/sites-available/asd-db.conf
-sudo nginx -t
-sudo systemctl reload nginx
-</code></pre>
+<h3 id="frontend-still-shows-old-build">Frontend still shows old build</h3>
+<ul>
+<li><strong>Symptom:</strong> Website missing latest UI changes.</li>
+<li><strong>Cause:</strong> Browser cache or frontend build not refreshed.</li>
+<li><strong>Fix:</strong></li>
+<li>Force rebuild: <code>./deploy-production.sh</code>.</li>
+<li>Hard-refresh browser: <code>Ctrl+Shift+R</code> (or <code>Cmd+Shift+R</code> on macOS).</li>
+<li>Confirm <code>/opt/asd-db/frontend/testing-website/build</code> timestamps update.</li>
+</ul>
+<h3 id="nginx-404-or-double-apiapi">nginx 404 or double <code>/api/api</code></h3>
+<ul>
+<li><strong>Symptom:</strong> Browser console shows 404 with duplicated path segments.</li>
+<li><strong>Cause:</strong> Missing trailing slash on <code>/jobs/</code> proxy in nginx config.</li>
+<li><strong>Fix:</strong></li>
+<li>Ensure <code>/etc/nginx/sites-available/asd-db.conf</code> has <code>proxy_pass http://127.0.0.1:5001/;</code></li>
+<li>Test config: <code>sudo nginx -t</code></li>
+<li>Reload: <code>sudo systemctl reload nginx</code></li>
+</ul>
+<h3 id="deploy-script-fails-mid-run">Deploy script fails mid-run</h3>
+<ul>
+<li><strong>Symptom:</strong> <code>./deploy-production.sh</code> stops with error, services partially restarted.</li>
+<li><strong>Cause:</strong> Outdated dependencies, missing environment variables, build failure.</li>
+<li><strong>Fix:</strong></li>
+<li>Restart deploy script after addressing error.</li>
+<li>If repeated Node install failures occur, remove <code>frontend/testing-website/node_modules</code> and rerun <code>npm install</code>.</li>
+<li>Verify environment by sourcing <code>config/production.env</code> and rerunning step manually.</li>
+</ul>
+<h3 id="long-startup-times-timeouts">Long startup times / timeouts</h3>
+<ul>
+<li><strong>Symptom:</strong> Health checks fail because API takes &gt;60s to respond after restart.</li>
+<li><strong>Cause:</strong> MedBERT model loads at startup; first request blocked until ready.</li>
+<li><strong>Fix:</strong></li>
+<li>Wait 60–90 seconds after restart before testing.</li>
+<li>For CI/testing, set <code>DISABLE_MODEL_LOADING=1</code>.</li>
+<li>Consider warming cache after deployment (run <code>/api/filters</code>).</li>
+</ul>
+<h3 id="permission-denied-writing-logs-or-builds">Permission denied writing logs or builds</h3>
+<ul>
+<li><strong>Symptom:</strong> Deploy script cannot overwrite files.</li>
+<li><strong>Cause:</strong> File ownership changed or script run as wrong user.</li>
+<li><strong>Fix:</strong></li>
+<li>Ensure deployment commands run as system user with access to <code>/opt/asd-db</code>.</li>
+<li>Restore ownership if needed: <code>sudo chown -R maint:maint /opt/asd-db</code> (replace with correct user).</li>
+</ul>
+<h3 id="stuck-git-worktree">Stuck Git worktree</h3>
+<ul>
+<li><strong>Symptom:</strong> <code>git pull</code> fails due to local changes.</li>
+<li><strong>Fix:</strong></li>
+<li>Stash or commit local changes.</li>
+<li><code>git pull --rebase origin main</code></li>
+<li>Reapply changes from stash: <code>git stash pop</code></li>
+</ul>
+<h2 id="when-to-escalate">When to Escalate</h2>
+<ul>
+<li>Neon database experiencing outages → Contact Neon support / check status page.</li>
+<li>Server resource exhaustion (RAM &lt;100MB free) → Notify infrastructure admins.</li>
+<li>Security incident or credential exposure → Rotate secrets immediately and notify supervisors.</li>
+</ul>
+<p>Document every outage in the project log (see <code>logs/</code> directory) for future improvements.</p>
 
 
 
