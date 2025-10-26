@@ -1,6 +1,9 @@
 import { useState } from "react";
 import AlexLo from "../assets/AlexLo.jpg";
+import ColeOliva from "../assets/ColeOliva.jpg";
+import JimHarle from "../assets/JimHarle.jpg";
 import RichardJefferson from "../assets/RichardJefferson.jpg";
+import ShameemAhmed from "../assets/ShameemAhmed.jpg";
 import "../index.css";
 import Contact from "./Contact";
 
@@ -80,12 +83,20 @@ const About = () => {
         </p>
         <div className="grid md:grid-cols-3 gap-5">
           <div className="text-center">
-            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <img
+              src={JimHarle}
+              alt="Jim Harle"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
+            />
             <h3 className="font-semibold">James Harle, MD</h3>
             <p className="text-gray-600">Child and Adolescent Psychiatrist</p>
           </div>
           <div className="text-center">
-            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <img
+              src={ShameemAhmed}
+              alt="Shameem Ahmed"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
+            />
             <h3 className="font-semibold">Shameem Ahmed</h3>
             <p className="text-gray-600">Research Oversight and ASD Expert</p>
           </div>
@@ -93,7 +104,7 @@ const About = () => {
             <img
               src={RichardJefferson}
               alt="Richard Jefferson"
-              className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
             />
             <h3 className="font-semibold">Richard Jefferson</h3>
             <p className="text-gray-600">Database Architect</p>
@@ -102,7 +113,7 @@ const About = () => {
             <img
               src={AlexLo}
               alt="Alex Lo"
-              className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
             />
             <h3 className="font-semibold">Alex Lo</h3>
             <p className="text-gray-600">API and Formatting Architect</p>
@@ -113,7 +124,11 @@ const About = () => {
             <p className="text-gray-600">LLM and MedBERT Architect</p>
           </div>
           <div className="text-center">
-            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <img
+              src={ColeOliva}
+              alt="Cole Oliva"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
+            />
             <h3 className="font-semibold">Cole Oliva</h3>
             <p className="text-gray-600">Frontend and Endpoints Architect</p>
           </div>
@@ -150,6 +165,19 @@ const About = () => {
           We welcome contributions from researchers, clinicians, and other
           professionals in the field. If you have resources to contribute or
           feedback on our platform, please reach out to us.
+        </p>
+        <p className="text-lg mb-4">
+          For technical documentation, deployment guides, and developer
+          resources, visit our{" "}
+          <a
+            href="https://tipsycanoe.github.io/Autism-Spectrum-Disorder-ASD-Treatment-Database/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 underline font-medium"
+          >
+            comprehensive documentation
+          </a>
+          .
         </p>
         <div className="text-center">
           <button
