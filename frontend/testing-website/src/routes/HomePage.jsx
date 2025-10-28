@@ -128,31 +128,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="bg-gray-100 py-16">
-        <div className="container mx-auto text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-8">
-            What Our Users Say
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-6 bg-white rounded-lg shadow">
-              <p className="text-gray-600">
-                "This database has been a lifesaver for our family. We found so
-                many helpful resources!"
-              </p>
-              <p className="text-gray-800 mt-4 font-semibold">- Jane Doe</p>
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow">
-              <p className="text-gray-600">
-                "As a professional, I rely on this database for the latest
-                research and best practices."
-              </p>
-              <p className="text-gray-800 mt-4 font-semibold">- John Smith</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Other Resources Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto text-center">
