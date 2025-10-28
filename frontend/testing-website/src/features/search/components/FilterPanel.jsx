@@ -19,6 +19,8 @@ const FilterPanel = ({
     gender: false,
     medication: false, // Add medication to initial state
   });
+  
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
 
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
@@ -28,19 +30,56 @@ const FilterPanel = ({
   };
 
   return (
-    <div className="lg:w-1/3 bg-white p-6 rounded-lg shadow sticky top-24 self-start">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800">Filters</h2>
+    <>
+      {/* Mobile Filter Toggle Button */}
+      <div className="lg:hidden mb-4">
         <button
-          onClick={clearFilters}
-          className="text-sm text-blue-600 hover:underline"
+          onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+          className="w-full flex justify-between items-center px-4 py-3 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue"
         >
-          Clear All
+          <span className="font-medium">
+            {isFilterPanelOpen ? "Hide Filters" : "Show Filters"}
+            {selectedOptions.length > 0 && ` (${selectedOptions.length} active)`}
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className={`w-5 h-5 transition-transform ${isFilterPanelOpen ? 'rotate-180' : ''}`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
         </button>
       </div>
 
-      {/* Make the filters area scrollable with fixed height */}
-      <div className="overflow-y-auto max-h-[60vh] pr-2">
+      {/* Filter Panel */}
+      <div className={`
+        lg:w-1/3 bg-white p-4 lg:p-6 rounded-lg shadow 
+        lg:sticky lg:top-24 lg:self-start
+        ${isFilterPanelOpen ? 'block' : 'hidden lg:block'}
+      `}>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-gray-800">Filters</h2>
+          <button
+            onClick={clearFilters}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Clear All
+          </button>
+        </div>
+
+        {/* Helpful instructions */}
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-sm text-gray-700">
+            <span className="font-semibold">Tip:</span> Filters and keywords are optional. 
+            You can search without selecting any filters. Select multiple options within each category to refine your results.
+          </p>
+        </div>
+
+        {/* Make the filters area scrollable with fixed height */}
+        <div className="overflow-y-auto max-h-[50vh] lg:max-h-[60vh] pr-2">
         <div className="mb-6">
           <label
             htmlFor="search-query"
@@ -104,7 +143,7 @@ const FilterPanel = ({
       </div>
 
       {/* Sticky search button always visible */}
-      <div className="pt-4 mt-2 border-t border-gray-200 sticky bottom-0 bg-white">
+      <div className="pt-4 mt-2 border-t border-gray-200 lg:sticky lg:bottom-0 bg-white">
         <button
           onClick={handleSearch}
           className="w-full px-6 py-2 bg-navbar-blue text-white rounded-lg hover:bg-link-hover-blue"
@@ -113,6 +152,7 @@ const FilterPanel = ({
         </button>
       </div>
     </div>
+    </>
   );
 };
 

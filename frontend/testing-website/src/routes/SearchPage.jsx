@@ -109,12 +109,12 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="w-11/12 max-w-7xl mx-auto py-8">
+    <div className="w-full px-4 lg:w-11/12 max-w-7xl mx-auto py-4 lg:py-8">
       {/* Disclaimer Banner */}
-      <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded">
+      <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 lg:p-4 mb-4 lg:mb-6 rounded text-sm lg:text-base">
         <strong>Disclaimer:</strong> This website is in development and does not provide medical advice or recommendations. For medical decisions, consult a qualified healthcare professional.
       </div>
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         <FilterPanel
           selectedOptions={selectedOptions}
           handleFilterChange={handleFilterChange}
@@ -128,12 +128,12 @@ const SearchPage = () => {
           medicationOptions={getOptionsForCategory("medication")}
         />
 
-        <div className="lg:w-2/3">
-          <div className="bg-white p-6 rounded-lg shadow mb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Study Results</h2>
+        <div className="w-full lg:w-2/3">
+          <div className="bg-white p-4 lg:p-6 rounded-lg shadow mb-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+              <h2 className="text-lg lg:text-xl font-bold text-gray-800">Study Results</h2>
               {!isLoading && !error && medicationGroups.length > 0 && (
-                <p className="text-sm text-gray-500">
+                <p className="text-xs lg:text-sm text-gray-500">
                   {medicationGroups.reduce(
                     (acc, group) => acc + group.studyCount,
                     0
@@ -147,7 +147,7 @@ const SearchPage = () => {
             {/* Active filters display */}
             {selectedOptions.length > 0 && (
               <div className="mb-4">
-                <p className="text-sm text-gray-500 mb-2">Active filters:</p>
+                <p className="text-xs lg:text-sm text-gray-500 mb-2">Active filters:</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedOptions.map((filter) => {
                     const [category, value] = filter.split(":");
@@ -209,13 +209,13 @@ const SearchPage = () => {
                           onClick={() =>
                             toggleMedicationAccordion(group.medicationName)
                           }
-                          className="w-full flex justify-between items-center text-left py-3 px-4 bg-blue-50 hover:bg-blue-100 rounded-md focus:outline-none"
+                          className="w-full flex justify-between items-center text-left py-2 lg:py-3 px-3 lg:px-4 bg-blue-50 hover:bg-blue-100 rounded-md focus:outline-none"
                         >
-                          <h3 className="text-lg font-semibold text-blue-700">
+                          <h3 className="text-sm lg:text-lg font-semibold text-blue-700 pr-2">
                             {group.medicationName} ({group.studyCount}{" "}
                             {group.studyCount === 1 ? "study" : "studies"})
                           </h3>
-                          <span className="text-blue-500">
+                          <span className="text-blue-500 flex-shrink-0">
                             {activeMedicationKey === group.medicationName ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +223,7 @@ const SearchPage = () => {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                className="w-6 h-6"
+                                className="w-5 h-5 lg:w-6 lg:h-6"
                               >
                                 <path
                                   strokeLinecap="round"
@@ -238,7 +238,7 @@ const SearchPage = () => {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                className="w-6 h-6"
+                                className="w-5 h-5 lg:w-6 lg:h-6"
                               >
                                 <path
                                   strokeLinecap="round"
@@ -251,17 +251,17 @@ const SearchPage = () => {
                         </button>
 
                         {activeMedicationKey === group.medicationName && (
-                          <div className="pl-4 mt-2 space-y-1">
+                          <div className="pl-2 lg:pl-4 mt-2 space-y-1">
                             {group.studies.map((study) => (
                               <div key={study.id} className="py-1">
                                 <button
                                   onClick={() => toggleStudyAccordion(study.id)}
-                                  className="w-full flex justify-between items-center text-left py-2 px-3 bg-gray-50 hover:bg-gray-100 rounded-md focus:outline-none"
+                                  className="w-full flex justify-between items-center text-left py-2 px-2 lg:px-3 bg-gray-50 hover:bg-gray-100 rounded-md focus:outline-none"
                                 >
-                                  <h4 className="text-md font-medium text-gray-700">
+                                  <h4 className="text-sm lg:text-md font-medium text-gray-700 pr-2">
                                     {study.title || "Untitled Study"}
                                   </h4>
-                                  <span className="text-gray-400">
+                                  <span className="text-gray-400 flex-shrink-0">
                                     {activeStudyId === study.id ? (
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -269,7 +269,7 @@ const SearchPage = () => {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="w-5 h-5"
+                                        className="w-4 h-4 lg:w-5 lg:h-5"
                                       >
                                         <path
                                           strokeLinecap="round"
@@ -284,7 +284,7 @@ const SearchPage = () => {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="w-5 h-5"
+                                        className="w-4 h-4 lg:w-5 lg:h-5"
                                       >
                                         <path
                                           strokeLinecap="round"
@@ -297,27 +297,27 @@ const SearchPage = () => {
                                 </button>
 
                                 {activeStudyId === study.id && (
-                                  <div className="p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
+                                  <div className="p-3 lg:p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
                                     {/* Publication Info */}
                                     {(study["Publication Date"] || study.Author || study.PMID) && (
-                                      <div className="mb-4 text-sm text-gray-600">
+                                      <div className="mb-3 lg:mb-4 text-xs lg:text-sm text-gray-600 break-words">
                                         {study["Publication Date"] && (
-                                          <span>Published: {study["Publication Date"]}</span>
+                                          <div className="mb-1">Published: {study["Publication Date"]}</div>
                                         )}
                                         {study.Author && (
-                                          <span> • {study.Author}</span>
+                                          <div className="mb-1">Author: {study.Author}</div>
                                         )}
                                         {study.PMID && (
-                                          <span> • PMID: {study.PMID}</span>
+                                          <div className="mb-1">PMID: {study.PMID}</div>
                                         )}
                                       </div>
                                     )}
                                     
                                     {/* Abstract/Description */}
                                     {(study.description || study.Abstract) && (
-                                      <div className="mb-4">
-                                        <strong className="text-sm text-gray-700 block mb-1">Abstract:</strong>
-                                        <p className="text-sm text-gray-600">
+                                      <div className="mb-3 lg:mb-4">
+                                        <strong className="text-xs lg:text-sm text-gray-700 block mb-1">Abstract:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">
                                           {study.description || study.Abstract}
                                         </p>
                                       </div>
@@ -325,33 +325,33 @@ const SearchPage = () => {
                                     
                                     {/* Primary Outcome */}
                                     {study["Primary Outcome Area"] && study["Primary Outcome Area"] !== "N/A" && (
-                                      <div className="mb-3">
-                                        <strong className="text-sm text-gray-700">Primary Outcome Area:</strong>
-                                        <p className="text-sm text-gray-600">{study["Primary Outcome Area"]}</p>
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Area:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Area"]}</p>
                                       </div>
                                     )}
                                     
                                     {/* Primary Outcome Measure */}
                                     {study["Primary Outcome Measure"] && study["Primary Outcome Measure"] !== "N/A" && (
-                                      <div className="mb-3">
-                                        <strong className="text-sm text-gray-700">Primary Outcome Measure:</strong>
-                                        <p className="text-sm text-gray-600">{study["Primary Outcome Measure"]}</p>
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Measure:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Measure"]}</p>
                                       </div>
                                     )}
                                     
                                     {/* Treatment Duration */}
                                     {study["Treatment Duration"] && study["Treatment Duration"] !== "N/A" && (
-                                      <div className="mb-3">
-                                        <strong className="text-sm text-gray-700">Treatment Duration:</strong>
-                                        <p className="text-sm text-gray-600">{study["Treatment Duration"]}</p>
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Treatment Duration:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Treatment Duration"]}</p>
                                       </div>
                                     )}
                                     
                                     {/* Similarity Score */}
                                     {study["Similarity Score"] !== undefined && (
-                                      <div className="mb-3">
-                                        <strong className="text-sm text-gray-700">Relevance Score:</strong>
-                                        <p className="text-sm text-gray-600">
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Relevance Score:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600">
                                           {(study["Similarity Score"] * 100).toFixed(0)}%
                                         </p>
                                       </div>
@@ -361,7 +361,7 @@ const SearchPage = () => {
                                         href={study["Full Text URL"]}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="mt-2 inline-block text-blue-600 hover:underline text-sm"
+                                        className="mt-2 inline-block text-blue-600 hover:underline text-xs lg:text-sm"
                                       >
                                         View Full Text
                                       </a>
