@@ -88,27 +88,42 @@ const HomePage = () => {
       <section className="bg-white py-12">
         <div className="container mx-auto text-center">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
-            Features
+            What We Offer
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 bg-gray-100 rounded-lg shadow">
-              <h3 className="text-xl font-semibold">Extensive Database</h3>
-              <p className="text-gray-600 mt-2">
-                Access a wide range of resources tailored for autism support.
-              </p>
-            </div>
-            <div className="p-6 bg-gray-100 rounded-lg shadow">
-              <h3 className="text-xl font-semibold">Professional Guidance</h3>
-              <p className="text-gray-600 mt-2">
-                Find expert advice and best practices for autism care.
-              </p>
-            </div>
-            <div className="p-6 bg-gray-100 rounded-lg shadow">
-              <h3 className="text-xl font-semibold">Family Support</h3>
-              <p className="text-gray-600 mt-2">
-                Discover resources and support networks for families.
-              </p>
-            </div>
+            <Link to="/search" className="block">
+              <div className="p-6 bg-gray-100 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all cursor-pointer h-full">
+                <h3 className="text-xl font-semibold text-navbar-blue">Extensive Database</h3>
+                <p className="text-gray-600 mt-2">
+                  Access a wide range of peer-reviewed studies and treatment research tailored for autism support.
+                </p>
+                <span className="text-sm text-navbar-blue mt-4 inline-block font-medium">
+                  Explore Database →
+                </span>
+              </div>
+            </Link>
+            <Link to="/about" className="block">
+              <div className="p-6 bg-gray-100 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all cursor-pointer h-full">
+                <h3 className="text-xl font-semibold text-navbar-blue">Curated from PubMed</h3>
+                <p className="text-gray-600 mt-2">
+                  Studies sourced from PubMed's scientific database and organized in partnership with the Sendan Center.
+                </p>
+                <span className="text-sm text-navbar-blue mt-4 inline-block font-medium">
+                  Learn More →
+                </span>
+              </div>
+            </Link>
+            <Link to="/search" className="block">
+              <div className="p-6 bg-gray-100 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all cursor-pointer h-full">
+                <h3 className="text-xl font-semibold text-navbar-blue">Evidence-Based Resources</h3>
+                <p className="text-gray-600 mt-2">
+                  Find validated treatment approaches and intervention studies to support informed decisions.
+                </p>
+                <span className="text-sm text-navbar-blue mt-4 inline-block font-medium">
+                  Start Searching →
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
