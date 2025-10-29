@@ -24,7 +24,7 @@ def build_ASD_query(author_queries, topic_queries):
         topic = topic_queries[i]
         if('Unknown' in topic):
             topic = ''
-        queries.append(author_queries[i] + ' AND ' + topic + ' AND ' + '(randomized controlled trial[Publication Type] OR "Clinical Trial"[Publication Type])')
+        queries.append(str(author_queries[i]) + ' AND ' + str(topic) + ' AND ' + '(randomized controlled trial[Publication Type] OR "Clinical Trial"[Publication Type])')
     return queries
 
 if __name__ == '__main__':
