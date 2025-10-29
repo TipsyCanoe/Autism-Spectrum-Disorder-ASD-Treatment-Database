@@ -29,6 +29,7 @@ nav:
     - Nginx Configuration: advanced/NGINX_CONFIGURATION.md
     - CI/CD Pipeline: advanced/CI_CD_PIPELINE.md
     - Security & Permissions: advanced/SECURITY_AND_PERMISSIONS.md
+    - Typography Standards: advanced/TYPOGRAPHY_STANDARDS.md
   - Operations:
     - Troubleshooting: advanced/TROUBLESHOOTING_GUIDE.md
     - Monitoring & Logging: advanced/MONITORING_AND_LOGGING.md
