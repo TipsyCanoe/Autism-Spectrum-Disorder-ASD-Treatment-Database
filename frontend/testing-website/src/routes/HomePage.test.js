@@ -20,17 +20,21 @@ describe("HomePage Component", () => {
     );
     expect(
       screen.getByRole("heading", {
-        name: /Welcome to the Autism Resources Database/i,
+        name: /Welcome to STAR/i,
         level: 1,
       })
     ).toBeInTheDocument();
+    expect(screen.getByText(/Sendan Tools for Autism Resources/i)).toBeInTheDocument();
     expect(
       screen.getByText(
-        /A comprehensive database of resources for professionals and families/i
+        /A comprehensive database of peer-reviewed research for professionals and families/i
       )
     ).toBeInTheDocument();
-    expect(screen.getByText(/Sendan Center/i)).toBeInTheDocument();
+    // Check for the full text containing Sendan Center in the hero section
+    expect(screen.getByText(/We are working with the/i)).toBeInTheDocument();
+    expect(screen.getByText(/to aggregate and organize autism treatment studies from PubMed/i)).toBeInTheDocument();
   });
+
 
   test("renders search section with search button and update database button", () => {
     render(
@@ -40,11 +44,11 @@ describe("HomePage Component", () => {
     );
     expect(
       screen.getByRole("heading", {
-        name: /Find the Resources You Need/i,
+        name: /Find the Research You Need/i,
         level: 2,
       })
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Search/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Search Database/i })).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Update Database/i })
     ).toBeInTheDocument();
@@ -212,28 +216,25 @@ describe("HomePage Component", () => {
       </MemoryRouter>
     );
     expect(
-      screen.getByRole("heading", { name: /Features/i, level: 2 })
+      screen.getByRole("heading", { name: /What We Offer/i, level: 2 })
     ).toBeInTheDocument();
     expect(screen.getByText(/Extensive Database/i)).toBeInTheDocument();
-    expect(screen.getByText(/Professional Guidance/i)).toBeInTheDocument();
-    expect(screen.getByText(/Family Support/i)).toBeInTheDocument();
+    expect(screen.getByText(/Curated from PubMed/i)).toBeInTheDocument();
+    expect(screen.getByText(/Evidence-Based Resources/i)).toBeInTheDocument();
   });
 
-  test("renders testimonials section", () => {
+  test("renders 'How It Works' section", () => {
     render(
       <MemoryRouter>
         <HomePage />
       </MemoryRouter>
     );
     expect(
-      screen.getByRole("heading", { name: /What Our Users Say/i, level: 2 })
+      screen.getByRole("heading", { name: /How It Works/i, level: 2 })
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/"This database has been a lifesaver for our family/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/"As a professional, I rely on this database/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Search or Browse/i)).toBeInTheDocument();
+    expect(screen.getByText(/Review Results/i)).toBeInTheDocument();
+    expect(screen.getByText(/Make Informed Decisions/i)).toBeInTheDocument();
   });
 
   test("renders other resources section", () => {
@@ -246,9 +247,7 @@ describe("HomePage Component", () => {
       screen.getByRole("heading", { name: /Other Autism Resources/i, level: 2 })
     ).toBeInTheDocument();
     // Be more specific: look for the heading elements for each resource
-    expect(
-      screen.getByRole("heading", { name: /Autism Speaks/i, level: 3 })
-    ).toBeInTheDocument();
+    // Autism Speaks has been removed per user feedback
     expect(
       screen.getByRole("heading", {
         name: /National Autism Association/i,

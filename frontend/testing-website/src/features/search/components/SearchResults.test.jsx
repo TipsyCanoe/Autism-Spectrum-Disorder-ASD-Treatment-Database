@@ -128,19 +128,27 @@ describe("SearchPage Component (from SearchResults.jsx)", () => {
   test("displays results when available", () => {
     const mockResults = [
       {
-        id: "1",
-        title: "Resource 1",
-        description: "Desc 1",
-        type: "Article",
-        tags: ["tag1"],
+        treatment: "Treatment A",
+        studies: [
+          {
+            title: "Study 1",
+            description: "Description for study 1",
+            "Publication Date": "2023",
+            Author: "Smith et al.",
+            PMID: "12345678"
+          }
+        ]
       },
       {
-        id: "2",
-        title: "Resource 2",
-        description: "Desc 2",
-        type: "Video",
-        url: "http://example.com",
-      },
+        treatment: "Treatment B",
+        studies: [
+          {
+            "Study Title": "Study 2",
+            Abstract: "Abstract for study 2",
+            "Publication Date": "2022"
+          }
+        ]
+      }
     ];
     mockUseSearch.mockReturnValueOnce({
       selectedOptions: [],
@@ -151,15 +159,13 @@ describe("SearchPage Component (from SearchResults.jsx)", () => {
       error: null,
     });
     render(<SearchPage />);
-    expect(screen.getByText("Resource 1")).toBeInTheDocument();
-    expect(screen.getByText("Desc 1")).toBeInTheDocument();
-    expect(screen.getByText("Article")).toBeInTheDocument();
-    expect(screen.getByText("tag1")).toBeInTheDocument();
-    expect(screen.getByText("Resource 2")).toBeInTheDocument();
-    expect(screen.getByText(/View Resource/i)).toHaveAttribute(
-      "href",
-      "http://example.com"
-    );
+    expect(screen.getByText("Treatment A")).toBeInTheDocument();
+    expect(screen.getByText("Study 1")).toBeInTheDocument();
+    expect(screen.getByText("Description for study 1")).toBeInTheDocument();
+    expect(screen.getByText(/Published: 2023/)).toBeInTheDocument();
+    expect(screen.getByText(/Smith et al./)).toBeInTheDocument();
+    expect(screen.getByText("Treatment B")).toBeInTheDocument();
+    expect(screen.getByText("Study 2")).toBeInTheDocument();
     expect(
       screen.getByText(`${mockResults.length} resources found`)
     ).toBeInTheDocument();

@@ -255,7 +255,7 @@ describe("useSearch Hook", () => {
     });
 
     test("should fetch and set results successfully with no query or filters", async () => {
-      const mockSearchResults = { results: [{ id: 1, title: "Study 1" }] };
+      const mockSearchResults = [{ id: 1, title: "Study 1" }];
       fetch.mockImplementation((url) => {
         // Further override for /api/search
         if (url.includes("/api/filters"))
@@ -282,7 +282,7 @@ describe("useSearch Hook", () => {
       fireEvent.click(screen.getByRole("button", { name: /Fetch Results/i }));
       await waitFor(() =>
         expect(screen.getByTestId("results").textContent).toBe(
-          JSON.stringify(mockSearchResults.results)
+          JSON.stringify(mockSearchResults)
         )
       );
       expect(screen.getByTestId("isLoading").textContent).toBe("false");
@@ -290,7 +290,7 @@ describe("useSearch Hook", () => {
     });
 
     test("should fetch results with a query", async () => {
-      const mockSearchResults = { results: [{ id: 2, title: "Query Study" }] };
+      const mockSearchResults = [{ id: 2, title: "Query Study" }];
       fetch.mockImplementation((url) => {
         if (url.includes("/api/filters"))
           return Promise.resolve({
@@ -319,15 +319,13 @@ describe("useSearch Hook", () => {
       fireEvent.click(screen.getByRole("button", { name: /Fetch Results/i }));
       await waitFor(() =>
         expect(screen.getByTestId("results").textContent).toBe(
-          JSON.stringify(mockSearchResults.results)
+          JSON.stringify(mockSearchResults)
         )
       );
     });
 
     test("should fetch results with selected options", async () => {
-      const mockSearchResults = {
-        results: [{ id: 3, title: "Filtered Study" }],
-      };
+      const mockSearchResults = [{ id: 3, title: "Filtered Study" }];
       fetch.mockImplementation((url) => {
         if (url.includes("/api/filters"))
           return Promise.resolve({
@@ -364,7 +362,7 @@ describe("useSearch Hook", () => {
       fireEvent.click(screen.getByRole("button", { name: /Fetch Results/i }));
       await waitFor(() =>
         expect(screen.getByTestId("results").textContent).toBe(
-          JSON.stringify(mockSearchResults.results)
+          JSON.stringify(mockSearchResults)
         )
       );
     });
@@ -381,7 +379,7 @@ describe("useSearch Hook", () => {
         if (url.includes("/api/search"))
           return new Promise((resolve) =>
             setTimeout(
-              () => resolve({ ok: true, json: async () => ({ results: [] }) }),
+              () => resolve({ ok: true, json: async () => [] }),
               50
             )
           );
@@ -479,12 +477,12 @@ describe("useSearch Hook", () => {
       if (url.includes("/api/search") && !url.includes("filters="))
         return Promise.resolve({
           ok: true,
-          json: async () => ({ results: [{ id: 1, title: "Initial" }] }),
+          json: async () => [{ id: 1, title: "Initial" }],
         });
       if (url.includes("/api/search") && url.includes("filters="))
         return Promise.resolve({
           ok: true,
-          json: async () => ({ results: [{ id: 2, title: "Filtered" }] }),
+          json: async () => [{ id: 2, title: "Filtered" }],
         });
       return undefined;
     });

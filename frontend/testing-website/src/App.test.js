@@ -6,16 +6,14 @@ describe('App Component Rendering and Initial Route', () => {
   test('renders the App without crashing and displays the NavBar', () => {
     render(<App />);
 
-    // Verify NavBar title is rendered (already present)
-    const navTitle = screen.getByText(/STAR/i);
+    // Verify NavBar title is rendered - be more specific to avoid matching homepage content
+    const navBar = screen.getByRole('navigation');
+    const navTitle = within(navBar).getByText(/STAR/i);
     expect(navTitle).toBeInTheDocument();
-
-    // Find the navigation bar element first
-    const navBar = screen.getByRole('navigation'); // Assuming your NavBar has a role="navigation"
 
     // Verify NavBar links are present *within* the navBar
     expect(within(navBar).getByRole('link', { name: /Home/i })).toBeInTheDocument();
-    expect(within(navBar).getByRole('link', { name: /Search/i })).toBeInTheDocument(); // Use within here
+    expect(within(navBar).getByRole('link', { name: /Search/i })).toBeInTheDocument();
     expect(within(navBar).getByRole('link', { name: /FAQ/i })).toBeInTheDocument();
     expect(within(navBar).getByRole('link', { name: /About/i })).toBeInTheDocument();
   });
@@ -23,9 +21,9 @@ describe('App Component Rendering and Initial Route', () => {
   test('renders the HomePage component on the default route', () => {
     render(<App />);
 
-    // Verify a key element from HomePage is rendered
+    // Verify a key element from HomePage is rendered - updated to match new heading
     const welcomeHeading = screen.getByRole('heading', {
-      name: /Welcome to the Autism Resources Database/i,
+      name: /Welcome to STAR/i,
     });
     expect(welcomeHeading).toBeInTheDocument();
 

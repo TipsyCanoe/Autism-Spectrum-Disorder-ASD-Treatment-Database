@@ -42,7 +42,7 @@ const FAQ = () => {
 
   return (
     <div className="flex flex-col items-center py-8 px-4 bg-white">
-      <h1 className="text-3xl font-bold text-black mb-8 text-center">
+      <h1 className="page-heading text-black">
         Frequently Asked Questions
       </h1>
 
@@ -59,10 +59,10 @@ const FAQ = () => {
       </div>
 
       <div className="mt-8 text-center">
-        <p className="text-black mb-4">Don't see your question here?</p>
+        <p className="body-text text-black mb-4">Don't see your question here?</p>
         <button
           onClick={() => setShowContact(true)}
-          className="px-6 py-2 bg-white text-black border border-black rounded-lg hover:bg-gray-100"
+          className="btn-standard bg-white text-black border border-black hover:bg-gray-100"
         >
           Contact Us
         </button>

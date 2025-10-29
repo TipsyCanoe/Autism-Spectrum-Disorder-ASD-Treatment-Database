@@ -11,14 +11,14 @@ const About = () => {
   const [showContact, setShowContact] = useState(false);
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold text-center mb-8">
+      <h1 className="page-heading">
         About the Autism Resources Database
       </h1>
 
       {/* Mission Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
-        <p className="text-lg mb-4">
+        <h2 className="section-heading">Our Mission</h2>
+        <p className="body-text mb-4">
           The Autism Resources Database (ARD) is dedicated to providing
           healthcare professionals, educators, researchers, and families with
           access to evidence-based resources and treatment papers related to
@@ -26,7 +26,7 @@ const About = () => {
           research and practice by making current, vetted information readily
           accessible to those who need it most.
         </p>
-        <p className="text-lg">
+        <p className="body-text">
           We believe that reliable information should be accessible to everyone
           involved in supporting individuals with autism, regardless of their
           location or resources. By centralizing research and treatment
@@ -37,17 +37,17 @@ const About = () => {
 
       {/* Partnership Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">
+        <h2 className="section-heading">
           Our Partnership with the Sendan Center
         </h2>
-        <p className="text-lg mb-4">
+        <p className="body-text mb-4">
           The Autism Resources Database was developed in collaboration with Jim
           Harle from the Sendan Center, a leading organization specializing in
           autism assessment, treatment, and support services. This partnership
           ensures that our database is built on clinical expertise and reflects
           the real-world needs of practitioners and families.
         </p>
-        <p className="text-lg">
+        <p className="body-text">
           The process of articles getting added to our database is thoroughly
           discussed and vetted, ensuring that all information shared through our
           platform meets high standards of scientific validity and practical
@@ -57,13 +57,13 @@ const About = () => {
 
       {/* Database Content Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">
+        <h2 className="section-heading">
           What You'll Find in Our Database
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="border border-gray-300 rounded-lg p-6">
-            <h3 className="text-xl font-medium mb-3">Research Papers</h3>
-            <p>
+            <h3 className="card-heading mb-3">Research Papers</h3>
+            <p className="body-text">
               Established studies on autism interventions, diagnostic
               approaches, and emerging treatments for mental health. Our
               collection spans from foundational research to the latest
@@ -75,8 +75,8 @@ const About = () => {
 
       {/* Team Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">Our Team</h2>
-        <p className="text-lg mb-6">
+        <h2 className="section-heading">Our Team</h2>
+        <p className="body-text mb-6">
           The Autism Resources Database is maintained by a dedicated team of
           researchers, clinicians, and technology specialists who are passionate
           about improving access to autism resources.
@@ -137,10 +137,10 @@ const About = () => {
 
       {/* Resource Vetting Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">
+        <h2 className="section-heading">
           Our Resource Vetting Process
         </h2>
-        <p className="text-lg mb-4">
+        <p className="body-text mb-4">
           We are committed to maintaining the highest standards of accuracy and
           relevance in our database. Each resource undergoes an automated
           evaluation process before being included:
@@ -160,13 +160,13 @@ const About = () => {
 
       {/* Contact Section */}
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Get Involved</h2>
-        <p className="text-lg mb-4">
+        <h2 className="section-heading">Get Involved</h2>
+        <p className="body-text mb-4">
           We welcome contributions from researchers, clinicians, and other
           professionals in the field. If you have resources to contribute or
           feedback on our platform, please reach out to us.
         </p>
-        <p className="text-lg mb-4">
+        <p className="body-text mb-4">
           For technical documentation, deployment guides, and developer
           resources, visit our{" "}
           <a
@@ -182,7 +182,7 @@ const About = () => {
         <div className="text-center">
           <button
             onClick={() => setShowContact(true)}
-            className="px-6 py-2 bg-white text-black border border-black rounded-lg hover:bg-gray-100"
+            className="btn-standard bg-white text-black border border-black hover:bg-gray-100"
           >
             Contact Us
           </button>

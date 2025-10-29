@@ -66,4 +66,40 @@
   .navbar-item a:hover {
     @apply bg-[#3498db];
   }
+
+  /* Standardized Typography Utilities */
+  /* Page Headings */
+  .page-heading {
+    @apply text-3xl font-bold text-center mb-8;
+  }
+  
+  /* Section Headings */
+  .section-heading {
+    @apply text-2xl font-semibold mb-4;
+  }
+  
+  /* Card/Component Headings */
+  .card-heading {
+    @apply text-xl font-semibold;
+  }
+  
+  /* Body Text - Standard */
+  .body-text {
+    @apply text-lg;
+  }
+  
+  /* Body Text - Small */
+  .body-text-sm {
+    @apply text-base;
+  }
+  
+  /* Buttons - Standard */
+  .btn-standard {
+    @apply px-6 py-2.5 text-base rounded-lg transition-colors;
+  }
+  
+  /* Buttons - Primary */
+  .btn-primary {
+    @apply btn-standard bg-navbar-blue text-white hover:bg-link-hover-blue;
+  }
 }
