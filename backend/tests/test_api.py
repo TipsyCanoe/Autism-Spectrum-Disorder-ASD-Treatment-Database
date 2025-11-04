@@ -41,8 +41,8 @@ def test_get_filters_endpoint(client, mock_db_connection):
     # Verify that the execute method was called with the expected SQL
     mock_cursor.execute.assert_called_once()
     sql_call = mock_cursor.execute.call_args[0][0]
-    assert "SELECT DISTINCT treatment_name" in sql_call
-    assert "FROM updated_treatment_data.treatments" in sql_call
+    assert 'SELECT DISTINCT "Treatment name"' in sql_call
+    assert "FROM jim_data.search_data_stage" in sql_call
 
 @pytest.mark.api
 def test_initial_results_endpoint(client, mock_db_connection):
@@ -53,19 +53,35 @@ def test_initial_results_endpoint(client, mock_db_connection):
     from datetime import date
     pub_date = date(2023, 1, 1)
     
-    # Mock the database response
+    # Mock the database response with all 38 columns from new schema
     mock_cursor.fetchall.return_value = [
-        # title, pub_date, pmid, authors, url, treatment_name, duration, 
-        # primary_outcome_area, primary_outcome_measures, distance, abstract
+        # title, pub_date, pmid, authors, url, Treatment name, Duration, 
+        # Primary Outcome Area, Primary Outcome Measures, distance, abstract,
+        # First Author, Date of publication, Study type, Sample Size, M:F Ratio,
+        # Age range/mean, Medication/Treatment Dose Range, Results: Primary measure,
+        # Secondary Outcome Area, Secondary Outcome Measures, Tolerability/Side Effects,
+        # Safety, Drop Our Rate, Race/Ethnicity Percentages, Notes,
+        # Sequence Generation, Allocation Concealment, Outcome Assessors Blinding,
+        # Clinician and Participant Blinding, Incomplete outcome data, 
+        # Selective outcome reporting, Notes on Biases, ai, age_min, age_max, 
+        # males_in_study, females_in_study
         (
             "Test Study Title", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome Area", "Test Measures",
-            0, "Test Abstract"
+            0, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50
         ),
         (
             "Another Study", pub_date, 67890, "Another Author", "http://another.url",
             "Another Medication", "8 weeks", "Another Outcome", "Another Measures",
-            0, "Another Abstract"
+            0, "Another Abstract", "Second Author", "2023-02-01", "Open Label", "50",
+            "2:1", "8-12", "15mg", "No change", "Another Secondary", "Other Measures",
+            "Moderate", "Safe", "10%", "60% White", "Other notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "Some biases", "0.7",
+            8, 12, 33, 17
         )
     ]
     
@@ -99,8 +115,8 @@ def test_initial_results_endpoint(client, mock_db_connection):
     # Verify that the execute method was called with the expected SQL
     mock_cursor.execute.assert_called_once()
     sql_call = mock_cursor.execute.call_args[0][0]
-    assert "FROM updated_treatment_data.semantic_paper_search_view" in sql_call
-    assert "ORDER BY spv.pub_date DESC" in sql_call
+    assert "FROM jim_data.search_data_stage" in sql_call
+    assert "ORDER BY pub_date DESC" in sql_call
 
 @pytest.mark.api
 def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_model):
@@ -111,18 +127,25 @@ def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_mo
     from datetime import date
     pub_date = date(2023, 1, 1)
     
-    # Mock the database response
+    # Mock the database response with all 38 columns from new schema
     mock_cursor.fetchall.return_value = [
-        # Similar structure as initial_results test but with a distance value
         (
             "Test Study Title", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome Area", "Test Measures",
-            0.2, "Test Abstract"
+            0.2, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50
         ),
         (
             "Another Study", pub_date, 67890, "Another Author", "http://another.url",
             "Another Medication", "8 weeks", "Another Outcome", "Another Measures",
-            0.3, "Another Abstract"
+            0.3, "Another Abstract", "Second Author", "2023-02-01", "Open Label", "50",
+            "2:1", "8-12", "15mg", "No change", "Another Secondary", "Other Measures",
+            "Moderate", "Safe", "10%", "60% White", "Other notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "Some biases", "0.7",
+            8, 12, 33, 17
         )
     ]
     
@@ -159,7 +182,7 @@ def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_mo
     # Verify that the execute method was called with the expected SQL
     mock_cursor.execute.assert_called_once()
     sql_call = mock_cursor.execute.call_args[0][0]
-    assert "FROM updated_treatment_data.semantic_paper_search_view" in sql_call
+    assert "FROM jim_data.search_data_stage" in sql_call
     assert "ORDER BY distance ASC" in sql_call
 
 @pytest.mark.api
@@ -171,13 +194,16 @@ def test_search_endpoint_with_filters(client, mock_db_connection, mock_sentence_
     from datetime import date
     pub_date = date(2023, 1, 1)
     
-    # Mock the database response
+    # Mock the database response with all 38 columns from new schema
     mock_cursor.fetchall.return_value = [
-        # Similar structure as search_with_query test
         (
             "Test Study Title", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome Area", "Test Measures",
-            0.2, "Test Abstract"
+            0.2, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50
         )
     ]
     
@@ -207,12 +233,16 @@ def test_empty_search_uses_initial_results(client, mock_db_connection):
     from datetime import date
     pub_date = date(2023, 1, 1)
     
-    # Mock the database response for initial results
+    # Mock the database response for initial results with all 38 columns
     mock_cursor.fetchall.return_value = [
         (
             "Initial Result", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome", "Test Measures",
-            0, "Test Abstract"
+            0, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50
         )
     ]
     

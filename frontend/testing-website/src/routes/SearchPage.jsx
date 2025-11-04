@@ -313,17 +313,67 @@ const SearchPage = () => {
                                       </div>
                                     )}
                                     
-                                    {/* Abstract/Description */}
+                                    {/* Abstract/Description - Collapsible */}
                                     {(study.description || study.Abstract) && (
-                                      <div className="mb-3 lg:mb-4">
-                                        <strong className="text-xs lg:text-sm text-gray-700 block mb-1">Abstract:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">
+                                      <details className="mb-3 lg:mb-4">
+                                        <summary className="cursor-pointer text-xs lg:text-sm text-gray-700 font-bold hover:text-gray-900">
+                                          Abstract (Click to expand)
+                                        </summary>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words mt-2 pl-4 border-l-2 border-gray-300">
                                           {study.description || study.Abstract}
                                         </p>
+                                      </details>
+                                    )}
+                                    
+                                    {/* Study Type */}
+                                    {study["Study Type"] && study["Study Type"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Study Type:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Study Type"]}</p>
                                       </div>
                                     )}
                                     
-                                    {/* Primary Outcome */}
+                                    {/* Duration */}
+                                    {study["Treatment Duration"] && study["Treatment Duration"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Duration:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Treatment Duration"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Sample Size */}
+                                    {study["Sample Size"] && study["Sample Size"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Sample Size:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Sample Size"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* M:F Ratio */}
+                                    {study["M:F Ratio"] && study["M:F Ratio"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">M:F Ratio:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["M:F Ratio"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Age Range */}
+                                    {study["Age Range/Mean"] && study["Age Range/Mean"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Age Range/Mean:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Age Range/Mean"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Medication/Treatment Dose Range */}
+                                    {study["Medication/Treatment Dose Range"] && study["Medication/Treatment Dose Range"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Medication/Treatment Dose Range:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Medication/Treatment Dose Range"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Primary Outcome Area */}
                                     {study["Primary Outcome Area"] && study["Primary Outcome Area"] !== "N/A" && (
                                       <div className="mb-2 lg:mb-3">
                                         <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Area:</strong>
@@ -334,9 +384,132 @@ const SearchPage = () => {
                                     {/* Primary Outcome Measure */}
                                     {study["Primary Outcome Measure"] && study["Primary Outcome Measure"] !== "N/A" && (
                                       <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Measure:</strong>
+                                        <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Measures:</strong>
                                         <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Measure"]}</p>
                                       </div>
+                                    )}
+                                    
+                                    {/* Results: Primary measure */}
+                                    {study["Results: Primary measure"] && study["Results: Primary measure"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Results: Primary Measure:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Results: Primary measure"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Secondary Outcome Area */}
+                                    {study["Secondary Outcome Area"] && study["Secondary Outcome Area"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Secondary Outcome Area:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Secondary Outcome Area"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Secondary Outcome Measures */}
+                                    {study["Secondary Outcome Measures"] && study["Secondary Outcome Measures"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Secondary Outcome Measures:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Secondary Outcome Measures"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Tolerability/Side Effects */}
+                                    {study["Tolerability/Side Effects"] && study["Tolerability/Side Effects"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Tolerability/Side Effects:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Tolerability/Side Effects"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Safety */}
+                                    {study["Safety"] && study["Safety"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Safety:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Safety"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Drop Out Rate */}
+                                    {study["Drop Out Rate"] && study["Drop Out Rate"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Drop Out Rate:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Drop Out Rate"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Race/Ethnicity Percentages */}
+                                    {study["Race/Ethnicity Percentages"] && study["Race/Ethnicity Percentages"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Race/Ethnicity Percentages:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Race/Ethnicity Percentages"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Notes */}
+                                    {study["Notes"] && study["Notes"] !== "N/A" && (
+                                      <div className="mb-2 lg:mb-3">
+                                        <strong className="text-xs lg:text-sm text-gray-700">Notes:</strong>
+                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Notes"]}</p>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Bias Assessments - Collapsible Section */}
+                                    {(study["Sequence Generation (selection bias)"] || 
+                                      study["Allocation Concealment (selection bias)"] ||
+                                      study["Outcome Assessors Blinding (detection bias)"] ||
+                                      study["Clinician and Participant Blinding (performance bias)"] ||
+                                      study["Incomplete outcome data (attrition bias)"] ||
+                                      study["Selective outcome reporting (reporting bias)"] ||
+                                      study["Notes on Biases"]) && (
+                                      <details className="mb-2 lg:mb-3">
+                                        <summary className="cursor-pointer text-xs lg:text-sm text-gray-700 font-bold hover:text-gray-900">
+                                          Bias Assessment (Click to expand)
+                                        </summary>
+                                        <div className="mt-2 pl-4 border-l-2 border-gray-300">
+                                          {study["Sequence Generation (selection bias)"] && study["Sequence Generation (selection bias)"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Sequence Generation (selection bias):</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Sequence Generation (selection bias)"]}</p>
+                                            </div>
+                                          )}
+                                          {study["Allocation Concealment (selection bias)"] && study["Allocation Concealment (selection bias)"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Allocation Concealment (selection bias):</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Allocation Concealment (selection bias)"]}</p>
+                                            </div>
+                                          )}
+                                          {study["Outcome Assessors Blinding (detection bias)"] && study["Outcome Assessors Blinding (detection bias)"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Outcome Assessors Blinding (detection bias):</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Outcome Assessors Blinding (detection bias)"]}</p>
+                                            </div>
+                                          )}
+                                          {study["Clinician and Participant Blinding (performance bias)"] && study["Clinician and Participant Blinding (performance bias)"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Clinician and Participant Blinding (performance bias):</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Clinician and Participant Blinding (performance bias)"]}</p>
+                                            </div>
+                                          )}
+                                          {study["Incomplete outcome data (attrition bias)"] && study["Incomplete outcome data (attrition bias)"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Incomplete outcome data (attrition bias):</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Incomplete outcome data (attrition bias)"]}</p>
+                                            </div>
+                                          )}
+                                          {study["Selective outcome reporting (reporting bias)"] && study["Selective outcome reporting (reporting bias)"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Selective outcome reporting (reporting bias):</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Selective outcome reporting (reporting bias)"]}</p>
+                                            </div>
+                                          )}
+                                          {study["Notes on Biases"] && study["Notes on Biases"] !== "N/A" && (
+                                            <div className="mb-2">
+                                              <strong className="text-xs lg:text-sm text-gray-700">Notes on Biases:</strong>
+                                              <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Notes on Biases"]}</p>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </details>
                                     )}
                                     
                                     {/* Treatment Duration */}

@@ -74,14 +74,9 @@ else:
 
 available_filters = {
     "age": ["0-5", "6-12", "13-17", "18-25", "26-64", "65+"],
-    "symptom": [
-        "irritability", "adhd", "hyperactivity", "social", 
-        "attention-hyperactivity",
-        "lethargy-withdrawal-stereotypy-hyperactivity-noncompliance", 
-        "anxiety-reactivity"
-    ],
+    "symptom": [],  # Will be populated from primary_outcome_area column
     "gender": ["male", "female", "nonbinary"],
-    "medication": []
+    "medication": []  # Will be populated from treatment_name column
 }
 
 def extract_age_from_range(age_range_str):
@@ -169,7 +164,7 @@ def matches_symptom_filter(study, filter_symptoms):
 def get_db_connection():
     """Create a connection to the Neon PostgreSQL database"""
     print("connecting")
-    connection_url = "postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require"
+    connection_url = os.getenv('DATABASE_URL', NEON_DATABASE_URL)
     if 'sslmode=' not in connection_url:
         separator = '&' if '?' in connection_url else '?'
         connection_url = f"{connection_url}{separator}sslmode=require"
@@ -205,23 +200,38 @@ def get_filters():
         print("Returning filters from cache")
         return cached_filters
     
-    # Add code to load medication options if they're empty
-    if not available_filters["medication"]:
+    # Load medication and symptom options from database if they're empty
+    if not available_filters["medication"] or not available_filters["symptom"]:
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            # Get distinct treatment names
-            cursor.execute("""
-                SELECT DISTINCT treatment_name 
-                FROM updated_treatment_data.treatments 
-                WHERE treatment_name IS NOT NULL AND treatment_name <> '' 
-                ORDER BY treatment_name ASC
-            """)
-            medications = [row[0].lower() for row in cursor.fetchall()]
-            available_filters["medication"] = medications
-            print(f"Loaded {len(medications)} medications for filter")
+            
+            # Get distinct treatment names for medication filter
+            if not available_filters["medication"]:
+                cursor.execute("""
+                    SELECT DISTINCT treatment_name 
+                    FROM jim_data.search_data_stage 
+                    WHERE treatment_name IS NOT NULL AND treatment_name <> '' 
+                    ORDER BY treatment_name ASC
+                """)
+                medications = [row[0].lower() for row in cursor.fetchall()]
+                available_filters["medication"] = medications
+                print(f"Loaded {len(medications)} medications for filter")
+            
+            # Get distinct primary outcome areas for symptom filter
+            if not available_filters["symptom"]:
+                cursor.execute("""
+                    SELECT DISTINCT primary_outcome_area 
+                    FROM jim_data.search_data_stage 
+                    WHERE primary_outcome_area IS NOT NULL AND primary_outcome_area <> '' 
+                    ORDER BY primary_outcome_area ASC
+                """)
+                symptoms = [row[0] for row in cursor.fetchall()]
+                available_filters["symptom"] = symptoms
+                print(f"Loaded {len(symptoms)} primary outcome areas for symptom filter")
+                
         except Exception as e:
-            print(f"Error loading medications for filter: {e}")
+            print(f"Error loading filters from database: {e}")
         finally:
             if cursor:
                 cursor.close()
@@ -239,7 +249,7 @@ def search():
     query = request.args.get('query', '').lower()
     selected_filters = request.args.getlist('filters')
     filters_str = ', '.join(selected_filters)
-    limit = int(request.args.get('limit', 70))
+    limit = int(request.args.get('limit', 10000))  # Increased default limit
     
     # For empty query and no filters, use the initial results endpoint
     if not query and not selected_filters:
@@ -278,21 +288,46 @@ def search():
     
     sql = """
         SELECT 
-            spv.title,
-            spv.pub_date,
-            spv.pmid,
-            spv.authors,
-            spv.url,
-            t.treatment_name,
-            t.duration,
-            t.primary_outcome_area,
-            t.primary_outcome_measures,
-            spv.embedding <=> %s::vector AS distance,
-            spv.abstract
-        FROM updated_treatment_data.semantic_paper_search_view spv
-        JOIN updated_treatment_data.treatment_pubmed_link tpl ON spv.pmid = tpl.pmid
-        JOIN updated_treatment_data.treatments t ON tpl.treatment_id = t.id
-        WHERE spv.embedding <=> %s::vector < %s
+            title,
+            pub_date,
+            pmid,
+            authors,
+            url,
+            treatment_name,
+            duration,
+            primary_outcome_area,
+            primary_outcome_measures,
+            vector::vector <=> %s::vector AS distance,
+            abstract,
+            first_author,
+            date_of_publication,
+            study_type,
+            sample_size,
+            m_f_ratio,
+            age_range_mean,
+            medication_treatment_dose_range,
+            results_primary_measure,
+            secondary_outcome_area,
+            secondary_outcome_measures,
+            tolerability_side_effects,
+            safety,
+            drop_out_rate,
+            race_ethnicity_percentages,
+            notes,
+            sequence_generation_selection_bias,
+            allocation_concealment_selection_bias,
+            outcome_assessors_blinding_detection_bias,
+            clinician_and_participant_blinding_performance_bias,
+            incomplete_outcome_data_attrition_bias,
+            selective_outcome_reporting_reporting_bias,
+            notes_on_biases,
+            ai,
+            age_min,
+            age_max,
+            males_in_study,
+            females_in_study
+        FROM jim_data.search_data_stage
+        WHERE vector IS NOT NULL AND vector::vector <=> %s::vector < %s
         ORDER BY distance ASC
         LIMIT %s
     """
@@ -310,17 +345,43 @@ def search():
             paper_data = {
                 "Abstract": abstract_text,
                 "description": abstract_text,  # Add description field for frontend compatibility
-                "title": row[0] if row[0] else "Untitled Study",  # Add title field
+                "title": row[0] if row[0] else "Untitled Study",
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Treatment Duration": row[6] if row[6] else "N/A",
-                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A"),
-                "Author": row[3] if row[3] else "N/A",
+                "Publication Date": row[12] if row[12] else (row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A")),
+                "Author": row[11] if row[11] else (row[3] if row[3] else "N/A"),
                 "Study Title": row[0] if row[0] else "N/A",
                 "PMID": str(row[2]) if row[2] else "N/A",
                 "Full Text URL": row[4] if row[4] else None,
                 "Similarity Score": round(1 - row[9], 3) if row[9] is not None else 0,
-                "Distance": round(row[9], 3) if row[9] is not None else 1
+                "Distance": round(row[9], 3) if row[9] is not None else 1,
+                # Additional fields from new schema
+                "Study Type": row[13] if row[13] else "N/A",
+                "Sample Size": row[14] if row[14] else "N/A",
+                "M:F Ratio": row[15] if row[15] else "N/A",
+                "Age Range/Mean": row[16] if row[16] else "N/A",
+                "Medication/Treatment Dose Range": row[17] if row[17] else "N/A",
+                "Results: Primary measure": row[18] if row[18] else "N/A",
+                "Secondary Outcome Area": row[19] if row[19] else "N/A",
+                "Secondary Outcome Measures": row[20] if row[20] else "N/A",
+                "Tolerability/Side Effects": row[21] if row[21] else "N/A",
+                "Safety": row[22] if row[22] else "N/A",
+                "Drop Out Rate": row[23] if row[23] else "N/A",
+                "Race/Ethnicity Percentages": row[24] if row[24] else "N/A",
+                "Notes": row[25] if row[25] else "N/A",
+                "Sequence Generation (selection bias)": row[26] if row[26] else "N/A",
+                "Allocation Concealment (selection bias)": row[27] if row[27] else "N/A",
+                "Outcome Assessors Blinding (detection bias)": row[28] if row[28] else "N/A",
+                "Clinician and Participant Blinding (performance bias)": row[29] if row[29] else "N/A",
+                "Incomplete outcome data (attrition bias)": row[30] if row[30] else "N/A",
+                "Selective outcome reporting (reporting bias)": row[31] if row[31] else "N/A",
+                "Notes on Biases": row[32] if row[32] else "N/A",
+                "AI": row[33] if row[33] else "N/A",
+                "age_min": row[34] if row[34] is not None else "N/A",
+                "age_max": row[35] if row[35] is not None else "N/A",
+                "males_in_study": row[36] if row[36] is not None else "N/A",
+                "females_in_study": row[37] if row[37] is not None else "N/A"
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"
@@ -346,7 +407,9 @@ def search():
         
     except Exception as e:
         print(f"Error executing vector search: {e}")
-        return {}
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
     finally:
         if cursor:
             cursor.close()
@@ -364,7 +427,7 @@ def get_initial_results():
         print("Returning initial results from cache")
         return cached_result
     
-    limit = int(request.args.get('limit', 70))  # Use same default limit as search endpoint
+    limit = int(request.args.get('limit', 10000))  # Increased default limit
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -373,21 +436,46 @@ def get_initial_results():
     # This query just gets recent studies across treatments without any specific search terms
     sql = """
         SELECT 
-            spv.title,
-            spv.pub_date,
-            spv.pmid,
-            spv.authors,
-            spv.url,
-            t.treatment_name,
-            t.duration,
-            t.primary_outcome_area,
-            t.primary_outcome_measures,
+            title,
+            pub_date,
+            pmid,
+            authors,
+            url,
+            treatment_name,
+            duration,
+            primary_outcome_area,
+            primary_outcome_measures,
             0 AS distance,  -- No distance calculation needed for initial results
-            spv.abstract
-        FROM updated_treatment_data.semantic_paper_search_view spv
-        JOIN updated_treatment_data.treatment_pubmed_link tpl ON spv.pmid = tpl.pmid
-        JOIN updated_treatment_data.treatments t ON tpl.treatment_id = t.id
-        ORDER BY spv.pub_date DESC  -- Get most recent studies
+            abstract,
+            first_author,
+            date_of_publication,
+            study_type,
+            sample_size,
+            m_f_ratio,
+            age_range_mean,
+            medication_treatment_dose_range,
+            results_primary_measure,
+            secondary_outcome_area,
+            secondary_outcome_measures,
+            tolerability_side_effects,
+            safety,
+            drop_out_rate,
+            race_ethnicity_percentages,
+            notes,
+            sequence_generation_selection_bias,
+            allocation_concealment_selection_bias,
+            outcome_assessors_blinding_detection_bias,
+            clinician_and_participant_blinding_performance_bias,
+            incomplete_outcome_data_attrition_bias,
+            selective_outcome_reporting_reporting_bias,
+            notes_on_biases,
+            ai,
+            age_min,
+            age_max,
+            males_in_study,
+            females_in_study
+        FROM jim_data.search_data_stage
+        ORDER BY pub_date DESC NULLS LAST  -- Get most recent studies
         LIMIT %s
     """
     
@@ -402,17 +490,43 @@ def get_initial_results():
             paper_data = {
                 "Abstract": abstract_text,
                 "description": abstract_text,  # Add description field for frontend compatibility
-                "title": row[0] if row[0] else "Untitled Study",  # Add title field
+                "title": row[0] if row[0] else "Untitled Study",
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Treatment Duration": row[6] if row[6] else "N/A",
-                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A"),
-                "Author": row[3] if row[3] else "N/A",
+                "Publication Date": row[12] if row[12] else (row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A")),
+                "Author": row[11] if row[11] else (row[3] if row[3] else "N/A"),
                 "Study Title": row[0] if row[0] else "N/A",
                 "PMID": str(row[2]) if row[2] else "N/A",
                 "Full Text URL": row[4] if row[4] else None,
                 "Similarity Score": 0.5,  # Default similarity score for initial results
-                "Distance": 0.5  # Default distance for initial results
+                "Distance": 0.5,  # Default distance for initial results
+                # Additional fields from new schema
+                "Study Type": row[13] if row[13] else "N/A",
+                "Sample Size": row[14] if row[14] else "N/A",
+                "M:F Ratio": row[15] if row[15] else "N/A",
+                "Age Range/Mean": row[16] if row[16] else "N/A",
+                "Medication/Treatment Dose Range": row[17] if row[17] else "N/A",
+                "Results: Primary measure": row[18] if row[18] else "N/A",
+                "Secondary Outcome Area": row[19] if row[19] else "N/A",
+                "Secondary Outcome Measures": row[20] if row[20] else "N/A",
+                "Tolerability/Side Effects": row[21] if row[21] else "N/A",
+                "Safety": row[22] if row[22] else "N/A",
+                "Drop Out Rate": row[23] if row[23] else "N/A",
+                "Race/Ethnicity Percentages": row[24] if row[24] else "N/A",
+                "Notes": row[25] if row[25] else "N/A",
+                "Sequence Generation (selection bias)": row[26] if row[26] else "N/A",
+                "Allocation Concealment (selection bias)": row[27] if row[27] else "N/A",
+                "Outcome Assessors Blinding (detection bias)": row[28] if row[28] else "N/A",
+                "Clinician and Participant Blinding (performance bias)": row[29] if row[29] else "N/A",
+                "Incomplete outcome data (attrition bias)": row[30] if row[30] else "N/A",
+                "Selective outcome reporting (reporting bias)": row[31] if row[31] else "N/A",
+                "Notes on Biases": row[32] if row[32] else "N/A",
+                "AI": row[33] if row[33] else "N/A",
+                "age_min": row[34] if row[34] is not None else "N/A",
+                "age_max": row[35] if row[35] is not None else "N/A",
+                "males_in_study": row[36] if row[36] is not None else "N/A",
+                "females_in_study": row[37] if row[37] is not None else "N/A"
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"
@@ -451,6 +565,13 @@ def get_initial_results():
             cursor.close()
         if conn:
             conn.close()
+
+@app.route('/api/clear-cache', methods=['POST'])
+def clear_cache():
+    """Clear all caches"""
+    search_cache.cache.clear()
+    filter_cache.cache.clear()
+    return jsonify({"message": "Cache cleared successfully"}), 200
 
 if __name__ == '__main__':
     # Get port and debug settings from environment variables
