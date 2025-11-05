@@ -4,6 +4,7 @@ import re
 import os
 from Bio import Entrez
 from pathlib import Path
+from datetime import datetime
 
 monthDict = {
         "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
@@ -13,14 +14,19 @@ monthDict = {
 
 ENTREZ_EMAIL = os.getenv('ENTREZ_EMAIL')
 ENTREZ_API_KEY = os.getenv('ENTREZ_API_KEY')
+LAST_PULL_DATE = os.getenv('LAST_PULL_DATE', '1970-01-01')
 
 class importer:
     Entrez.email = ENTREZ_EMAIL
     Entrez.api_key = ENTREZ_API_KEY
 
     def importPapers(completePD, query):
+        # Filtering by pulling papers published since last pulled
+        today = datetime.now().strftime("%Y-%m-%d")
+        query_w_date = f"({query}) AND ({LAST_PULL_DATE}[PDAT] : {today}[PDAT])" 
+
         # Search PubMed for relevant records
-        handle = Entrez.esearch(db='pubmed', retmax=1000, term=query)
+        handle = Entrez.esearch(db='pubmed', retmax=1000, term=query_w_date)
         record = Entrez.read(handle)
         id_list = record['IdList']
 

@@ -1,5 +1,7 @@
 import subprocess
 from pathlib import Path
+from datetime import datetime
+import os
 
 # runs the designated series of scripts
 def run_scripts(script_paths):
@@ -27,3 +29,6 @@ if __name__ == "__main__":
         scripts.append(path)
 
     run_scripts(scripts)
+    today = datetime.now().strftime("%Y-%m-%d")
+    with open('.env', 'w') as f:
+        f.write(f"LAST_PULL_DATE={today}\n")
