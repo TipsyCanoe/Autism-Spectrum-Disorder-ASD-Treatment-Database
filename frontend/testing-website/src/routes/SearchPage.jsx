@@ -298,6 +298,13 @@ const SearchPage = () => {
 
                                 {activeStudyId === study.id && (
                                   <div className="p-3 lg:p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
+                                    {/* Similarity Score - subtle display */}
+                                    {study["Similarity Score"] !== undefined && study["Similarity Score"] > 0 && (
+                                      <div className="mb-2 text-xs text-gray-400 italic">
+                                        Relevance: {(study["Similarity Score"] * 100).toFixed(1)}%
+                                      </div>
+                                    )}
+                                    
                                     {/* Publication Info */}
                                     {(study["Publication Date"] || study.Author || study.PMID) && (
                                       <div className="mb-3 lg:mb-4 text-xs lg:text-sm text-gray-600 break-words">
