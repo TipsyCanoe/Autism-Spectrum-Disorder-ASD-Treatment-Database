@@ -349,7 +349,7 @@ def search():
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Treatment Duration": row[6] if row[6] else "N/A",
-                "Publication Date": row[12] if row[12] else (row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A")),
+                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A"),
                 "Author": row[11] if row[11] else (row[3] if row[3] else "N/A"),
                 "Study Title": row[0] if row[0] else "N/A",
                 "PMID": str(row[2]) if row[2] else "N/A",
@@ -387,9 +387,14 @@ def search():
             treatment_name = row[5].lower() if row[5] else "unknown"
             grouped_results[treatment_name].append(paper_data)
         
+        # Sort studies within each treatment by similarity score (best first)
+        for treatment_name in grouped_results:
+            grouped_results[treatment_name].sort(key=lambda x: x["Similarity Score"], reverse=True)
+        
+        # Sort treatments by best similarity score (treatment with highest scoring study first)
         final_results = dict(grouped_results)
         final_results = dict(sorted(final_results.items(), 
-                                  key=lambda x: len(x[1]), 
+                                  key=lambda x: max([s["Similarity Score"] for s in x[1]], default=0), 
                                   reverse=True))
         
         json_output = []
@@ -494,7 +499,7 @@ def get_initial_results():
                 "Primary Outcome Area": row[7] if row[7] else "N/A",
                 "Primary Outcome Measure": row[8] if row[8] else "N/A",
                 "Treatment Duration": row[6] if row[6] else "N/A",
-                "Publication Date": row[12] if row[12] else (row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A")),
+                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "N/A"),
                 "Author": row[11] if row[11] else (row[3] if row[3] else "N/A"),
                 "Study Title": row[0] if row[0] else "N/A",
                 "PMID": str(row[2]) if row[2] else "N/A",

@@ -94,6 +94,11 @@ const FilterPanel = ({
             placeholder="Search terms..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
           />
         </div>
 

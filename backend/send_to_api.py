@@ -14,7 +14,7 @@ batch = client.batches.create(
     input_file_id=batch_input_file.id,
     endpoint="/v1/chat/completions",
     completion_window="24h",
-    metadata={"description": "batch 1 test"}
+    metadata={"description": "batch 3"}
 )
 
 print("Batch created successfully!")
