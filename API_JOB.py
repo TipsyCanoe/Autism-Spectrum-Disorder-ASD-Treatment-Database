@@ -20,6 +20,13 @@ def run_scripts(script_paths):
             print(f"Error: Python interpreter not found.")
         except Exception as e:
             print(f"An unexpected error occurred while running {script_path}: {e}")
+    
+def update_pull_data():
+    today = datetime.now().strftime("%Y-%m-%d")
+    time = datetime.now().strftime("%H:%M:%S")
+    with open('.env', 'w') as f:
+        f.write(f"LAST_PULL_DATE={today}\n")
+        f.write(f"LAST_PULL_TIME={time}\n")
 
 if __name__ == "__main__":
     scripts = []
@@ -31,8 +38,4 @@ if __name__ == "__main__":
 
     load_dotenv()
     run_scripts(scripts)
-    today = datetime.now().strftime("%Y-%m-%d")
-    time = datetime.now().strftime("%H:%M:%S")
-    with open('.env', 'w') as f:
-        f.write(f"LAST_PULL_DATE={today}\n")
-        f.write(f"LAST_PULL_TIME={time}\n")
+    update_pull_data()
