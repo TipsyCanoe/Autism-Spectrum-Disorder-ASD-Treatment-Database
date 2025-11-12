@@ -58,6 +58,21 @@ const FAQ = () => {
         ))}
       </div>
 
+      {/* Link to User Documentation */}
+      <div className="mt-8 text-center">
+        <p className="body-text text-black mb-4">
+          Need more help getting started?
+        </p>
+        <a
+          href="https://tipsycanoe.github.io/Autism-Spectrum-Disorder-ASD-Treatment-Database/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-standard bg-white text-black border border-black hover:bg-gray-100"
+        >
+          View User Documentation
+        </a>
+      </div>
+
       <div className="mt-8 text-center">
         <p className="body-text text-black mb-4">Don't see your question here?</p>
         <button

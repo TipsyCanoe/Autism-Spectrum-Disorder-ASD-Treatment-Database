@@ -17,22 +17,24 @@ theme:
         name: Switch to light mode
 nav:
   - Home: README.md
-  - Getting Started:
-    - Deployment: getting_started/PRODUCTION_DEPLOYMENT.md
-    - Configuring Environments: getting_started/ENVIRONMENT_GUIDE.md
-  - Using Our Site:
+  
+  # USER DOCUMENTATION
+  - For Users:
     - Navigating the Site: users/NAV_SITE.md
     - How to Search: users/SEARCH_GUIDE.md
     - Contact Us: users/CONTACT_US.md
-  - Advanced:
-    - Environment File Overview: advanced/ENVIRONMENT_FILES_OVERVIEW.md
-    - Nginx Configuration: advanced/NGINX_CONFIGURATION.md
-    - CI/CD Pipeline: advanced/CI_CD_PIPELINE.md
-    - Security & Permissions: advanced/SECURITY_AND_PERMISSIONS.md
-    - Typography Standards: advanced/TYPOGRAPHY_STANDARDS.md
-  - Operations:
-    - Troubleshooting: advanced/TROUBLESHOOTING_GUIDE.md
-    - Monitoring & Logging: advanced/MONITORING_AND_LOGGING.md
+  
+  # DEVELOPER DOCUMENTATION
+  - For Developers:
+    - Production Deployment: developer/PRODUCTION_DEPLOYMENT.md
+    - Environment Configuration: developer/ENVIRONMENT_GUIDE.md
+    - Environment Files Overview: developer/ENVIRONMENT_FILES_OVERVIEW.md
+    - Nginx Configuration: developer/NGINX_CONFIGURATION.md
+    - CI/CD Pipeline: developer/CI_CD_PIPELINE.md
+    - Security & Permissions: developer/SECURITY_AND_PERMISSIONS.md
+    - Typography Standards: developer/TYPOGRAPHY_STANDARDS.md
+    - Monitoring & Logging: developer/MONITORING_AND_LOGGING.md
+    - Troubleshooting: developer/TROUBLESHOOTING_GUIDE.md
 markdown_extensions:
   - attr_list
   - md_in_html
