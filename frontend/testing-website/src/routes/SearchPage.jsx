@@ -17,6 +17,8 @@ const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeMedicationKey, setActiveMedicationKey] = useState(null);
   const [activeStudyId, setActiveStudyId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20; // Show 20 treatment groups per page
 
   const handleFilterChange = (category, value) => {
     const filterKey = `${category}:${value}`;
@@ -29,11 +31,13 @@ const SearchPage = () => {
 
   const handleSearch = () => {
     fetchResults(searchQuery);
+    setCurrentPage(1); // Reset to first page on new search
   };
 
   const clearFilters = () => {
     setSelectedOptions([]);
     setSearchQuery("");
+    setCurrentPage(1); // Reset to first page when clearing filters
   };
 
   const getOptionsForCategory = (category) => {
@@ -97,6 +101,20 @@ const SearchPage = () => {
     [results, processResultsForMultiLevelAccordion]
   );
 
+  // Pagination logic
+  const totalPages = Math.ceil(medicationGroups.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedGroups = medicationGroups.slice(startIndex, endIndex);
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    setActiveMedicationKey(null); // Close any open accordions when changing pages
+    setActiveStudyId(null);
+    // Scroll to top of results
+    document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const toggleMedicationAccordion = (medicationKey) => {
     setActiveMedicationKey((prevKey) =>
       prevKey === medicationKey ? null : medicationKey
@@ -110,11 +128,19 @@ const SearchPage = () => {
 
   return (
     <div className="w-full px-4 lg:w-11/12 max-w-7xl mx-auto py-4 lg:py-8">
+      {/* Skip to main content link for keyboard users */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-20 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded"
+      >
+        Skip to main content
+      </a>
+      
       {/* Disclaimer Banner */}
-      <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 lg:p-4 mb-4 lg:mb-6 rounded text-sm lg:text-base">
+      <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 lg:p-4 mb-4 lg:mb-6 rounded text-sm lg:text-base" role="alert">
         <strong>Disclaimer:</strong> This website is in development and does not provide medical advice or recommendations. For medical decisions, consult a qualified healthcare professional.
       </div>
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8" id="main-content">
         <FilterPanel
           selectedOptions={selectedOptions}
           handleFilterChange={handleFilterChange}
@@ -185,9 +211,9 @@ const SearchPage = () => {
             )}
 
             {isLoading && (
-              <p className="text-center py-8 text-gray-500">Loading...</p>
+              <p className="text-center py-8 text-gray-500" role="status" aria-live="polite">Loading...</p>
             )}
-            {error && <p className="text-center py-8 text-red-500">{error}</p>}
+            {error && <p className="text-center py-8 text-red-500" role="alert" aria-live="assertive">{error}</p>}
 
             {!isLoading && !error && medicationGroups.length === 0 && (
               <div className="text-center py-8">
@@ -200,8 +226,16 @@ const SearchPage = () => {
             )}
 
             {!isLoading && !error && medicationGroups.length > 0 && (
-              <div className="divide-y divide-gray-200">
-                {medicationGroups.map(
+              <>
+                {/* Pagination info */}
+                {totalPages > 1 && (
+                  <div className="mb-4 text-sm text-gray-600 text-center">
+                    Showing {startIndex + 1}-{Math.min(endIndex, medicationGroups.length)} of {medicationGroups.length} treatment groups
+                  </div>
+                )}
+                
+                <div className="divide-y divide-gray-200">
+                  {paginatedGroups.map(
                   (group) =>
                     group.studyCount > 0 && (
                       <div key={group.medicationName} className="py-2">
@@ -209,13 +243,15 @@ const SearchPage = () => {
                           onClick={() =>
                             toggleMedicationAccordion(group.medicationName)
                           }
-                          className="w-full flex justify-between items-center text-left py-2 lg:py-3 px-3 lg:px-4 bg-blue-50 hover:bg-blue-100 rounded-md focus:outline-none"
+                          className="w-full flex justify-between items-center text-left py-2 lg:py-3 px-3 lg:px-4 bg-blue-50 hover:bg-blue-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          aria-expanded={activeMedicationKey === group.medicationName}
+                          aria-controls={`treatment-${group.medicationName.replace(/\s+/g, '-')}`}
                         >
                           <h3 className="text-sm lg:text-lg font-semibold text-blue-700 pr-2">
                             {group.medicationName} ({group.studyCount}{" "}
                             {group.studyCount === 1 ? "study" : "studies"})
                           </h3>
-                          <span className="text-blue-500 flex-shrink-0">
+                          <span className="text-blue-500 flex-shrink-0" aria-hidden="true">
                             {activeMedicationKey === group.medicationName ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -251,17 +287,24 @@ const SearchPage = () => {
                         </button>
 
                         {activeMedicationKey === group.medicationName && (
-                          <div className="pl-2 lg:pl-4 mt-2 space-y-1">
+                          <div 
+                            className="pl-2 lg:pl-4 mt-2 space-y-1"
+                            id={`treatment-${group.medicationName.replace(/\s+/g, '-')}`}
+                            role="region"
+                            aria-label={`Studies for ${group.medicationName}`}
+                          >
                             {group.studies.map((study) => (
                               <div key={study.id} className="py-1">
                                 <button
                                   onClick={() => toggleStudyAccordion(study.id)}
-                                  className="w-full flex justify-between items-center text-left py-2 px-2 lg:px-3 bg-gray-50 hover:bg-gray-100 rounded-md focus:outline-none"
+                                  className="w-full flex justify-between items-center text-left py-2 px-2 lg:px-3 bg-gray-50 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1"
+                                  aria-expanded={activeStudyId === study.id}
+                                  aria-controls={`study-${study.id}`}
                                 >
                                   <h4 className="text-sm lg:text-md font-medium text-gray-700 pr-2">
                                     {study.title || "Untitled Study"}
                                   </h4>
-                                  <span className="text-gray-400 flex-shrink-0">
+                                  <span className="text-gray-400 flex-shrink-0" aria-hidden="true">
                                     {activeStudyId === study.id ? (
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -297,7 +340,12 @@ const SearchPage = () => {
                                 </button>
 
                                 {activeStudyId === study.id && (
-                                  <div className="p-3 lg:p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm">
+                                  <div 
+                                    className="p-3 lg:p-4 mt-1 bg-white border border-gray-200 rounded-b-md shadow-sm"
+                                    id={`study-${study.id}`}
+                                    role="region"
+                                    aria-label={`Details for ${study.title}`}
+                                  >
                                     {/* Similarity Score - subtle display */}
                                     {study["Similarity Score"] !== undefined && study["Similarity Score"] > 0 && (
                                       <div className="mb-2 text-xs text-gray-400 italic">
@@ -370,8 +418,8 @@ const SearchPage = () => {
                                     
                                     {/* Age Range */}
                                     <div className="mb-2 lg:mb-3">
-                                      <strong className="text-xs lg:text-sm text-gray-700">Age Range/Mean:</strong>
-                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Age Range/Mean"] || "Not specified in article"}</p>
+                                      <strong className="text-xs lg:text-sm text-gray-700">Age Range (years):</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Age Range (years)"] || "Not specified in article"}</p>
                                     </div>
                                     
                                     {/* Medication/Treatment Dose Range */}
@@ -528,6 +576,64 @@ const SearchPage = () => {
                     )
                 )}
               </div>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-6 flex justify-center items-center gap-2">
+                  <button
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 rounded border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                    aria-label="Previous page"
+                  >
+                    Previous
+                  </button>
+                  
+                  <div className="flex gap-1">
+                    {[...Array(totalPages)].map((_, index) => {
+                      const pageNumber = index + 1;
+                      // Show first page, last page, current page, and pages around current
+                      if (
+                        pageNumber === 1 ||
+                        pageNumber === totalPages ||
+                        (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+                      ) {
+                        return (
+                          <button
+                            key={pageNumber}
+                            onClick={() => goToPage(pageNumber)}
+                            className={`px-3 py-2 rounded text-sm ${
+                              currentPage === pageNumber
+                                ? 'bg-blue-600 text-white'
+                                : 'border border-gray-300 bg-white hover:bg-gray-50'
+                            }`}
+                            aria-label={`Go to page ${pageNumber}`}
+                            aria-current={currentPage === pageNumber ? 'page' : undefined}
+                          >
+                            {pageNumber}
+                          </button>
+                        );
+                      } else if (
+                        pageNumber === currentPage - 2 ||
+                        pageNumber === currentPage + 2
+                      ) {
+                        return <span key={pageNumber} className="px-2 py-2 text-gray-500">...</span>;
+                      }
+                      return null;
+                    })}
+                  </div>
+                  
+                  <button
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 rounded border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                    aria-label="Next page"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+              </>
             )}
           </div>
         </div>
