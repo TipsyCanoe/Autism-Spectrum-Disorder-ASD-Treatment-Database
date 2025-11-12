@@ -37,7 +37,13 @@ const useSearch = () => {
         throw new Error("Failed to fetch initial results");
       }
       const data = await response.json();
-      setResults(data);
+      // Alphabetize the treatment groups for initial results
+      const alphabetizedData = data.sort((a, b) => {
+        const treatmentA = (a.treatment || "").toLowerCase();
+        const treatmentB = (b.treatment || "").toLowerCase();
+        return treatmentA.localeCompare(treatmentB);
+      });
+      setResults(alphabetizedData);
     } catch (err) {
       console.error("Error fetching initial results:", err);
       // Don't set error for initial load failures, just leave results empty

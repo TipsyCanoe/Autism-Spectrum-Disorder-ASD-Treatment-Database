@@ -325,7 +325,9 @@ def search():
             age_min,
             age_max,
             males_in_study,
-            females_in_study
+            females_in_study,
+            journal,
+            affiliations
         FROM jim_data.search_data_stage
         WHERE vector IS NOT NULL AND vector::vector <=> %s::vector < %s
         ORDER BY distance ASC
@@ -381,7 +383,9 @@ def search():
                 "age_min": row[34] if row[34] is not None else "N/A",
                 "age_max": row[35] if row[35] is not None else "N/A",
                 "males_in_study": row[36] if row[36] is not None else "N/A",
-                "females_in_study": row[37] if row[37] is not None else "N/A"
+                "females_in_study": row[37] if row[37] is not None else "N/A",
+                "Journal": row[38] if row[38] else "N/A",
+                "Commercial Affiliation": row[39] if row[39] else "N/A"
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"
@@ -478,7 +482,9 @@ def get_initial_results():
             age_min,
             age_max,
             males_in_study,
-            females_in_study
+            females_in_study,
+            journal,
+            affiliations
         FROM jim_data.search_data_stage
         ORDER BY pub_date DESC NULLS LAST  -- Get most recent studies
         LIMIT %s
@@ -531,7 +537,9 @@ def get_initial_results():
                 "age_min": row[34] if row[34] is not None else "N/A",
                 "age_max": row[35] if row[35] is not None else "N/A",
                 "males_in_study": row[36] if row[36] is not None else "N/A",
-                "females_in_study": row[37] if row[37] is not None else "N/A"
+                "females_in_study": row[37] if row[37] is not None else "N/A",
+                "Journal": row[38] if row[38] else "N/A",
+                "Commercial Affiliation": row[39] if row[39] else "N/A"
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"

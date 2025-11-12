@@ -306,159 +306,139 @@ const SearchPage = () => {
                                     )}
                                     
                                     {/* Publication Info */}
-                                    {(study["Publication Date"] || study.Author || study.PMID) && (
-                                      <div className="mb-3 lg:mb-4 text-xs lg:text-sm text-gray-600 break-words">
-                                        {study["Publication Date"] && (
-                                          <div className="mb-1">Published: {study["Publication Date"]}</div>
-                                        )}
-                                        {study.Author && (
-                                          <div className="mb-1">Author: {study.Author}</div>
-                                        )}
-                                        {study.PMID && (
-                                          <div className="mb-1">PMID: {study.PMID}</div>
-                                        )}
-                                      </div>
-                                    )}
+                                    <div className="mb-3 lg:mb-4 text-xs lg:text-sm text-gray-600 break-words">
+                                      {study["Publication Date"] && (
+                                        <div className="mb-1">
+                                          <strong>Published:</strong> {study["Publication Date"] || "Not specified in article"}
+                                        </div>
+                                      )}
+                                      {study.Author && (
+                                        <div className="mb-1">
+                                          <strong>First Author:</strong> {study.Author || "Not specified in article"}
+                                        </div>
+                                      )}
+                                      {study.Journal && (
+                                        <div className="mb-1">
+                                          <strong>Journal:</strong> {study.Journal || "Not specified in article"}
+                                        </div>
+                                      )}
+                                      {study["Commercial Affiliation"] && (
+                                        <div className="mb-1">
+                                          <strong>Commercial Affiliation:</strong> {study["Commercial Affiliation"] || "Not specified in article"}
+                                        </div>
+                                      )}
+                                      {study.PMID && (
+                                        <div className="mb-1">
+                                          <strong>PMID:</strong> {study.PMID}
+                                        </div>
+                                      )}
+                                    </div>
                                     
                                     {/* Abstract/Description - Collapsible */}
-                                    {(study.description || study.Abstract) && (
-                                      <details className="mb-3 lg:mb-4">
-                                        <summary className="cursor-pointer text-xs lg:text-sm text-gray-700 font-bold hover:text-gray-900">
-                                          Abstract (Click to expand)
-                                        </summary>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words mt-2 pl-4 border-l-2 border-gray-300">
-                                          {study.description || study.Abstract}
-                                        </p>
-                                      </details>
-                                    )}
+                                    <details className="mb-3 lg:mb-4">
+                                      <summary className="cursor-pointer text-xs lg:text-sm text-gray-700 font-bold hover:text-gray-900">
+                                        Abstract (Click to expand)
+                                      </summary>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words mt-2 pl-4 border-l-2 border-gray-300">
+                                        {study.description || study.Abstract || "Not specified in article"}
+                                      </p>
+                                    </details>
                                     
                                     {/* Study Type */}
-                                    {study["Study Type"] && study["Study Type"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Study Type:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Study Type"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Study Type:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Study Type"] || "Not specified in article"}</p>
+                                    </div>
                                     
-                                    {/* Duration */}
-                                    {study["Treatment Duration"] && study["Treatment Duration"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Duration:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Treatment Duration"]}</p>
-                                      </div>
-                                    )}
+                                    {/* Treatment Duration */}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Treatment Duration:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Treatment Duration"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Sample Size */}
-                                    {study["Sample Size"] && study["Sample Size"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Sample Size:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Sample Size"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Sample Size:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Sample Size"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* M:F Ratio */}
-                                    {study["M:F Ratio"] && study["M:F Ratio"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">M:F Ratio:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["M:F Ratio"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">M:F Ratio:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["M:F Ratio"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Age Range */}
-                                    {study["Age Range/Mean"] && study["Age Range/Mean"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Age Range/Mean:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Age Range/Mean"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Age Range/Mean:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Age Range/Mean"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Medication/Treatment Dose Range */}
-                                    {study["Medication/Treatment Dose Range"] && study["Medication/Treatment Dose Range"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Medication/Treatment Dose Range:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Medication/Treatment Dose Range"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Medication/Treatment Dose Range:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Medication/Treatment Dose Range"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Primary Outcome Area */}
-                                    {study["Primary Outcome Area"] && study["Primary Outcome Area"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Area:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Area"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Area:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Area"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Primary Outcome Measure */}
-                                    {study["Primary Outcome Measure"] && study["Primary Outcome Measure"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Measures:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Measure"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Primary Outcome Measures:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Primary Outcome Measure"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Results: Primary measure */}
-                                    {study["Results: Primary measure"] && study["Results: Primary measure"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Results: Primary Measure:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Results: Primary measure"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Results: Primary Measure:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Results: Primary measure"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Secondary Outcome Area */}
-                                    {study["Secondary Outcome Area"] && study["Secondary Outcome Area"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Secondary Outcome Area:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Secondary Outcome Area"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Secondary Outcome Area:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Secondary Outcome Area"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Secondary Outcome Measures */}
-                                    {study["Secondary Outcome Measures"] && study["Secondary Outcome Measures"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Secondary Outcome Measures:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Secondary Outcome Measures"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Secondary Outcome Measures:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Secondary Outcome Measures"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Tolerability/Side Effects */}
-                                    {study["Tolerability/Side Effects"] && study["Tolerability/Side Effects"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Tolerability/Side Effects:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Tolerability/Side Effects"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Tolerability/Side Effects:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Tolerability/Side Effects"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Safety */}
-                                    {study["Safety"] && study["Safety"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Safety:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Safety"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Safety:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Safety"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Drop Out Rate */}
-                                    {study["Drop Out Rate"] && study["Drop Out Rate"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Drop Out Rate:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Drop Out Rate"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Drop Out Rate:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Drop Out Rate"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Race/Ethnicity Percentages */}
-                                    {study["Race/Ethnicity Percentages"] && study["Race/Ethnicity Percentages"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Race/Ethnicity Percentages:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Race/Ethnicity Percentages"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Race/Ethnicity Percentages:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Race/Ethnicity Percentages"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Notes */}
-                                    {study["Notes"] && study["Notes"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Notes:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Notes"]}</p>
-                                      </div>
-                                    )}
+                                    <div className="mb-2 lg:mb-3">
+                                      <strong className="text-xs lg:text-sm text-gray-700">Notes:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Notes"] || "Not specified in article"}</p>
+                                    </div>
                                     
                                     {/* Bias Assessments - Collapsible Section */}
                                     {(study["Sequence Generation (selection bias)"] || 
@@ -517,14 +497,6 @@ const SearchPage = () => {
                                           )}
                                         </div>
                                       </details>
-                                    )}
-                                    
-                                    {/* Treatment Duration */}
-                                    {study["Treatment Duration"] && study["Treatment Duration"] !== "N/A" && (
-                                      <div className="mb-2 lg:mb-3">
-                                        <strong className="text-xs lg:text-sm text-gray-700">Treatment Duration:</strong>
-                                        <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Treatment Duration"]}</p>
-                                      </div>
                                     )}
                                     
                                     {/* Similarity Score */}
