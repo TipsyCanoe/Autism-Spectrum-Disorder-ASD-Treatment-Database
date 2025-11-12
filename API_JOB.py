@@ -2,6 +2,7 @@ import subprocess
 from pathlib import Path
 from datetime import datetime
 import os
+from dotenv import load_dotenv
 
 # runs the designated series of scripts
 def run_scripts(script_paths):
@@ -28,7 +29,10 @@ if __name__ == "__main__":
         path = str(Path.cwd()) + '/PubmedAPIFiles/' + file_head
         scripts.append(path)
 
+    load_dotenv()
     run_scripts(scripts)
     today = datetime.now().strftime("%Y-%m-%d")
+    time = datetime.now().strftime("%H:%M:%S")
     with open('.env', 'w') as f:
         f.write(f"LAST_PULL_DATE={today}\n")
+        f.write(f"LAST_PULL_TIME={time}\n")

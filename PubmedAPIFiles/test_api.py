@@ -68,5 +68,3 @@ def test_importer_part():
 
     df = importer.importPapers(df, "ajsdklfjajsdfajsdiofj")
     assert list(df.columns) == columns
-
-

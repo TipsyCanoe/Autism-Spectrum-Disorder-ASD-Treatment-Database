@@ -5,6 +5,7 @@ import os
 from Bio import Entrez
 from pathlib import Path
 from datetime import datetime
+from dotenv import load_dotenv
 
 monthDict = {
         "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
@@ -12,6 +13,7 @@ monthDict = {
         "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
     }
 
+load_dotenv()
 ENTREZ_EMAIL = os.getenv('ENTREZ_EMAIL')
 ENTREZ_API_KEY = os.getenv('ENTREZ_API_KEY')
 LAST_PULL_DATE = os.getenv('LAST_PULL_DATE', '1970-01-01')
