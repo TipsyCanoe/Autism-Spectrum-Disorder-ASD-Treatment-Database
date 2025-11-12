@@ -79,7 +79,7 @@ ENVIRONMENT=production source load-env.sh
 - `config/staging.env` - Staging environment template
 - `config/production.env.template` - Production template (copy to `production.env`)
 
-📚 **Detailed Guide**: See [Environment File Overview](advanced/ENVIRONMENT_FILES_OVERVIEW.md)
+📚 **Detailed Guide**: See [Environment File Overview](developer/ENVIRONMENT_FILES_OVERVIEW.md)
 
 ## **Production Deployment**
 
@@ -97,7 +97,7 @@ This handles:
 - Service restarts and health checks
 - Nginx configuration reload
 
-For a more detailed guide, see [Deployment](getting_started/PRODUCTION_DEPLOYMENT.md)
+For a more detailed guide, see [Deployment](developer/PRODUCTION_DEPLOYMENT.md)
 
 ## **Testing**
 
@@ -174,11 +174,11 @@ python FineTunedLLM/MedBERT.py
 
 ## **Documentation**
 
-- **[Environment Setup Guide](getting_started/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
-- **[Production Deployment](getting_started/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
-- **[Nginx Configuration](advanced/NGINX_CONFIGURATION.md)** - Reverse proxy and routing setup
-- **[CI/CD Pipeline](advanced/CI_CD_PIPELINE.md)** - Automated testing and deployment
-- **[File Overview](advanced/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
+- **[Environment Setup Guide](developer/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
+- **[Production Deployment](developer/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
+- **[Nginx Configuration](developer/NGINX_CONFIGURATION.md)** - Reverse proxy and routing setup
+- **[CI/CD Pipeline](developer/CI_CD_PIPELINE.md)** - Automated testing and deployment
+- **[File Overview](developer/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
 - **Code Documentation** - Inline comments throughout codebase
 
 Update documentation by navigating to `mydocs`, then typing the command `mkdocs gh-deploy`.

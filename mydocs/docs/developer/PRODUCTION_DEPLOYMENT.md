@@ -88,7 +88,7 @@ sudo systemctl restart asd-backend.service asd-node-backend.service
 - `/etc/nginx/sites-available/asd-db.conf` - Main site config
 - `/etc/nginx/sites-enabled/asd-db.conf` - Enabled site (symlink)
 
-For detailed nginx configuration documentation, see [Nginx Configuration](../advanced/NGINX_CONFIGURATION.md).
+For detailed nginx configuration documentation, see [Nginx Configuration](NGINX_CONFIGURATION.md).
 
 ### Application Configuration
 
@@ -102,7 +102,7 @@ The project supports automated deployment via GitHub Actions. When enabled, push
 2. Deploy to production if tests pass
 3. Restart services and reload nginx
 
-For detailed CI/CD documentation, see [CI/CD Pipeline](../advanced/CI_CD_PIPELINE.md).
+For detailed CI/CD documentation, see [CI/CD Pipeline](CI_CD_PIPELINE.md).
 
 Note: Auto-deployment is currently disabled to isolate production during active development.
 
