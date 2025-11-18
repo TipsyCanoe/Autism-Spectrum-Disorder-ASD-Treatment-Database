@@ -210,7 +210,7 @@ def get_filters():
             if not available_filters["medication"]:
                 cursor.execute("""
                     SELECT DISTINCT treatment_name 
-                    FROM jim_data.search_data_stage 
+                    FROM jim_data.data_embedded 
                     WHERE treatment_name IS NOT NULL AND treatment_name <> '' 
                     ORDER BY treatment_name ASC
                 """)
@@ -222,7 +222,7 @@ def get_filters():
             if not available_filters["symptom"]:
                 cursor.execute("""
                     SELECT DISTINCT primary_outcome_area 
-                    FROM jim_data.search_data_stage 
+                    FROM jim_data.data_embedded 
                     WHERE primary_outcome_area IS NOT NULL AND primary_outcome_area <> '' 
                     ORDER BY primary_outcome_area ASC
                 """)
@@ -328,7 +328,7 @@ def search():
             females_in_study,
             journal,
             affiliations
-        FROM jim_data.search_data_stage
+        FROM jim_data.data_embedded
         WHERE vector IS NOT NULL AND vector::vector <=> %s::vector < %s
         ORDER BY distance ASC
         LIMIT %s
@@ -485,7 +485,7 @@ def get_initial_results():
             females_in_study,
             journal,
             affiliations
-        FROM jim_data.search_data_stage
+        FROM jim_data.data_embedded
         ORDER BY pub_date DESC NULLS LAST  -- Get most recent studies
         LIMIT %s
     """
