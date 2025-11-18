@@ -7,6 +7,7 @@ const FilterSection = ({
   onFilterChange,
   isExpanded,
   onToggle,
+  subtitle, // Add optional subtitle
 }) => {
   return (
     <div className="mb-6 border-t border-gray-200 pt-4">
@@ -18,6 +19,10 @@ const FilterSection = ({
         <span>{title}</span>
         <span>{isExpanded ? "−" : "+"}</span>
       </button>
+
+      {subtitle && (
+        <p className="text-xs text-gray-500 mb-2 ml-2">{subtitle}</p>
+      )}
 
       {isExpanded && (
         <div className="ml-2 space-y-2">

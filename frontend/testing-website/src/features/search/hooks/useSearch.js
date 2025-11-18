@@ -29,10 +29,11 @@ const useSearch = () => {
     }
   }, []);
 
-  const fetchInitialResults = useCallback(async () => {
+  const fetchInitialResults = useCallback(async (limit = 200) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/initial-results`);
+      const url = limit ? `${API_BASE_URL}/api/initial-results?limit=${limit}` : `${API_BASE_URL}/api/initial-results`;
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch initial results");
       }
@@ -63,13 +64,17 @@ const useSearch = () => {
   }, [fetchFilters, fetchInitialResults]);
 
   const fetchResults = useCallback(
-    async (query = "") => {
+    async (query = "", limit = 200) => {
       setIsLoading(true);
       setError(null);
       
       try {
         const params = new URLSearchParams();
         params.append("query", query);
+        
+        if (limit) {
+          params.append("limit", limit);
+        }
         
         selectedOptions.forEach((filter) => {
           params.append("filters", filter);
@@ -102,6 +107,7 @@ const useSearch = () => {
     setSelectedOptions,
     results, // This will be an array of treatment objects: [{ treatment: "...", studies: [...] }]
     fetchResults,
+    fetchInitialResults,
     isLoading,
     error,
     availableFilters,

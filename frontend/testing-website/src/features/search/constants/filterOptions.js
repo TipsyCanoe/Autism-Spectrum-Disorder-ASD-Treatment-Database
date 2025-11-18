@@ -1,10 +1,10 @@
 export const ageOptions = [
-  { value: "0-5", label: "Infancy/Early Childhood (0-5 years)" },
-  { value: "6-12", label: "Childhood (6-12 years)" },
-  { value: "13-17", label: "Adolescence (13-17 years)" },
-  { value: "18-25", label: "Young Adult (18-25 years)" },
-  { value: "26-64", label: "Adult (26-64 years)" },
-  { value: "65+", label: "Senior (65+ years)" },
+  { value: "0-5", label: "0-5 years" },
+  { value: "6-12", label: "6-12 years" },
+  { value: "13-17", label: "13-17 years" },
+  { value: "18-25", label: "18-25 years" },
+  { value: "26-64", label: "26-64 years" },
+  { value: "65+", label: "65+ years" },
 ];
 
 export const symptomOptions = [

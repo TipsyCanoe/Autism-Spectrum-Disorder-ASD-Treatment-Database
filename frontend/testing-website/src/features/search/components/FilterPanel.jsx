@@ -113,16 +113,7 @@ const FilterPanel = ({
           onToggle={() => toggleSection("age")}
         />
 
-        <FilterSection
-          title="Symptoms & Behaviors"
-          category="symptom"
-          options={symptomOptions} // Use prop
-          selectedOptions={selectedOptions}
-          onFilterChange={handleFilterChange}
-          isExpanded={expandedSections.symptoms}
-          onToggle={() => toggleSection("symptoms")}
-        />
-
+        {/* Gender Filter Section */}
         <FilterSection
           title="Gender"
           category="gender"
@@ -133,7 +124,19 @@ const FilterPanel = ({
           onToggle={() => toggleSection("gender")}
         />
 
-        {/* Example for a new Medication Filter Section, if medicationOptions are provided */}
+        {/* Symptoms Filter Section */}
+        <FilterSection
+          title="Symptoms & Behaviors"
+          category="symptom"
+          options={symptomOptions} // Use prop
+          selectedOptions={selectedOptions}
+          onFilterChange={handleFilterChange}
+          isExpanded={expandedSections.symptoms}
+          onToggle={() => toggleSection("symptoms")}
+          subtitle="Showing top 15 most common"
+        />
+
+        {/* Medication Filter Section */}
         {medicationOptions && medicationOptions.length > 0 && (
           <FilterSection
             title="Medication"
@@ -143,6 +146,7 @@ const FilterPanel = ({
             onFilterChange={handleFilterChange}
             isExpanded={expandedSections.medication} // Ensure this uses the state
             onToggle={() => toggleSection("medication")} // Ensure this uses the state
+            subtitle="Showing top 15 most common"
           />
         )}
       </div>

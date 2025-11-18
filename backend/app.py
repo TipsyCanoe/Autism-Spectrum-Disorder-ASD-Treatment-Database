@@ -206,27 +206,29 @@ def get_filters():
             conn = get_db_connection()
             cursor = conn.cursor()
             
-            # Get distinct treatment names for medication filter
+            # Get distinct treatment names for medication filter with counts
             if not available_filters["medication"]:
                 cursor.execute("""
-                    SELECT DISTINCT treatment_name 
+                    SELECT LOWER(treatment_name) as treatment_lower, COUNT(*) as study_count
                     FROM jim_data.data_embedded 
                     WHERE treatment_name IS NOT NULL AND treatment_name <> '' 
-                    ORDER BY treatment_name ASC
+                    GROUP BY LOWER(treatment_name)
+                    ORDER BY study_count DESC, treatment_lower ASC
                 """)
-                medications = [row[0].lower() for row in cursor.fetchall()]
+                medications = [{"value": row[0], "count": row[1]} for row in cursor.fetchall()]
                 available_filters["medication"] = medications
                 print(f"Loaded {len(medications)} medications for filter")
             
-            # Get distinct primary outcome areas for symptom filter
+            # Get distinct primary outcome areas for symptom filter with counts
             if not available_filters["symptom"]:
                 cursor.execute("""
-                    SELECT DISTINCT primary_outcome_area 
+                    SELECT LOWER(primary_outcome_area) as outcome_lower, COUNT(*) as study_count
                     FROM jim_data.data_embedded 
                     WHERE primary_outcome_area IS NOT NULL AND primary_outcome_area <> '' 
-                    ORDER BY primary_outcome_area ASC
+                    GROUP BY LOWER(primary_outcome_area)
+                    ORDER BY study_count DESC, outcome_lower ASC
                 """)
-                symptoms = [row[0] for row in cursor.fetchall()]
+                symptoms = [{"value": row[0], "count": row[1]} for row in cursor.fetchall()]
                 available_filters["symptom"] = symptoms
                 print(f"Loaded {len(symptoms)} primary outcome areas for symptom filter")
                 
@@ -249,7 +251,7 @@ def search():
     query = request.args.get('query', '').lower()
     selected_filters = request.args.getlist('filters')
     filters_str = ', '.join(selected_filters)
-    limit = int(request.args.get('limit', 10000))  # Increased default limit
+    limit = int(request.args.get('limit', 200))  # Default limit for search results
     
     # For empty query and no filters, use the initial results endpoint
     if not query and not selected_filters:
@@ -283,8 +285,6 @@ def search():
     
     results = []
     query_embedding = sentence_model.encode(query + filters_str)
-
-    similarity_threshold = .999
     
     sql = """
         SELECT 
@@ -329,12 +329,12 @@ def search():
             journal,
             affiliations
         FROM jim_data.data_embedded
-        WHERE vector IS NOT NULL AND vector::vector <=> %s::vector < %s
+        WHERE vector IS NOT NULL
         ORDER BY distance ASC
         LIMIT %s
     """
     
-    params = [query_embedding.tolist(), query_embedding.tolist(), similarity_threshold, limit]
+    params = [query_embedding.tolist(), limit]
     
     try:
         cursor.execute(sql, params)
@@ -343,49 +343,49 @@ def search():
         grouped_results = defaultdict(list)
         
         for row in results:
-            abstract_text = row[10] if row[10] else "Not specified in article"
+            abstract_text = row[10] if row[10] else "Not specified in abstract"
             paper_data = {
                 "Abstract": abstract_text,
                 "description": abstract_text,  # Add description field for frontend compatibility
                 "title": row[0] if row[0] else "Untitled Study",
-                "Primary Outcome Area": row[7] if row[7] else "Not specified in article",
-                "Primary Outcome Measure": row[8] if row[8] else "Not specified in article",
-                "Treatment Duration": row[6] if row[6] else "Not specified in article",
-                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "Not specified in article"),
-                "Author": row[11] if row[11] else (row[3] if row[3] else "Not specified in article"),
-                "Study Title": row[0] if row[0] else "Not specified in article",
-                "PMID": str(row[2]) if row[2] else "Not specified in article",
+                "Primary Outcome Area": row[7] if row[7] else "Not specified in abstract",
+                "Primary Outcome Measure": row[8] if row[8] else "Not specified in abstract",
+                "Treatment Duration": row[6] if row[6] else "Not specified in abstract",
+                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "Not specified in abstract"),
+                "Author": row[11] if row[11] else (row[3] if row[3] else "Not specified in abstract"),
+                "Study Title": row[0] if row[0] else "Not specified in abstract",
+                "PMID": str(row[2]) if row[2] else "Not specified in abstract",
                 "Full Text URL": row[4] if row[4] else None,
                 "Similarity Score": round(1 - row[9], 3) if row[9] is not None else 0,
                 "Distance": round(row[9], 3) if row[9] is not None else 1,
                 # Additional fields from new schema
-                "Study Type": row[13] if row[13] else "Not specified in article",
-                "Sample Size": row[14] if row[14] else "Not specified in article",
-                "M:F Ratio": row[15] if row[15] else "Not specified in article",
-                "Age Range (years)": row[16] if row[16] else "Not specified in article",
-                "Medication/Treatment Dose Range": row[17] if row[17] else "Not specified in article",
-                "Results: Primary measure": row[18] if row[18] else "Not specified in article",
-                "Secondary Outcome Area": row[19] if row[19] else "Not specified in article",
-                "Secondary Outcome Measures": row[20] if row[20] else "Not specified in article",
-                "Tolerability/Side Effects": row[21] if row[21] else "Not specified in article",
-                "Safety": row[22] if row[22] else "Not specified in article",
-                "Drop Out Rate": row[23] if row[23] else "Not specified in article",
-                "Race/Ethnicity Percentages": row[24] if row[24] else "Not specified in article",
-                "Notes": row[25] if row[25] else "Not specified in article",
-                "Sequence Generation (selection bias)": row[26] if row[26] else "Not specified in article",
-                "Allocation Concealment (selection bias)": row[27] if row[27] else "Not specified in article",
-                "Outcome Assessors Blinding (detection bias)": row[28] if row[28] else "Not specified in article",
-                "Clinician and Participant Blinding (performance bias)": row[29] if row[29] else "Not specified in article",
-                "Incomplete outcome data (attrition bias)": row[30] if row[30] else "Not specified in article",
-                "Selective outcome reporting (reporting bias)": row[31] if row[31] else "Not specified in article",
-                "Notes on Biases": row[32] if row[32] else "Not specified in article",
-                "AI": row[33] if row[33] else "Not specified in article",
-                "age_min": row[34] if row[34] is not None else "Not specified in article",
-                "age_max": row[35] if row[35] is not None else "Not specified in article",
-                "males_in_study": row[36] if row[36] is not None else "Not specified in article",
-                "females_in_study": row[37] if row[37] is not None else "Not specified in article",
-                "Journal": row[38] if row[38] else "Not specified in article",
-                "Commercial Affiliation": row[39] if row[39] else "Not specified in article"
+                "Study Type": row[13] if row[13] else "Not specified in abstract",
+                "Sample Size": row[14] if row[14] else "Not specified in abstract",
+                "M:F Ratio": row[15] if row[15] else "Not specified in abstract",
+                "Age Range (years)": row[16] if row[16] else "Not specified in abstract",
+                "Medication/Treatment Dose Range": row[17] if row[17] else "Not specified in abstract",
+                "Results: Primary measure": row[18] if row[18] else "Not specified in abstract",
+                "Secondary Outcome Area": row[19] if row[19] else "Not specified in abstract",
+                "Secondary Outcome Measures": row[20] if row[20] else "Not specified in abstract",
+                "Tolerability/Side Effects": row[21] if row[21] else "Not specified in abstract",
+                "Safety": row[22] if row[22] else "Not specified in abstract",
+                "Drop Out Rate": row[23] if row[23] else "Not specified in abstract",
+                "Race/Ethnicity Percentages": row[24] if row[24] else "Not specified in abstract",
+                "Notes": row[25] if row[25] else "Not specified in abstract",
+                "Sequence Generation (selection bias)": row[26] if row[26] else "Not specified in abstract",
+                "Allocation Concealment (selection bias)": row[27] if row[27] else "Not specified in abstract",
+                "Outcome Assessors Blinding (detection bias)": row[28] if row[28] else "Not specified in abstract",
+                "Clinician and Participant Blinding (performance bias)": row[29] if row[29] else "Not specified in abstract",
+                "Incomplete outcome data (attrition bias)": row[30] if row[30] else "Not specified in abstract",
+                "Selective outcome reporting (reporting bias)": row[31] if row[31] else "Not specified in abstract",
+                "Notes on Biases": row[32] if row[32] else "Not specified in abstract",
+                "AI": row[33] if row[33] else "Not specified in abstract",
+                "age_min": row[34] if row[34] is not None else "Not specified in abstract",
+                "age_max": row[35] if row[35] is not None else "Not specified in abstract",
+                "males_in_study": row[36] if row[36] is not None else "Not specified in abstract",
+                "females_in_study": row[37] if row[37] is not None else "Not specified in abstract",
+                "Journal": row[38] if row[38] else "Not specified in abstract",
+                "Commercial Affiliation": row[39] if row[39] else "Not specified in abstract"
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"
@@ -430,13 +430,14 @@ def get_initial_results():
     """Return initial set of results to preload on page load without waiting for user search"""
     print("Loading initial results")
     
-    # Try to get from cache first
-    cached_result = search_cache.get('initial_results')
-    if cached_result:
-        print("Returning initial results from cache")
-        return cached_result
+    limit = int(request.args.get('limit', 200))  # Default limit for initial results
     
-    limit = int(request.args.get('limit', 10000))  # Increased default limit
+    # Try to get from cache first with limit in cache key
+    cache_key = f'initial_results_{limit}'
+    cached_result = search_cache.get(cache_key)
+    if cached_result:
+        print(f"Returning initial results from cache (limit={limit})")
+        return cached_result
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -497,49 +498,49 @@ def get_initial_results():
         grouped_results = defaultdict(list)
         
         for row in results:
-            abstract_text = row[10] if row[10] else "Not specified in article"
+            abstract_text = row[10] if row[10] else "Not specified in abstract"
             paper_data = {
                 "Abstract": abstract_text,
                 "description": abstract_text,  # Add description field for frontend compatibility
                 "title": row[0] if row[0] else "Untitled Study",
-                "Primary Outcome Area": row[7] if row[7] else "Not specified in article",
-                "Primary Outcome Measure": row[8] if row[8] else "Not specified in article",
-                "Treatment Duration": row[6] if row[6] else "Not specified in article",
-                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "Not specified in article"),
-                "Author": row[11] if row[11] else (row[3] if row[3] else "Not specified in article"),
-                "Study Title": row[0] if row[0] else "Not specified in article",
-                "PMID": str(row[2]) if row[2] else "Not specified in article",
+                "Primary Outcome Area": row[7] if row[7] else "Not specified in abstract",
+                "Primary Outcome Measure": row[8] if row[8] else "Not specified in abstract",
+                "Treatment Duration": row[6] if row[6] else "Not specified in abstract",
+                "Publication Date": row[1].isoformat() if (row[1] and hasattr(row[1], 'isoformat')) else (str(row[1]) if row[1] else "Not specified in abstract"),
+                "Author": row[11] if row[11] else (row[3] if row[3] else "Not specified in abstract"),
+                "Study Title": row[0] if row[0] else "Not specified in abstract",
+                "PMID": str(row[2]) if row[2] else "Not specified in abstract",
                 "Full Text URL": row[4] if row[4] else None,
                 "Similarity Score": 0.5,  # Default similarity score for initial results
                 "Distance": 0.5,  # Default distance for initial results
                 # Additional fields from new schema
-                "Study Type": row[13] if row[13] else "Not specified in article",
-                "Sample Size": row[14] if row[14] else "Not specified in article",
-                "M:F Ratio": row[15] if row[15] else "Not specified in article",
-                "Age Range (years)": row[16] if row[16] else "Not specified in article",
-                "Medication/Treatment Dose Range": row[17] if row[17] else "Not specified in article",
-                "Results: Primary measure": row[18] if row[18] else "Not specified in article",
-                "Secondary Outcome Area": row[19] if row[19] else "Not specified in article",
-                "Secondary Outcome Measures": row[20] if row[20] else "Not specified in article",
-                "Tolerability/Side Effects": row[21] if row[21] else "Not specified in article",
-                "Safety": row[22] if row[22] else "Not specified in article",
-                "Drop Out Rate": row[23] if row[23] else "Not specified in article",
-                "Race/Ethnicity Percentages": row[24] if row[24] else "Not specified in article",
-                "Notes": row[25] if row[25] else "Not specified in article",
-                "Sequence Generation (selection bias)": row[26] if row[26] else "Not specified in article",
-                "Allocation Concealment (selection bias)": row[27] if row[27] else "Not specified in article",
-                "Outcome Assessors Blinding (detection bias)": row[28] if row[28] else "Not specified in article",
-                "Clinician and Participant Blinding (performance bias)": row[29] if row[29] else "Not specified in article",
-                "Incomplete outcome data (attrition bias)": row[30] if row[30] else "Not specified in article",
-                "Selective outcome reporting (reporting bias)": row[31] if row[31] else "Not specified in article",
-                "Notes on Biases": row[32] if row[32] else "Not specified in article",
-                "AI": row[33] if row[33] else "Not specified in article",
-                "age_min": row[34] if row[34] is not None else "Not specified in article",
-                "age_max": row[35] if row[35] is not None else "Not specified in article",
-                "males_in_study": row[36] if row[36] is not None else "Not specified in article",
-                "females_in_study": row[37] if row[37] is not None else "Not specified in article",
-                "Journal": row[38] if row[38] else "Not specified in article",
-                "Commercial Affiliation": row[39] if row[39] else "Not specified in article"
+                "Study Type": row[13] if row[13] else "Not specified in abstract",
+                "Sample Size": row[14] if row[14] else "Not specified in abstract",
+                "M:F Ratio": row[15] if row[15] else "Not specified in abstract",
+                "Age Range (years)": row[16] if row[16] else "Not specified in abstract",
+                "Medication/Treatment Dose Range": row[17] if row[17] else "Not specified in abstract",
+                "Results: Primary measure": row[18] if row[18] else "Not specified in abstract",
+                "Secondary Outcome Area": row[19] if row[19] else "Not specified in abstract",
+                "Secondary Outcome Measures": row[20] if row[20] else "Not specified in abstract",
+                "Tolerability/Side Effects": row[21] if row[21] else "Not specified in abstract",
+                "Safety": row[22] if row[22] else "Not specified in abstract",
+                "Drop Out Rate": row[23] if row[23] else "Not specified in abstract",
+                "Race/Ethnicity Percentages": row[24] if row[24] else "Not specified in abstract",
+                "Notes": row[25] if row[25] else "Not specified in abstract",
+                "Sequence Generation (selection bias)": row[26] if row[26] else "Not specified in abstract",
+                "Allocation Concealment (selection bias)": row[27] if row[27] else "Not specified in abstract",
+                "Outcome Assessors Blinding (detection bias)": row[28] if row[28] else "Not specified in abstract",
+                "Clinician and Participant Blinding (performance bias)": row[29] if row[29] else "Not specified in abstract",
+                "Incomplete outcome data (attrition bias)": row[30] if row[30] else "Not specified in abstract",
+                "Selective outcome reporting (reporting bias)": row[31] if row[31] else "Not specified in abstract",
+                "Notes on Biases": row[32] if row[32] else "Not specified in abstract",
+                "AI": row[33] if row[33] else "Not specified in abstract",
+                "age_min": row[34] if row[34] is not None else "Not specified in abstract",
+                "age_max": row[35] if row[35] is not None else "Not specified in abstract",
+                "males_in_study": row[36] if row[36] is not None else "Not specified in abstract",
+                "females_in_study": row[37] if row[37] is not None else "Not specified in abstract",
+                "Journal": row[38] if row[38] else "Not specified in abstract",
+                "Commercial Affiliation": row[39] if row[39] else "Not specified in abstract"
             }
             
             treatment_name = row[5].lower() if row[5] else "unknown"
@@ -566,8 +567,8 @@ def get_initial_results():
             print(f"Populated medication filters with {len(available_treatments)} treatments")
         
         result = json.dumps(json_output, indent=4, sort_keys=False)
-        # Cache the result before returning
-        search_cache.set('initial_results', result)
+        # Cache the result before returning with limit in cache key
+        search_cache.set(cache_key, result)
         return result
         
     except Exception as e:

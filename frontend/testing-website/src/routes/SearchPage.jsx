@@ -10,6 +10,7 @@ const SearchPage = () => {
     setSelectedOptions,
     results, // This is now an array of objects
     fetchResults,
+    fetchInitialResults,
     isLoading,
     error,
     availableFilters,
@@ -18,6 +19,7 @@ const SearchPage = () => {
   const [activeMedicationKey, setActiveMedicationKey] = useState(null);
   const [activeStudyId, setActiveStudyId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAllResults, setShowAllResults] = useState(false);
   const itemsPerPage = 20; // Show 20 treatment groups per page
 
   const handleFilterChange = (category, value) => {
@@ -30,7 +32,8 @@ const SearchPage = () => {
   };
 
   const handleSearch = () => {
-    fetchResults(searchQuery);
+    const limit = showAllResults ? 10000 : 200;
+    fetchResults(searchQuery, limit);
     setCurrentPage(1); // Reset to first page on new search
   };
 
@@ -40,17 +43,48 @@ const SearchPage = () => {
     setCurrentPage(1); // Reset to first page when clearing filters
   };
 
+  const handleToggleAllResults = () => {
+    const newShowAll = !showAllResults;
+    setShowAllResults(newShowAll);
+    const limit = newShowAll ? 10000 : 200;
+    
+    // If there's a search query, re-fetch with new limit
+    if (searchQuery) {
+      fetchResults(searchQuery, limit);
+    } else {
+      // Otherwise fetch initial results with new limit
+      fetchInitialResults(limit);
+    }
+    setCurrentPage(1);
+  };
+
   const getOptionsForCategory = (category) => {
     if (
       availableFilters &&
       availableFilters[category] &&
       availableFilters[category].length > 0
     ) {
-      return availableFilters[category].map((value) => ({
-        value: value,
-        label:
-          value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, " "),
-      }));
+      // Handle both old format (strings) and new format (objects with value and count)
+      const items = availableFilters[category];
+      
+      // Check if items have the new format with counts
+      const hasCountFormat = items[0] && typeof items[0] === 'object' && 'value' in items[0];
+      
+      if (hasCountFormat) {
+        // Limit symptoms and medications to top 15 most common
+        const limit = (category === 'symptom' || category === 'medication') ? 15 : items.length;
+        return items.slice(0, limit).map((item) => ({
+          value: item.value,
+          label: item.value.charAt(0).toUpperCase() + item.value.slice(1).replace(/-/g, " "),
+          count: item.count
+        }));
+      } else {
+        // Old format - just strings
+        return items.map((value) => ({
+          value: value,
+          label: value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, " "),
+        }));
+      }
     }
     return allFilterOptions[category] || [];
   };
@@ -158,16 +192,24 @@ const SearchPage = () => {
           <div className="bg-white p-4 lg:p-6 rounded-lg shadow mb-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
               <h2 className="text-lg lg:text-xl font-bold text-gray-800">Study Results</h2>
-              {!isLoading && !error && medicationGroups.length > 0 && (
-                <p className="text-xs lg:text-sm text-gray-500">
-                  {medicationGroups.reduce(
-                    (acc, group) => acc + group.studyCount,
-                    0
-                  )}{" "}
-                  studies found across {medicationGroups.length} treatment
-                  groups
-                </p>
-              )}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                {!isLoading && !error && medicationGroups.length > 0 && (
+                  <p className="text-xs lg:text-sm text-gray-500">
+                    {showAllResults ? 'All ' : 'Top 200 '}
+                    studies across {medicationGroups.length} treatment groups
+                  </p>
+                )}
+                {/* Show All Results Toggle */}
+                <label className="flex items-center gap-2 text-xs lg:text-sm text-gray-700 cursor-pointer whitespace-nowrap">
+                  <input
+                    type="checkbox"
+                    checked={showAllResults}
+                    onChange={handleToggleAllResults}
+                    className="w-4 h-4 cursor-pointer"
+                  />
+                  <span>Show all results</span>
+                </label>
+              </div>
             </div>
 
             {/* Active filters display */}
