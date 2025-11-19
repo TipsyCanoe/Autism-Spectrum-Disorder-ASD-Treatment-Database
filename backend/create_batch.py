@@ -1,5 +1,8 @@
 import pandas as pd
 import json
+from openai import OpenAI
+
+client = OpenAI()
 
 df = pd.read_csv('grabbed_papers.csv')
 batch_size = 5
@@ -101,3 +104,23 @@ with open('batch_requests.jsonl', 'w', encoding='utf-8') as f:
         f.write(json.dumps(json_object) + '\n')
 
 print(f"Created {(len(df) + batch_size - 1) // batch_size} batched requests")
+
+batch_input_file = client.files.create(
+    file=open("batch_requests.jsonl", "rb"),
+    purpose="batch"
+)
+
+print(f"Uploaded file: {batch_input_file.filename}")
+print(f"File ID: {batch_input_file.id}")
+
+batch = client.batches.create(
+    input_file_id=batch_input_file.id,
+    endpoint="/v1/chat/completions",
+    completion_window="24h",
+    metadata={"description": "batch"}
+)
+
+print("Batch created successfully!")
+print(f"Batch ID: {batch.id}")
+print(f"Status: {batch.status}")
+print(f"Created at: {batch.created_at}")
