@@ -35,9 +35,9 @@ if __name__ == "__main__":
     if(last_pull_date == today):
         scripts = []
         file_heads = [
-            f"pubmed_API_ASD_data_{today}.py",
-            f"pubmed_API_data_{today}.py",
-            f"pubmed_API_treatment_{today}.py",
+            "pubmed_API_ASD_data.py",
+            "pubmed_API_data.py",
+            "pubmed_API_treatment.py",
             "convert_excels_to_csvs.py"
         ]
         for file_head in file_heads:

@@ -55,4 +55,4 @@ if __name__ == '__main__':
         completePD = importer.importPapers(completePD, query)
 
     today = datetime.now().strftime("%Y-%m-%d")
-    completePD.to_excel(f"pubmed_treatment_info_{today}.py", index=False)
+    completePD.to_excel(f"pubmed_treatment_info_{today}.xlsx", index=False)

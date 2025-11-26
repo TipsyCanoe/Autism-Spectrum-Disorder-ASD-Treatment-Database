@@ -48,5 +48,5 @@ if __name__ == '__main__':
     # Importing the papers
     completePD = pd.DataFrame()
     completePD = importer.importPapers(completePD, full_query)
-    completePD.to_excel(f"pubmed_papers_info_{today}.py", index=False)
+    completePD.to_excel(f"pubmed_papers_info_{today}.xlsx", index=False)
     

@@ -1,8 +1,10 @@
 import pandas as pd
 from pathlib import Path
 import os
+from datetime import datetime
 
 def xlsx_to_csvs(file_heads):
+    today = datetime.now().strftime("%Y-%m-%d")
     combined_df = pd.DataFrame() # all data
 
     for file_head in file_heads:
@@ -21,13 +23,18 @@ def xlsx_to_csvs(file_heads):
 
     # Write the combined CSV if we have data
     if not combined_df.empty:
-        combined_df.to_csv("pubmed_combined.csv", index=False)
-        print("Successfully converted to: pubmed_combined.csv")
+        combined_df.to_csv(f"pubmed_combined_{today}.csv", index=False)
+        print(f"Successfully converted to: pubmed_combined_{today}.csv")
     else:
         print("No data to combine")
 
 if __name__ == '__main__':
+    today = datetime.now().strftime("%Y-%m-%d")
     # Use: Add name of excel file in string with path, and sheet name in oldDf string
-    file_heads = ['pubmed_papers_info', 'pubmed_treatment_info', 'pubmed_ASD_info']
+    file_heads = [
+            f"pubmed_ASD_info_{today}",
+            f"pubmed_papers_info_{today}",
+            f"pubmed_treatment_info_{today}"
+        ]
     xlsx_to_csvs(file_heads)
 
