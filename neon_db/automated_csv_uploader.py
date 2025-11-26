@@ -25,8 +25,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max file size
 
-# Database configuration - use your existing connection string
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require')
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require')
 
 class CSVUploader:
     def __init__(self, database_url: str):
@@ -80,7 +79,7 @@ class CSVUploader:
         except Exception as e:
             logger.error(f"Error getting table columns: {str(e)}")
             return []
-    
+    # may not need this method
     def create_table_from_csv(self, file_path: str, schema: str, table: str) -> bool:
         """Create table based on CSV structure"""
         try:
