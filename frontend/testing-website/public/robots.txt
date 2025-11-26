@@ -1,3 +1,10 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /api/
+
+# Crawl-delay to be respectful
+Crawl-delay: 1
+
+# Sitemap location (update when you have a domain)
+Sitemap: https://star.cs.wwu.edu/sitemap.xml

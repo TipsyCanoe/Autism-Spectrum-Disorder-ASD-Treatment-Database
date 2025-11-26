@@ -4,27 +4,85 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/websiteLogo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="theme-color" content="#1e3a8a" />
+    
+    <!-- Primary Meta Tags -->
+    <title>ASD Treatment Research Database | Autism Spectrum Disorder Studies</title>
+    <meta name="title" content="ASD Treatment Research Database | Autism Spectrum Disorder Studies" />
+    <meta name="description" content="Comprehensive database of autism spectrum disorder (ASD) treatment research studies. Search 1000+ peer-reviewed clinical trials, medications, interventions, and evidence-based therapies for autism." />
+    <meta name="keywords" content="autism, ASD, autism spectrum disorder, autism treatment, autism research, clinical trials, autism medication, autism therapy, autism interventions, autism studies, evidence-based autism treatment, autism database" />
+    <meta name="author" content="STAR - Autism Research Database" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://star.cs.wwu.edu/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://star.cs.wwu.edu/" />
+    <meta property="og:title" content="ASD Treatment Research Database | Autism Spectrum Disorder Studies" />
+    <meta property="og:description" content="Comprehensive database of autism spectrum disorder (ASD) treatment research studies. Search 1000+ peer-reviewed clinical trials and evidence-based therapies." />
+    <meta property="og:image" content="%PUBLIC_URL%/websiteLogo.png" />
+    <meta property="og:site_name" content="STAR - Autism Research Database" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://star.cs.wwu.edu/" />
+    <meta property="twitter:title" content="ASD Treatment Research Database | Autism Spectrum Disorder Studies" />
+    <meta property="twitter:description" content="Comprehensive database of autism spectrum disorder (ASD) treatment research studies. Search 1000+ peer-reviewed clinical trials and evidence-based therapies." />
+    <meta property="twitter:image" content="%PUBLIC_URL%/websiteLogo.png" />
+    
+    <!-- Additional SEO -->
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    
+    <!-- Structured Data for Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "STAR - Autism Research Database",
+      "description": "Comprehensive database of autism spectrum disorder (ASD) treatment research studies",
+      "url": "https://star.cs.wwu.edu/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://star.cs.wwu.edu/search?query={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalWebPage",
+      "name": "ASD Treatment Research Database",
+      "description": "Comprehensive database of peer-reviewed autism spectrum disorder treatment research studies, clinical trials, and evidence-based interventions",
+      "url": "https://star.cs.wwu.edu/",
+      "medicalAudience": [
+        {
+          "@type": "MedicalAudience",
+          "audienceType": "Researcher"
+        },
+        {
+          "@type": "MedicalAudience",
+          "audienceType": "Patient"
+        },
+        {
+          "@type": "MedicalAudience",
+          "audienceType": "Clinician"
+        }
+      ],
+      "about": {
+        "@type": "MedicalCondition",
+        "name": "Autism Spectrum Disorder",
+        "alternateName": "ASD"
+      }
+    }
+    </script>
+    
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/websiteLogo.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Autism Research Database</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
