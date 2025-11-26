@@ -3,6 +3,7 @@ from pathlib import Path
 from complete_query import importer
 import re
 import os
+from datetime import datetime
 
 def get_treatments_queries(treatments):
     treatment_queries = []
@@ -53,4 +54,5 @@ if __name__ == '__main__':
     for query in full_queries:
         completePD = importer.importPapers(completePD, query)
 
-    completePD.to_excel('pubmed_treatment_info.xlsx', index=False)
+    today = datetime.now().strftime("%Y-%m-%d")
+    completePD.to_excel(f"pubmed_treatment_info_{today}.py", index=False)

@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 from complete_query import importer
+from datetime import datetime
 
 # Get terms from files
 def get_terms(file_name, default):
@@ -42,8 +43,10 @@ def get_full_query():
 
 if __name__ == '__main__':
     full_query = get_full_query()
+    today = datetime.now().strftime("%Y-%m-%d")
 
     # Importing the papers
     completePD = pd.DataFrame()
     completePD = importer.importPapers(completePD, full_query)
-    completePD.to_excel('pubmed_papers_info.xlsx', index=False)
+    completePD.to_excel(f"pubmed_papers_info_{today}.py", index=False)
+    

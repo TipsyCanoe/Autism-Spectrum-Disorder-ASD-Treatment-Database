@@ -3,6 +3,7 @@ from Bio import Entrez
 from pathlib import Path
 from complete_query import importer
 import os
+from datetime import datetime
 
 # Get all topics from df
 def get_topics(topics):
@@ -52,5 +53,7 @@ if __name__ == '__main__':
     for query in queries:
         completePD = importer.importPapers(completePD, query)
 
-    completePD.to_excel('pubmed_ASD_info.xlsx', index=False)
+    today = datetime.now().strftime("%Y-%m-%d")
+    completePD.to_excel(f"pubmed_ASD_info_{today}.py", index=False)
+    
 
