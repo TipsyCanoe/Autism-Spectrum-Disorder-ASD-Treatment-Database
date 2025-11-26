@@ -10,6 +10,7 @@ describe("HomePage Component", () => {
   beforeEach(() => {
     // Reset fetch mock before each test
     fetch.mockClear();
+    localStorage.clear();
   });
 
   test("renders hero section with title and description", () => {
@@ -85,7 +86,8 @@ describe("HomePage Component", () => {
           )
         ).toBeInTheDocument();
       });
-      expect(updateButton).not.toBeDisabled();
+      expect(updateButton).toBeDisabled();
+      expect(screen.getByText(/Updated Today/i)).toBeInTheDocument();
     });
 
     test("handles API error and displays error message", async () => {
@@ -270,5 +272,21 @@ describe("HomePage Component", () => {
         /© 2025 Autism Resources Database. All rights reserved./i
       )
     ).toBeInTheDocument();
+  });
+
+  test("button is disabled if limit is reached", () => {
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem("lastUpdateDate", today);
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    const updateButton = screen.getByRole("button", {
+      name: /Updated Today/i,
+    });
+    expect(updateButton).toBeDisabled();
   });
 });

@@ -27,7 +27,6 @@ if [ "$ENVIRONMENT" = "production" ]; then
     # Restart systemd services
     echo "Restarting backend services..."
     sudo systemctl restart asd-backend.service
-    sudo systemctl restart asd-node-backend.service
     
     # Reload nginx to serve new frontend build
     echo "Reloading nginx..."
@@ -65,22 +64,16 @@ else
      PYTHONUNBUFFERED=1 $PYTHON_CMD -B app.py > "$LOGS_DIR/backend_flask.log" 2>&1) &
     BACKEND_QUERY_PID=$!
     
-    # Start Node Backend with reduced memory limits
-    echo "Starting Backend Node.js API (port $NODE_BACKEND_PORT)..."
-    (cd "$SCRIPT_DIR/backend" && 
-     NODE_OPTIONS="--max-old-space-size=256" node server.js > "$LOGS_DIR/backend_node.log" 2>&1) &
-    BACKEND_JOB_PID=$!
-    
     # Save PIDs
-    echo "$FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID" > "$SCRIPT_DIR/.server_pids"
+    echo "$FRONTEND_PID $BACKEND_QUERY_PID" > "$SCRIPT_DIR/.server_pids"
     
-    echo "All servers started. PIDs: $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID"
+    echo "All servers started. PIDs: $FRONTEND_PID $BACKEND_QUERY_PID"
     echo "View logs with: tail -f $LOGS_DIR/*.log"
     echo "Stop servers with: ./stop_all_servers.sh"
     
     # Add cleanup trap
-    trap 'echo "Stopping servers..."; kill $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID 2>/dev/null; exit' INT
+    trap 'echo "Stopping servers..."; kill $FRONTEND_PID $BACKEND_QUERY_PID 2>/dev/null; exit' INT
     
     # Keep script running
-    wait $FRONTEND_PID $BACKEND_QUERY_PID $BACKEND_JOB_PID
+    wait $FRONTEND_PID $BACKEND_QUERY_PID
 fi

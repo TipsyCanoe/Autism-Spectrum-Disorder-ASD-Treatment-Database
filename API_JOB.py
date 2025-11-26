@@ -2,6 +2,7 @@ import subprocess
 from pathlib import Path
 from datetime import datetime
 import os
+import sys
 from dotenv import load_dotenv
 
 # runs the designated series of scripts
@@ -9,7 +10,7 @@ def run_scripts(script_paths):
     for script_path in script_paths:
         try:
             print("Running " + script_path)
-            result = subprocess.run(['python3', script_path], capture_output=True, text=True, check=True)
+            result = subprocess.run([sys.executable, script_path], capture_output=True, text=True, check=True)
             if result.stderr:
                 print(f"--- Errors from {script_path} ---")
                 print(result.stderr)
@@ -29,10 +30,11 @@ def update_pull_data():
         f.write(f"LAST_PULL_TIME={time}\n")
 
 if __name__ == "__main__":
-    load_dotenv()
+    load_dotenv(override=True)
     today = datetime.now().strftime("%Y-%m-%d")
     last_pull_date = os.getenv('LAST_PULL_DATE')
-    if(last_pull_date == today):
+    
+    if last_pull_date != today:
         scripts = []
         file_heads = [
             "pubmed_API_ASD_data.py",

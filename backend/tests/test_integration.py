@@ -20,7 +20,11 @@ def test_search_with_caching(client, mock_db_connection):
         (
             "Test Study Title", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome Area", "Test Measures",
-            0.2, "Test Abstract"
+            0.2, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
     
@@ -70,8 +74,8 @@ def test_filters_and_search_integration(client, mock_db_connection, mock_sentenc
     
     # Step 1: Mock response for /api/filters
     mock_cursor.fetchall.return_value = [
-        ("Aripiprazole",),
-        ("Risperidone",)
+        ("Aripiprazole", 10),
+        ("Risperidone", 5)
     ]
     
     # Get the filters
@@ -94,13 +98,18 @@ def test_filters_and_search_integration(client, mock_db_connection, mock_sentenc
         (
             "Aripiprazole Study", pub_date, 12345, "Test Author", "http://test.url",
             "Aripiprazole", "6 weeks", "Test Outcome Area", "Test Measures",
-            0.2, "Test Abstract"
+            0.2, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
     
     # Use one of the medication filters in a search
-    medication = filters_data["medication"][0]  # Should be "aripiprazole"
-    
+    medication_data = filters_data["medication"][0]
+    medication = medication_data["value"]  # Should be "aripiprazole"
+
     # Make search with the medication filter
     search_response = client.get(f'/api/search?filters=medication:{medication}')
     assert search_response.status_code == 200
@@ -176,7 +185,11 @@ def test_search_with_multiple_filters(client, mock_db_connection, mock_sentence_
         (
             "Pediatric Autism Study", pub_date, 12345, "Test Author", "http://test.url",
             "Aripiprazole", "6 weeks", "Irritability in autism", "ABC Irritability Scale",
-            0.2, "Study of irritability in children with autism"
+            0.2, "Study of irritability in children with autism", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
     

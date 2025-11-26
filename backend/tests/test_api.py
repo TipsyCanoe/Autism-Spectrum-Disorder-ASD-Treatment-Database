@@ -13,9 +13,9 @@ def test_get_filters_endpoint(client, mock_db_connection):
     
     # Mock the database response for medications
     mock_cursor.fetchall.return_value = [
-        ("Aripiprazole",),
-        ("Risperidone",),
-        ("Methylphenidate",)
+        ("aripiprazole", 10),
+        ("risperidone", 5),
+        ("methylphenidate", 3)
     ]
     
     # Call the API endpoint
@@ -34,15 +34,26 @@ def test_get_filters_endpoint(client, mock_db_connection):
     assert "medication" in data
     
     # Check that the medication list contains the mocked values
-    assert "aripiprazole" in data["medication"]
-    assert "risperidone" in data["medication"]
-    assert "methylphenidate" in data["medication"]
+    # The new format is a list of dicts with value and count
+    med_values = [m["value"] for m in data["medication"]]
+    assert "aripiprazole" in med_values
+    assert "risperidone" in med_values
+    assert "methylphenidate" in med_values
     
     # Verify that the execute method was called with the expected SQL
-    mock_cursor.execute.assert_called_once()
-    sql_call = mock_cursor.execute.call_args[0][0]
-    assert 'SELECT DISTINCT "Treatment name"' in sql_call
-    assert "FROM jim_data.search_data_stage" in sql_call
+    assert mock_cursor.execute.call_count == 2
+    
+    # Check the first call (medications)
+    call1 = mock_cursor.execute.call_args_list[0]
+    sql1 = call1[0][0]
+    assert 'SELECT LOWER(treatment_name)' in sql1
+    assert "FROM jim_data.data_embedded" in sql1
+    
+    # Check the second call (symptoms)
+    call2 = mock_cursor.execute.call_args_list[1]
+    sql2 = call2[0][0]
+    assert 'SELECT LOWER(primary_outcome_area)' in sql2
+    assert "FROM jim_data.data_embedded" in sql2
 
 @pytest.mark.api
 def test_initial_results_endpoint(client, mock_db_connection):
@@ -64,7 +75,7 @@ def test_initial_results_endpoint(client, mock_db_connection):
         # Sequence Generation, Allocation Concealment, Outcome Assessors Blinding,
         # Clinician and Participant Blinding, Incomplete outcome data, 
         # Selective outcome reporting, Notes on Biases, ai, age_min, age_max, 
-        # males_in_study, females_in_study
+        # males_in_study, females_in_study, Journal, Commercial Affiliation
         (
             "Test Study Title", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome Area", "Test Measures",
@@ -72,7 +83,7 @@ def test_initial_results_endpoint(client, mock_db_connection):
             "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
             "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
             "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
-            10, 15, 50, 50
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         ),
         (
             "Another Study", pub_date, 67890, "Another Author", "http://another.url",
@@ -81,7 +92,7 @@ def test_initial_results_endpoint(client, mock_db_connection):
             "2:1", "8-12", "15mg", "No change", "Another Secondary", "Other Measures",
             "Moderate", "Safe", "10%", "60% White", "Other notes", "Low risk", "Low risk",
             "Low risk", "Low risk", "Low risk", "Low risk", "Some biases", "0.7",
-            8, 12, 33, 17
+            8, 12, 33, 17, "Another Journal", "Another Affiliation"
         )
     ]
     
@@ -115,7 +126,7 @@ def test_initial_results_endpoint(client, mock_db_connection):
     # Verify that the execute method was called with the expected SQL
     mock_cursor.execute.assert_called_once()
     sql_call = mock_cursor.execute.call_args[0][0]
-    assert "FROM jim_data.search_data_stage" in sql_call
+    assert "FROM jim_data.data_embedded" in sql_call
     assert "ORDER BY pub_date DESC" in sql_call
 
 @pytest.mark.api
@@ -136,7 +147,7 @@ def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_mo
             "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
             "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
             "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
-            10, 15, 50, 50
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         ),
         (
             "Another Study", pub_date, 67890, "Another Author", "http://another.url",
@@ -145,7 +156,7 @@ def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_mo
             "2:1", "8-12", "15mg", "No change", "Another Secondary", "Other Measures",
             "Moderate", "Safe", "10%", "60% White", "Other notes", "Low risk", "Low risk",
             "Low risk", "Low risk", "Low risk", "Low risk", "Some biases", "0.7",
-            8, 12, 33, 17
+            8, 12, 33, 17, "Another Journal", "Another Affiliation"
         )
     ]
     
@@ -182,7 +193,7 @@ def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_mo
     # Verify that the execute method was called with the expected SQL
     mock_cursor.execute.assert_called_once()
     sql_call = mock_cursor.execute.call_args[0][0]
-    assert "FROM jim_data.search_data_stage" in sql_call
+    assert "FROM jim_data.data_embedded" in sql_call
     assert "ORDER BY distance ASC" in sql_call
 
 @pytest.mark.api
@@ -203,7 +214,7 @@ def test_search_endpoint_with_filters(client, mock_db_connection, mock_sentence_
             "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
             "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
             "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
-            10, 15, 50, 50
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
     
@@ -242,7 +253,7 @@ def test_empty_search_uses_initial_results(client, mock_db_connection):
             "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
             "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
             "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
-            10, 15, 50, 50
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
     
@@ -250,7 +261,7 @@ def test_empty_search_uses_initial_results(client, mock_db_connection):
     with patch('app.search_cache.get') as mock_cache_get:
         # Set up the mock to return different values based on the key
         def side_effect(key):
-            if key == 'initial_results':
+            if key == 'initial_results_200':
                 return None  # First call for initial_results returns None
             return None
         
@@ -263,4 +274,4 @@ def test_empty_search_uses_initial_results(client, mock_db_connection):
         assert response.status_code == 200
         
         # Verify it checked for initial_results in the cache
-        mock_cache_get.assert_any_call('initial_results')
+        mock_cache_get.assert_any_call('initial_results_200')

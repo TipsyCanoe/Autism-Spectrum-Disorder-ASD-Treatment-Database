@@ -30,7 +30,7 @@ def build_ASD_query(author_queries, topic_queries):
 
 if __name__ == '__main__':
     # May need to adjust path depending on what directory you run this in
-    path = str(Path.cwd()) + '/../PubmedAPIFiles/Harle - ASD bio tx .xlsx'
+    path = str(Path.cwd()) + '/PubmedAPIFiles/Harle - ASD bio tx .xlsx'
 
     # Null check
     if not os.path.isfile(path):

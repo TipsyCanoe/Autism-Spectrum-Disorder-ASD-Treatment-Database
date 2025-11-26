@@ -21,7 +21,11 @@ def test_search_endpoint_performance(client, mock_db_connection, mock_sentence_m
         (
             "Test Study", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome", "Test Measures",
-            0.2, "Test Abstract"
+            0.2, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
 
@@ -72,7 +76,11 @@ def test_initial_results_performance(client, mock_db_connection):
         (
             "Test Study", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome", "Test Measures",
-            0, "Test Abstract"
+            0, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
 
@@ -123,7 +131,11 @@ def test_load_simulation(client, mock_db_connection, mock_sentence_model):
         (
             "Test Study", pub_date, 12345, "Test Author", "http://test.url",
             "Test Medication", "6 weeks", "Test Outcome", "Test Measures",
-            0.2, "Test Abstract"
+            0.2, "Test Abstract", "First Author", "2023-01-01", "RCT", "100", "1:1",
+            "10-15", "10mg", "Improved", "Secondary Area", "Secondary Measures",
+            "Mild", "Safe", "5%", "50% White", "Notes", "Low risk", "Low risk",
+            "Low risk", "Low risk", "Low risk", "Low risk", "No biases", "0.8",
+            10, 15, 50, 50, "Test Journal", "Test Affiliation"
         )
     ]
 

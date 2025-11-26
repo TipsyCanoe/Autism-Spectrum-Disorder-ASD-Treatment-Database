@@ -22,7 +22,7 @@ if [ -f "$PID_FILE" ]; then
 else
     echo "No PID file found. Checking ports..."
     # Kill by port as fallback
-    for PORT in 3000 5000 5001; do
+    for PORT in 3000 5000; do
         PID=$(lsof -t -i:$PORT 2>/dev/null)
         [ -n "$PID" ] && kill $PID 2>/dev/null
     done

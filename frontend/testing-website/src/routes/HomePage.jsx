@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AutismSociety from "../assets/AutismSociety.png";
 import NationalAutismAssociation from "../assets/NationalAutismAssociation.png";
@@ -7,29 +7,40 @@ import "../index.css";
 const HomePage = () => {
   const [isJobRunning, setIsJobRunning] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
+  const [isLimitReached, setIsLimitReached] = useState(false);
+
+  useEffect(() => {
+    const lastUpdate = localStorage.getItem("lastUpdateDate");
+    const today = new Date().toISOString().split('T')[0];
+    if (lastUpdate === today) {
+      setIsLimitReached(true);
+    }
+  }, []);
 
   const handleRunJob = async () => {
+    if (isLimitReached) return;
+
     setIsJobRunning(true);
-    setJobMessage("Updating database...");
+    setJobMessage("Triggering update...");
     try {
-      const apiUrl = process.env.REACT_APP_NODE_API_URL || "http://localhost:5001";
+      const apiUrl = process.env.REACT_APP_PYTHON_API_URL || "http://localhost:5000";
       const response = await fetch(`${apiUrl}/api/run-job`, {
         method: "POST",
       });
       const data = await response.json();
       if (response.ok) {
-        setJobMessage(
-          data.message + (data.details ? ` Details: ${data.details}` : "")
-        );
+        setJobMessage("Update triggered successfully.");
+        const today = new Date().toISOString().split('T')[0];
+        localStorage.setItem("lastUpdateDate", today);
+        setIsLimitReached(true);
       } else {
         setJobMessage(
-          `Error: ${data.message}` +
-            (data.error ? ` Details: ${data.error}` : "")
+          `Error: ${data.message}`
         );
       }
     } catch (error) {
       console.error("Failed to trigger API job:", error);
-      setJobMessage("Failed to trigger job. Check console for details.");
+      setJobMessage("Failed to trigger job.");
     }
     setIsJobRunning(false);
   };
@@ -75,16 +86,16 @@ const HomePage = () => {
               </Link>
               <button
                 onClick={handleRunJob}
-                disabled={isJobRunning}
+                disabled={isJobRunning || isLimitReached}
                 className="btn-primary disabled:bg-gray-400"
-                title="Fetches the latest studies from PubMed"
+                title={isLimitReached ? "Database can only be updated once per day" : "Fetches the latest studies from PubMed"}
               >
-                {isJobRunning ? "Updating..." : "Update Database"}
+                {isJobRunning ? "Updating..." : (isLimitReached ? "Updated Today" : "Update Database")}
               </button>
             </div>
             <p className="body-text-sm text-gray-500 max-w-2xl">
               The database automatically pulls the latest autism treatment studies from PubMed. 
-              Click "Update Database" to manually trigger a refresh.
+              Click "Update Database" to manually trigger a refresh. If the button says "Updated Today", please wait until tomorrow.
             </p>
           </div>
           {jobMessage && (

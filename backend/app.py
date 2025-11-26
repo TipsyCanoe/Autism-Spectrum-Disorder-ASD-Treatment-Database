@@ -11,6 +11,9 @@ import datetime
 import re
 import json
 import functools  # For the caching decorator
+import subprocess
+import sys
+from pathlib import Path
 
 # Simple cache implementation
 class SimpleCache:
@@ -43,8 +46,10 @@ filter_cache = SimpleCache(max_size=10)   # Cache for filter options
 app = Flask(__name__)
 CORS(app) 
 
-# Get database URL from environment variable with fallback
-NEON_DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://neondb_owner:npg_Jcn8LGTStZ3u@ep-still-hat-a66dlf3g-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require")
+# Get database URL from environment variable
+NEON_DATABASE_URL = os.getenv('DATABASE_URL')
+if not NEON_DATABASE_URL:
+    print("Warning: DATABASE_URL not set. Database connections will fail.")
 
 if DISABLE_MODEL_LOADING:
     class _StubSentenceModel:
@@ -257,7 +262,8 @@ def search():
     if not query and not selected_filters:
         print("Empty search - redirecting to initial results")
         # Call the initial_results function directly but use the requested limit
-        cached_result = search_cache.get('initial_results')
+        cache_key = f'initial_results_{limit}'
+        cached_result = search_cache.get(cache_key)
         if cached_result:
             print("Returning initial results from cache for empty search")
             return cached_result
@@ -586,6 +592,38 @@ def clear_cache():
     search_cache.cache.clear()
     filter_cache.cache.clear()
     return jsonify({"message": "Cache cleared successfully"}), 200
+
+@app.route('/api/run-job', methods=['POST'])
+def run_job():
+    try:
+        # Get the root directory (parent of backend)
+        root_dir = Path(__file__).resolve().parent.parent
+        script_path = root_dir / 'API_JOB.py'
+        
+        if not script_path.exists():
+            return jsonify({
+                "message": "Job failed",
+                "error": f"Script not found at {script_path}"
+            }), 404
+
+        # Run the script asynchronously using Popen
+        # We don't wait for it to finish, so we can't return output
+        subprocess.Popen(
+            [sys.executable, str(script_path)],
+            cwd=str(root_dir),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+        return jsonify({
+            "message": "Job triggered successfully. It will run in the background."
+        })
+
+    except Exception as e:
+        return jsonify({
+            "message": "Job failed to trigger",
+            "error": str(e)
+        }), 500
 
 if __name__ == '__main__':
     # Get port and debug settings from environment variables
