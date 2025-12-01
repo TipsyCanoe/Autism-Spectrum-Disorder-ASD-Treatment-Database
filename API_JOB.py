@@ -30,11 +30,14 @@ def update_pull_data():
         f.write(f"LAST_PULL_TIME={time}\n")
 
 if __name__ == "__main__":
+    # Load variables from environment
     load_dotenv(override=True)
     today = datetime.now().strftime("%Y-%m-%d")
     last_pull_date = os.getenv('LAST_PULL_DATE')
     
+    # Only pull if we haven't pulled yet today
     if last_pull_date != today:
+        # Appending file paths for API scraping scripts
         scripts = []
         file_heads = [
             "pubmed_API_ASD_data.py",
@@ -48,6 +51,10 @@ if __name__ == "__main__":
 
         run_scripts(scripts)
         update_pull_data()
+
+        # Running LLM pipeline script
+        path_to_LLM = [str(Path.cwd()) + '/backend/LLMPipeline.py']
+        run_scripts(path_to_LLM)
     else:
         print("Already pulled today. Please try again tommorrow.")
     

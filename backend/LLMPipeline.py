@@ -6,6 +6,7 @@ from openai import OpenAI
 from transformers import AutoTokenizer
 from sentence_transformers import SentenceTransformer, models
 from tqdm import tqdm
+from dotenv import load_dotenv
 import os
 
 class LLMPipeline:
@@ -430,8 +431,10 @@ class LLMPipeline:
 
 
 if __name__ == "__main__":
+    load_dotenv(override=True)
+    last_pull_date = os.getenv('LAST_PULL_DATE')
     pipeline = LLMPipeline(
-        input_csv='grabbed_papers.csv',
+        input_csv=f"pubmed_combined_{last_pull_date}.csv",
         batch_size=5
     )
     
