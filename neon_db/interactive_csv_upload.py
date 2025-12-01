@@ -10,7 +10,7 @@ DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://neondb_owner:npg_Jcn8LGTS
 
 def interactive_upload():
     """Interactive CSV upload script"""
-    print("🚀 Neon Database CSV Uploader")
+    print("Neon Database CSV Uploader")
     print("=" * 40)
     
     # Get input from user with PubmedAPIFiles/ prepended
@@ -19,11 +19,11 @@ def interactive_upload():
     
     # Validate file
     if not os.path.exists(csv_path):
-        print(f"❌ File not found: {csv_path}")
+        print(f"File not found: {csv_path}")
         return False
     
     if not csv_path.lower().endswith('.csv'):
-        print("❌ File must be a CSV")
+        print("File must be a CSV")
         return False
     
     # Get database details with defaults
@@ -32,13 +32,13 @@ def interactive_upload():
     mode = input("Upload mode (append/replace) [append]: ").strip().lower() or 'append'
     
     if mode not in ['append', 'replace']:
-        print("❌ Mode must be 'append' or 'replace'")
+        print("Mode must be 'append' or 'replace'")
         return False
     
     # Preview CSV
     try:
         df_preview = pd.read_csv(csv_path, nrows=5)
-        print(f"\n📊 CSV Preview ({df_preview.shape[0]} rows shown):")
+        print(f"\nCSV Preview ({df_preview.shape[0]} rows shown):")
         print(df_preview.to_string(index=False))
         print(f"\nColumns: {list(df_preview.columns)}")
         
@@ -47,23 +47,23 @@ def interactive_upload():
         print(f"File size: {file_size / 1024 / 1024:.2f} MB")
         
     except Exception as e:
-        print(f"❌ Error reading CSV: {e}")
+        print(f"Error reading CSV: {e}")
         return False
     
     # Confirm upload
-    print(f"\n🎯 Upload Summary:")
+    print(f"\nUpload Summary:")
     print(f"   File: {csv_path}")
     print(f"   Target: {schema}.{table}")
     print(f"   Mode: {mode}")
     
     confirm = input("\nProceed with upload? (y/N): ").lower()
     if confirm != 'y':
-        print("❌ Upload cancelled")
+        print("Upload cancelled")
         return False
     
     # Perform upload
     try:
-        print("\n🔄 Starting upload...")
+        print("\nStarting upload...")
         engine = create_engine(DATABASE_URL)
         
         start_time = datetime.now()
@@ -87,7 +87,7 @@ def interactive_upload():
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds()
         
-        print(f"✅ Upload successful!")
+        print(f"Upload successful!")
         print(f"   Rows uploaded: {len(df)}")
         print(f"   Duration: {duration:.2f} seconds")
         print(f"   Table: {schema}.{table}")
@@ -95,7 +95,7 @@ def interactive_upload():
         return True
         
     except Exception as e:
-        print(f"❌ Upload failed: {e}")
+        print(f"Upload failed: {e}")
         return False
 
 if __name__ == '__main__':
