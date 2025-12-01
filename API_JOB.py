@@ -14,6 +14,8 @@ def run_scripts(script_paths):
             if result.stderr:
                 print(f"--- Errors from {script_path} ---")
                 print(result.stderr)
+            else:
+                print(f"--- Finished {script_path} ---")
         except subprocess.CalledProcessError as e:
             print(f"--- Error running {script_path} ---")
             print(e.stderr)
@@ -51,10 +53,12 @@ if __name__ == "__main__":
 
         run_scripts(scripts)
         update_pull_data()
+        print("Finished running all API scripts")
 
-        # Running LLM pipeline script
-        path_to_LLM = [str(Path.cwd()) + '/backend/LLMPipeline.py']
-        run_scripts(path_to_LLM)
+        # Running upload pipeline scripts
+        path_to_uploaders = [str(Path.cwd()) + '/backend/LLMPipeline.py', 
+                       str(Path.cwd()) + '/neon_db/automated_csv_uploader.py']
+        run_scripts(path_to_uploaders)
     else:
         print("Already pulled today. Please try again tommorrow.")
     
