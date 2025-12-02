@@ -5,6 +5,7 @@ const API_BASE_URL = process.env.REACT_APP_PYTHON_API_URL || "";
 
 const useSearch = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [includeAi, setIncludeAi] = useState(true); // Default to including AI results
   const [results, setResults] = useState([]); // This should be an array of treatment objects
   const [isLoading, setIsLoading] = useState(true); // Start with loading true
   const [error, setError] = useState(null);
@@ -32,7 +33,13 @@ const useSearch = () => {
   const fetchInitialResults = useCallback(async (limit = 200) => {
     setIsLoading(true);
     try {
-      const url = limit ? `${API_BASE_URL}/api/initial-results?limit=${limit}` : `${API_BASE_URL}/api/initial-results`;
+      let url = `${API_BASE_URL}/api/initial-results`;
+      const params = new URLSearchParams();
+      if (limit) params.append("limit", limit);
+      params.append("include_ai", includeAi);
+      
+      url += `?${params.toString()}`;
+      
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch initial results");
@@ -51,7 +58,7 @@ const useSearch = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [includeAi]); // Re-fetch if includeAi changes
 
   useEffect(() => {
     // Load both filters and initial results when component mounts
@@ -71,6 +78,7 @@ const useSearch = () => {
       try {
         const params = new URLSearchParams();
         params.append("query", query);
+        params.append("include_ai", includeAi);
         
         if (limit) {
           params.append("limit", limit);
@@ -99,12 +107,14 @@ const useSearch = () => {
         setIsLoading(false);
       }
     },
-    [selectedOptions]
+    [selectedOptions, includeAi]
   );
 
   return {
     selectedOptions,
     setSelectedOptions,
+    includeAi,
+    setIncludeAi,
     results, // This will be an array of treatment objects: [{ treatment: "...", studies: [...] }]
     fetchResults,
     fetchInitialResults,
