@@ -80,6 +80,9 @@ const TestComponent = ({
       <div data-testid="availableFilters">
         {JSON.stringify(hookResult.availableFilters)}
       </div>
+      <div data-testid="includeAi">
+        {String(hookResult.includeAi)}
+      </div>
       <input
         type="text"
         data-testid="query-input"
@@ -97,6 +100,7 @@ const TestComponent = ({
         Set Default Test Options
       </button>
       <button onClick={() => hookResult.fetchFilters()}>Refetch Filters</button>
+      <button onClick={() => hookResult.setIncludeAi(!hookResult.includeAi)}>Toggle AI</button>
     </div>
   );
 };
@@ -145,6 +149,7 @@ describe("useSearch Hook", () => {
     expect(screen.getByTestId("selectedOptions").textContent).toBe(
       JSON.stringify([])
     );
+    expect(screen.getByTestId("includeAi").textContent).toBe("true");
     expect(screen.getByTestId("results").textContent).toBe(JSON.stringify([]));
     expect(screen.getByTestId("error").textContent).toBe("null");
   });
@@ -459,7 +464,7 @@ describe("useSearch Hook", () => {
     );
   });
 
-  test("fetchResults uses updated selectedOptions correctly", async () => {
+    test("fetchResults uses updated selectedOptions correctly", async () => {
     const mockInitialFiltersForThisTest = {
       age: ["adult"],
       symptom: ["anxiety"],
@@ -508,6 +513,57 @@ describe("useSearch Hook", () => {
     fireEvent.click(screen.getByRole("button", { name: /Fetch Results/i }));
     await waitFor(() =>
       expect(screen.getByTestId("results").textContent).toContain("Filtered")
+    );
+  });
+
+  test("toggleIncludeAi should update includeAi state and trigger fetch", async () => {
+    const mockSearchResults = [{ id: 4, title: "AI Study" }];
+    fetch.mockImplementation((url) => {
+      if (url.includes("/api/filters"))
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({ age: [], symptom: [], gender: [], medication: [] }),
+        });
+      if (url.includes("/api/initial-results"))
+        return Promise.resolve({ ok: true, json: async () => [] });
+      if (url.includes("/api/search") && url.includes("include_ai=false"))
+        return Promise.resolve({
+          ok: true,
+          json: async () => mockSearchResults,
+        });
+      if (url.includes("/api/search"))
+        return Promise.resolve({
+          ok: true,
+          json: async () => [],
+        });
+      return undefined;
+    });
+
+    render(<TestComponent />);
+    await waitFor(() =>
+      expect(screen.getByTestId("availableFilters").textContent).toContain(
+        "age"
+      )
+    );
+    
+    // Initial state check
+    expect(screen.getByTestId("includeAi").textContent).toBe("true");
+    
+    // Toggle AI
+    fireEvent.click(screen.getByRole("button", { name: /Toggle AI/i }));
+    
+    // Check state update
+    await waitFor(() => 
+      expect(screen.getByTestId("includeAi").textContent).toBe("false")
+    );
+    
+    // Trigger fetch to verify param is passed
+    fireEvent.click(screen.getByRole("button", { name: /Fetch Results/i }));
+    
+    await waitFor(() =>
+      expect(screen.getByTestId("results").textContent).toBe(
+        JSON.stringify(mockSearchResults)
+      )
     );
   });
 });

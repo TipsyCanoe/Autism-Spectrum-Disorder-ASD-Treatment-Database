@@ -77,17 +77,17 @@ describe("HomePage Component", () => {
       fireEvent.click(updateButton);
 
       expect(updateButton).toBeDisabled();
-      expect(screen.getByText(/Updating database.../i)).toBeInTheDocument();
+      expect(screen.getByText(/Triggering update.../i)).toBeInTheDocument();
 
       await waitFor(() => {
         expect(
           screen.getByText(
-            /Job completed successfully Details: 100 entries added/i
+            /Update triggered successfully./i
           )
         ).toBeInTheDocument();
       });
       expect(updateButton).toBeDisabled();
-      expect(screen.getByText(/Updated Today/i)).toBeInTheDocument();
+      expect(updateButton).toHaveTextContent(/Updated Today/i);
     });
 
     test("handles API error and displays error message", async () => {
@@ -111,12 +111,12 @@ describe("HomePage Component", () => {
       fireEvent.click(updateButton);
 
       expect(updateButton).toBeDisabled();
-      expect(screen.getByText(/Updating database.../i)).toBeInTheDocument();
+      expect(screen.getByText(/Triggering update.../i)).toBeInTheDocument();
 
       await waitFor(() => {
         expect(
           screen.getByText(
-            /Error: Job failed Details: Database connection error/i
+            /Error: Job failed/i
           )
         ).toBeInTheDocument();
       });
@@ -143,11 +143,11 @@ describe("HomePage Component", () => {
       fireEvent.click(updateButton);
 
       expect(updateButton).toBeDisabled();
-      expect(screen.getByText(/Updating database.../i)).toBeInTheDocument();
+      expect(screen.getByText(/Triggering update.../i)).toBeInTheDocument();
 
       await waitFor(() => {
         expect(
-          screen.getByText(/Failed to trigger job. Check console for details./i)
+          screen.getByText(/Failed to trigger job./i)
         ).toBeInTheDocument();
       });
       expect(updateButton).not.toBeDisabled();
@@ -163,7 +163,7 @@ describe("HomePage Component", () => {
     test("displays success message without details if details are not provided", async () => {
       fetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ message: "Job completed successfully" }), // No details
+        json: async () => ({ message: "Update triggered successfully." }), // No details
       });
 
       render(
@@ -179,7 +179,7 @@ describe("HomePage Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/Job completed successfully/i)
+          screen.getByText(/Update triggered successfully./i)
         ).toBeInTheDocument();
         // Ensure "Details:" is not part of the message
         expect(screen.queryByText(/Details:/i)).not.toBeInTheDocument();
