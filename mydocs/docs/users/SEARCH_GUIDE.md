@@ -27,17 +27,17 @@ You can also include filters for your search. We have **age**, **symptoms and be
 ![Alt Text](images/search_filter.png)
 
 <figure style="max-width:120%; margin:auto;">
-  <figcaption style="text-align:center;">An example of filters applied to a search. Currently, the search is filtered by male, irritability, and the medication method of accelerated theta burst stimulation.</figcaption>
+  <figcaption style="text-align:center;">An example of filters applied to a search. Currently, the search is filtered by male, anxiety symptoms, and 6 - 12 years old.</figcaption>
 </figure>
 
 ## Most Recent Results
 
-If you feel like the studies are out-of-date, please click the **Update Database** button on the Home Page. This will update our database and help detect the most up-to-date papers. The process will take a couple of minutes, so we appreciate your patience.
+If you feel like the studies are out-of-date, please click the **Update Database** button on the Home Page. This will update our database and help detect the most up-to-date papers. The database can only be updated once per day due to the AI needing one day to finish. We appreciate your patience for the needed time.
 
 ![Alt Text](images/update_database.png)
 
 <figure style="max-width:120%; margin:auto;">
-  <figcaption style="text-align:center;">The Update Database button is highlighted on the home page with a red circle..</figcaption>
+  <figcaption style="text-align:center;">The Update Database button is highlighted on the home page with a red circle.</figcaption>
 </figure>
 
 We normally update our database once a week on Mondays, so if a paper came out after then, please feel free to update.
