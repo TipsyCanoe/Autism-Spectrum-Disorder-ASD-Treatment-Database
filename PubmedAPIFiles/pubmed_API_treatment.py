@@ -21,8 +21,8 @@ def get_full_treatment_queries(treatment_queries, queries):
     return full_queries
 
 if __name__ == '__main__':
-    # May need to adjust path depending on what directory you run this in
-    path = str(Path.cwd()) + '/../PubmedAPIFiles/Treatment_Names.xlsx'
+    # Use path relative to this script
+    path = str(Path(__file__).parent / 'Treatment_Names.xlsx')
 
     # Null check
     if not os.path.isfile(path):

@@ -34,7 +34,7 @@ if [ "$ENVIRONMENT" = "production" ]; then
     
     # Check service status
     echo "Service status:"
-    sudo systemctl status asd-backend.service asd-node-backend.service nginx.service --no-pager
+    sudo systemctl status asd-backend.service nginx.service --no-pager
     
 else
     echo "Development mode: Starting services manually..."
