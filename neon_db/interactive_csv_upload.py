@@ -29,15 +29,17 @@ def interactive_upload():
     # Get database details with defaults
     schema = input("Enter schema name [jim_data]: ").strip() or 'jim_data'
     table = input("Enter table name [data_embedded]: ").strip() or 'data_embedded'
-    mode = input("Upload mode (append/replace) [append]: ").strip().lower() or 'append'
+    mode = input("Upload mode (append/replace/upsert) [append]: ").strip().lower() or 'append'
     
-    if mode not in ['append', 'replace']:
-        print("Mode must be 'append' or 'replace'")
+    if mode not in ['append', 'replace', 'upsert']:
+        print("Mode must be 'append', 'replace', or 'upsert'")
         return False
     
     # Preview CSV
     try:
-        df_preview = pd.read_csv(csv_path, nrows=5)
+        df_preview = pd.read_csv(csv_path, nrows=5, lineterminator='\n', encoding='utf-8')
+        # Strip whitespace from column names
+        df_preview.columns = df_preview.columns.str.strip()
         print(f"\nCSV Preview ({df_preview.shape[0]} rows shown):")
         print(df_preview.to_string(index=False))
         print(f"\nColumns: {list(df_preview.columns)}")
@@ -69,7 +71,9 @@ def interactive_upload():
         start_time = datetime.now()
         
         # Read full CSV
-        df = pd.read_csv(csv_path)
+        df = pd.read_csv(csv_path, lineterminator='\n', encoding='utf-8', keep_default_na=True, na_values=['', 'NaN', 'nan', 'None'])
+        # Strip whitespace from column names
+        df.columns = df.columns.str.strip()
         print(f"   Loaded {len(df)} rows, {len(df.columns)} columns")
         
         # Clean column names
@@ -77,12 +81,49 @@ def interactive_upload():
         df.columns = [col.strip().lower().replace(' ', '_').replace('-', '_') 
                      for col in df.columns]
         
-        # Handle null values
+        # Convert data types to match database schema
+        # pmid and sample_size should be integers
+        if 'pmid' in df.columns:
+            df['pmid'] = pd.to_numeric(df['pmid'], errors='coerce').astype('Int64')
+        if 'sample_size' in df.columns:
+            df['sample_size'] = pd.to_numeric(df['sample_size'], errors='coerce').astype('Int64')
+        
+        # Handle null values - replace pandas NaN/None with Python None
         df = df.where(pd.notnull(df), None)
         
+        # Special handling for embedding column - ensure NaN becomes None (NULL in database)
+        if 'embedding' in df.columns:
+            df['embedding'] = df['embedding'].apply(lambda x: None if pd.isna(x) or x == 'NaN' or x == '' else x)
+        
         # Upload to database
-        df.to_sql(table, engine, schema=schema, if_exists=mode, 
-                 index=False, method='multi')
+        if mode == 'upsert':
+            # Use custom upsert logic with ON CONFLICT
+            from sqlalchemy import text
+            
+            # Get columns
+            columns = df.columns.tolist()
+            cols_str = ', '.join(columns)
+            placeholders = ', '.join([f':{col}' for col in columns])
+            
+            # Build update clause (update all columns except pmid)
+            update_cols = [col for col in columns if col != 'pmid']
+            update_str = ', '.join([f'{col} = EXCLUDED.{col}' for col in update_cols])
+            
+            # Create upsert SQL
+            upsert_sql = text(f"""
+                INSERT INTO {schema}.{table} ({cols_str})
+                VALUES ({placeholders})
+                ON CONFLICT (pmid) DO UPDATE SET {update_str}
+            """)
+            
+            # Execute batch upsert
+            with engine.begin() as conn:
+                for _, row in df.iterrows():
+                    conn.execute(upsert_sql, row.to_dict())
+        else:
+            # Use standard pandas to_sql for append/replace
+            df.to_sql(table, engine, schema=schema, if_exists=mode, 
+                     index=False, method='multi')
         
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds()
