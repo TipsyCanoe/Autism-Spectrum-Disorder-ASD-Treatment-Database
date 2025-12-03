@@ -2,6 +2,7 @@ import { useState } from "react";
 import AlexLo from "../assets/AlexLo.jpg";
 import ColeOliva from "../assets/ColeOliva.jpg";
 import JimHarle from "../assets/JimHarle.jpg";
+import LoganKalloway from "../assets/LoganKalloway.jpg";
 import RichardJefferson from "../assets/RichardJefferson.jpg";
 import ShameemAhmed from "../assets/ShameemAhmed.jpg";
 import "../index.css";
@@ -119,7 +120,11 @@ const About = () => {
             <p className="text-gray-600">API and Formatting Architect</p>
           </div>
           <div className="text-center">
-            <div className="w-24 h-24 rounded-full bg-gray-300 mx-auto mb-4"></div>
+            <img
+              src={LoganKalloway}
+              alt="Logan Kalloway"
+              className="w-24 h-24 rounded-full object-cover mx-auto mb-4"
+            />
             <h3 className="font-semibold">Logan Kalloway</h3>
             <p className="text-gray-600">LLM and MedBERT Architect</p>
           </div>
