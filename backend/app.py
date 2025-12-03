@@ -255,6 +255,7 @@ def search():
     print("trying search")
     query = request.args.get('query', '').lower()
     selected_filters = request.args.getlist('filters')
+    include_ai = request.args.get('include_ai', 'true').lower() == 'true'
     filters_str = ', '.join(selected_filters)
     limit = int(request.args.get('limit', 200))  # Default limit for search results
     
@@ -262,7 +263,7 @@ def search():
     if not query and not selected_filters:
         print("Empty search - redirecting to initial results")
         # Call the initial_results function directly but use the requested limit
-        cache_key = f'initial_results_{limit}'
+        cache_key = f'initial_results_{limit}_{include_ai}'
         cached_result = search_cache.get(cache_key)
         if cached_result:
             print("Returning initial results from cache for empty search")
@@ -272,7 +273,7 @@ def search():
         # This will still be different from initial results due to the vector similarity
     
     # Create a cache key from the query parameters
-    cache_key = f"{query}|{filters_str}|{limit}"
+    cache_key = f"{query}|{filters_str}|{limit}|{include_ai}"
     cached_result = search_cache.get(cache_key)
     if cached_result:
         print(f"Returning cached search results for: {cache_key}")
@@ -292,6 +293,7 @@ def search():
     results = []
     query_embedding = sentence_model.encode(query + filters_str)
     
+    # Base SQL query
     sql = """
         SELECT 
             title,
@@ -336,11 +338,20 @@ def search():
             affiliations
         FROM jim_data.data_embedded
         WHERE vector IS NOT NULL
+    """
+    
+    params = [query_embedding.tolist()]
+    
+    # Add AI filter if needed
+    if not include_ai:
+        sql += " AND (ai IS NULL OR LOWER(ai) != 'true')"
+        
+    # Add ordering and limit
+    sql += """
         ORDER BY distance ASC
         LIMIT %s
     """
-    
-    params = [query_embedding.tolist(), limit]
+    params.append(limit)
     
     try:
         cursor.execute(sql, params)
@@ -437,12 +448,13 @@ def get_initial_results():
     print("Loading initial results")
     
     limit = int(request.args.get('limit', 200))  # Default limit for initial results
+    include_ai = request.args.get('include_ai', 'true').lower() == 'true'
     
     # Try to get from cache first with limit in cache key
-    cache_key = f'initial_results_{limit}'
+    cache_key = f'initial_results_{limit}_{include_ai}'
     cached_result = search_cache.get(cache_key)
     if cached_result:
-        print(f"Returning initial results from cache (limit={limit})")
+        print(f"Returning initial results from cache (limit={limit}, include_ai={include_ai})")
         return cached_result
     
     conn = get_db_connection()
@@ -493,6 +505,13 @@ def get_initial_results():
             journal,
             affiliations
         FROM jim_data.data_embedded
+    """
+    
+    # Add AI filter if needed
+    if not include_ai:
+        sql += " WHERE (ai IS NULL OR LOWER(ai) != 'true')"
+        
+    sql += """
         ORDER BY pub_date DESC NULLS LAST  -- Get most recent studies
         LIMIT %s
     """

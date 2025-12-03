@@ -46,7 +46,7 @@ const defaultUseSearch = {
           "Study Title": "Study 1",
           PMID: "123",
           "Full Text URL": "http://example.com/full1",
-          Author: "Author 1",
+          Author: "Author 1, Author 2, Author 3",
         },
         {
           "Study Title": "Study 2",
@@ -106,7 +106,12 @@ describe("SearchPage", () => {
 
     // Click on "Study 1" to expand its details
     fireEvent.click(screen.getByText(/Study 1/i));
+    // Should only show the first author
     expect(await screen.findByText(/Author 1/i)).toBeInTheDocument();
+    // Should NOT show the other authors
+    expect(screen.queryByText(/Author 2/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Author 3/i)).not.toBeInTheDocument();
+    
     expect(screen.getByText(/View Full Text/i)).toHaveAttribute(
       "href",
       "http://example.com/full1"

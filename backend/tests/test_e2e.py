@@ -148,7 +148,7 @@ def test_cache_persistence(client, mock_db_connection):
     assert filters_response1.data == filters_response2.data
 
 @pytest.mark.e2e
-def test_error_handling(client):
+def test_error_handling(client, mock_db_connection):
     """
     Test that the API properly handles errors and returns
     appropriate error responses.

@@ -8,6 +8,8 @@ const SearchPage = () => {
   const {
     selectedOptions,
     setSelectedOptions,
+    includeAi,
+    setIncludeAi,
     results, // This is now an array of objects
     fetchResults,
     fetchInitialResults,
@@ -186,6 +188,8 @@ const SearchPage = () => {
           symptomOptions={getOptionsForCategory("symptom")}
           genderOptions={getOptionsForCategory("gender")}
           medicationOptions={getOptionsForCategory("medication")}
+          includeAi={includeAi}
+          setIncludeAi={setIncludeAi}
         />
 
         <div className="w-full lg:w-2/3">
@@ -404,7 +408,7 @@ const SearchPage = () => {
                                       )}
                                       {study.Author && (
                                         <div className="mb-1">
-                                          <strong>First Author:</strong> {study.Author || "Not specified in article"}
+                                          <strong>First Author:</strong> {study.Author.split(',')[0] || "Not specified in article"}
                                         </div>
                                       )}
                                       {study.Journal && (
@@ -413,9 +417,14 @@ const SearchPage = () => {
                                         </div>
                                       )}
                                       {study["Commercial Affiliation"] && (
-                                        <div className="mb-1">
-                                          <strong>Commercial Affiliation:</strong> {study["Commercial Affiliation"] || "Not specified in article"}
-                                        </div>
+                                        <details className="mb-1">
+                                          <summary className="cursor-pointer text-xs lg:text-sm font-bold hover:text-gray-900">
+                                            Commercial Affiliation (Click to expand)
+                                          </summary>
+                                          <p className="text-xs lg:text-sm text-gray-600 break-words mt-1 pl-4 border-l-2 border-gray-300">
+                                            {study["Commercial Affiliation"] || "Not specified in article"}
+                                          </p>
+                                        </details>
                                       )}
                                       {study.PMID && (
                                         <div className="mb-1">
@@ -483,9 +492,9 @@ const SearchPage = () => {
                                     </div>
                                     
                                     {/* Results: Primary measure */}
-                                    <div className="mb-2 lg:mb-3">
-                                      <strong className="text-xs lg:text-sm text-gray-700">Results: Primary Measure:</strong>
-                                      <p className="text-xs lg:text-sm text-gray-600 break-words">{study["Results: Primary measure"] || "Not specified in article"}</p>
+                                    <div className="mb-2 lg:mb-3 p-2 bg-blue-50 border-l-4 border-blue-500 rounded-r">
+                                      <strong className="text-xs lg:text-sm text-gray-800 block mb-1">Results: Primary Measure:</strong>
+                                      <p className="text-xs lg:text-sm text-gray-800 font-medium break-words">{study["Results: Primary measure"] || "Not specified in article"}</p>
                                     </div>
                                     
                                     {/* Secondary Outcome Area */}

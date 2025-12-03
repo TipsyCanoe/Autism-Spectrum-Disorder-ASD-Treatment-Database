@@ -27,9 +27,33 @@ def run_scripts(script_paths):
 def update_pull_data():
     today = datetime.now().strftime("%Y-%m-%d")
     time = datetime.now().strftime("%H:%M:%S")
-    with open('.env', 'w') as f:
-        f.write(f"LAST_PULL_DATE={today}\n")
-        f.write(f"LAST_PULL_TIME={time}\n")
+    
+    env_path = Path.cwd() / '.env'
+    env_lines = []
+    if env_path.exists():
+        with open(env_path, 'r') as f:
+            env_lines = f.readlines()
+    
+    new_lines = []
+    keys_updated = {'LAST_PULL_DATE': False, 'LAST_PULL_TIME': False}
+    
+    for line in env_lines:
+        if line.startswith('LAST_PULL_DATE='):
+            new_lines.append(f"LAST_PULL_DATE={today}\n")
+            keys_updated['LAST_PULL_DATE'] = True
+        elif line.startswith('LAST_PULL_TIME='):
+            new_lines.append(f"LAST_PULL_TIME={time}\n")
+            keys_updated['LAST_PULL_TIME'] = True
+        else:
+            new_lines.append(line)
+            
+    if not keys_updated['LAST_PULL_DATE']:
+        new_lines.append(f"LAST_PULL_DATE={today}\n")
+    if not keys_updated['LAST_PULL_TIME']:
+        new_lines.append(f"LAST_PULL_TIME={time}\n")
+        
+    with open(env_path, 'w') as f:
+        f.writelines(new_lines)
 
 if __name__ == "__main__":
     # Load variables from environment

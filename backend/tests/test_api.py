@@ -128,6 +128,30 @@ def test_initial_results_endpoint(client, mock_db_connection):
     sql_call = mock_cursor.execute.call_args[0][0]
     assert "FROM jim_data.data_embedded" in sql_call
     assert "ORDER BY pub_date DESC" in sql_call
+    # Default behavior (include_ai=True) should NOT exclude AI results
+    assert "LOWER(ai) != 'true'" not in sql_call
+
+@pytest.mark.api
+def test_initial_results_without_ai_endpoint(client, mock_db_connection):
+    """Test the /api/initial-results endpoint with include_ai=false."""
+    mock_conn, mock_cursor = mock_db_connection
+    
+    # Mock the database response
+    mock_cursor.fetchall.return_value = []
+    
+    # Patch the cache to return None so we hit the DB
+    with patch('app.search_cache.get', return_value=None):
+        # Call the API endpoint with include_ai=false
+        response = client.get('/api/initial-results?include_ai=false')
+        
+        # Check that the response is successful
+        assert response.status_code == 200
+        
+        # Verify that the execute method was called with the expected SQL
+        mock_cursor.execute.assert_called_once()
+        sql_call = mock_cursor.execute.call_args[0][0]
+        # Should contain the exclusion clause
+        assert "LOWER(ai) != 'true'" in sql_call
 
 @pytest.mark.api
 def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_model):
@@ -195,6 +219,30 @@ def test_search_endpoint_with_query(client, mock_db_connection, mock_sentence_mo
     sql_call = mock_cursor.execute.call_args[0][0]
     assert "FROM jim_data.data_embedded" in sql_call
     assert "ORDER BY distance ASC" in sql_call
+    # Default behavior (include_ai=True) should NOT exclude AI results
+    assert "LOWER(ai) != 'true'" not in sql_call
+
+@pytest.mark.api
+def test_search_endpoint_without_ai(client, mock_db_connection, mock_sentence_model):
+    """Test the /api/search endpoint with include_ai=false."""
+    mock_conn, mock_cursor = mock_db_connection
+    
+    # Mock the database response
+    mock_cursor.fetchall.return_value = []
+    
+    # Patch the cache to return None so we hit the DB
+    with patch('app.search_cache.get', return_value=None):
+        # Call the API endpoint with include_ai=false
+        response = client.get('/api/search?query=autism&include_ai=false')
+        
+        # Check that the response is successful
+        assert response.status_code == 200
+        
+        # Verify that the execute method was called with the expected SQL
+        mock_cursor.execute.assert_called_once()
+        sql_call = mock_cursor.execute.call_args[0][0]
+        # Should contain the exclusion clause
+        assert "LOWER(ai) != 'true'" in sql_call
 
 @pytest.mark.api
 def test_search_endpoint_with_filters(client, mock_db_connection, mock_sentence_model):
@@ -271,7 +319,6 @@ def test_empty_search_uses_initial_results(client, mock_db_connection):
         response = client.get('/api/search')
         
         # Check that the response is successful
-        assert response.status_code == 200
-        
         # Verify it checked for initial_results in the cache
-        mock_cache_get.assert_any_call('initial_results_200')
+        # The key now includes the default include_ai=True
+        mock_cache_get.assert_any_call('initial_results_200_True')

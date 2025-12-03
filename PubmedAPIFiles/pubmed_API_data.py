@@ -28,8 +28,10 @@ def get_full_query():
     social_terms = ['rTMS[Title/Abstract]', '"Transcranial Magnetic Stimulation"[MeSH]', 'ECT[Title/Abstract]', '"Electroconvulsive Therapy"[MeSH]', 
     'Behavioral Therapy[MeSH]', '"Psychotherapy, Group"[MeSH]', 'Cognitive Therapy[MeSH]', 'Psychosocial Intervention[Title/Abstract]']
 
-    biologics_terms = get_terms("biologic_terms.txt", biologics_terms)
-    social_terms = get_terms("social_terms.txt", social_terms)
+    # Get paths relative to this script
+    script_dir = Path(__file__).parent
+    biologics_terms = get_terms(script_dir / "biologic_terms.txt", biologics_terms)
+    social_terms = get_terms(script_dir / "social_terms.txt", social_terms)
 
     # Building the query
     query_boxes = [general_terms, biologics_terms, social_terms, treatment_types_terms]

@@ -13,7 +13,10 @@ monthDict = {
         "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
     }
 
-load_dotenv()
+# Load .env from project root (parent of parent of this script)
+dotenv_path = Path(__file__).parent.parent / '.env'
+load_dotenv(dotenv_path=dotenv_path)
+
 ENTREZ_EMAIL = os.getenv('ENTREZ_EMAIL')
 ENTREZ_API_KEY = os.getenv('ENTREZ_API_KEY')
 LAST_PULL_DATE = os.getenv('LAST_PULL_DATE', '1970-01-01')
