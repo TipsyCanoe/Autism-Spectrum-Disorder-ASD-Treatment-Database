@@ -4,6 +4,8 @@ from datetime import datetime
 import os
 import sys
 from dotenv import load_dotenv
+import urllib.request
+import urllib.error
 
 # runs the designated series of scripts
 def run_scripts(script_paths):
@@ -55,6 +57,21 @@ def update_pull_data():
     with open(env_path, 'w') as f:
         f.writelines(new_lines)
 
+def clear_cache():
+    port = os.getenv('PYTHON_BACKEND_PORT', 5000)
+    url = f"http://localhost:{port}/api/clear-cache"
+    try:
+        req = urllib.request.Request(url, method='POST')
+        with urllib.request.urlopen(req) as response:
+            if response.status == 200:
+                print("Successfully cleared backend cache.")
+            else:
+                print(f"Failed to clear cache. Status code: {response.status}")
+    except urllib.error.URLError as e:
+        print(f"Could not connect to backend to clear cache: {e}")
+    except Exception as e:
+        print(f"Error clearing cache: {e}")
+
 if __name__ == "__main__":
     # Load variables from environment
     load_dotenv(override=True)
@@ -83,6 +100,9 @@ if __name__ == "__main__":
         path_to_uploaders = [str(Path.cwd()) + '/backend/LLMPipeline.py', 
                        str(Path.cwd()) + '/neon_db/automated_csv_uploader.py']
         run_scripts(path_to_uploaders)
+        
+        # Clear the cache after all updates are done
+        clear_cache()
     else:
         print("Already pulled today. Please try again tommorrow.")
     

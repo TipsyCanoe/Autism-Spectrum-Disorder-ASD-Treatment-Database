@@ -14,24 +14,40 @@ import functools  # For the caching decorator
 import subprocess
 import sys
 from pathlib import Path
+import time
 
 # Simple cache implementation
 class SimpleCache:
-    def __init__(self, max_size=100):
+    def __init__(self, max_size=100, default_timeout=3600):
         self.cache = {}
         self.max_size = max(1, max_size)  # Ensure max_size is at least 1
+        self.default_timeout = default_timeout
     
     def get(self, key):
-        return self.cache.get(key)
+        item = self.cache.get(key)
+        if not item:
+            return None
+            
+        value, expiry = item
+        if time.time() > expiry:
+            del self.cache[key]
+            return None
+            
+        return value
     
-    def set(self, key, value):
+    def set(self, key, value, timeout=None):
+        if timeout is None:
+            timeout = self.default_timeout
+            
+        expiry = time.time() + timeout
+        
         # Basic LRU: if cache is full, remove first item (simplistic approach)
         if len(self.cache) >= self.max_size:
             # Remove oldest item (first key)
             if self.cache:  # Check if cache is not empty
                 oldest_key = next(iter(self.cache))
                 del self.cache[oldest_key]
-        self.cache[key] = value
+        self.cache[key] = (value, expiry)
 
 # Load environment variables
 load_dotenv()
@@ -348,7 +364,7 @@ def search():
         
     # Add ordering and limit
     sql += """
-        ORDER BY distance ASC
+        ORDER BY distance ASC, pmid DESC
         LIMIT %s
     """
     params.append(limit)
@@ -512,7 +528,7 @@ def get_initial_results():
         sql += " WHERE (ai IS NULL OR LOWER(ai) != 'true')"
         
     sql += """
-        ORDER BY pub_date DESC NULLS LAST  -- Get most recent studies
+        ORDER BY pub_date DESC NULLS LAST, pmid DESC  -- Get most recent studies
         LIMIT %s
     """
     
