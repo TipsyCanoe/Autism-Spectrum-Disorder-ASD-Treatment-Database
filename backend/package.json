@@ -1,0 +1,14 @@
+{
+  "name": "asd-db-job-scheduler",
+  "version": "1.0.0",
+  "description": "Node.js scheduler for ASD Database updates",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "node-cron": "^4.0.4"
+  },
+  "author": "",
+  "license": "ISC"
+}
