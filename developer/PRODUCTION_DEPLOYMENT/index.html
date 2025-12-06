@@ -489,6 +489,93 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#initial-server-setup-barebones-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Server Setup (Barebones VM)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Initial Server Setup (Barebones VM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-system-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. System Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Node.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Clone the Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-backend-setup-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Backend Setup (Python)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-frontend-setup-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Frontend Setup (React)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-environment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Environment Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-systemd-service-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Systemd Service Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-nginx-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Nginx Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#deployment-methods" class="md-nav__link">
     <span class="md-ellipsis">
       Deployment Methods
@@ -919,6 +1006,93 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#initial-server-setup-barebones-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Server Setup (Barebones VM)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Initial Server Setup (Barebones VM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-system-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. System Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Node.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Clone the Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-backend-setup-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Backend Setup (Python)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-frontend-setup-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Frontend Setup (React)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-environment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Environment Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-systemd-service-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Systemd Service Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-nginx-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Nginx Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#deployment-methods" class="md-nav__link">
     <span class="md-ellipsis">
       Deployment Methods
@@ -1143,6 +1317,123 @@
 <li><strong>Systemd</strong>: Service management for both backends</li>
 <li><strong>Neon Database</strong>: Cloud-hosted PostgreSQL database</li>
 </ul>
+<h2 id="initial-server-setup-barebones-vm">Initial Server Setup (Barebones VM)</h2>
+<p>This section details how to set up a fresh Ubuntu 20.04/22.04 LTS server from scratch.</p>
+<h3 id="1-system-prerequisites">1. System Prerequisites</h3>
+<p>Update the system and install essential packages:</p>
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade -y
+sudo apt install -y git curl wget build-essential python3 python3-pip python3-venv python3-dev nginx
+</code></pre>
+<h3 id="2-install-nodejs">2. Install Node.js</h3>
+<p>Install Node.js (LTS version) using NodeSource:</p>
+<pre><code class="language-bash">curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+</code></pre>
+<h3 id="3-clone-the-repository">3. Clone the Repository</h3>
+<p>Clone the repository to <code>/opt/asd-db</code>:</p>
+<pre><code class="language-bash">sudo mkdir -p /opt/asd-db
+sudo chown $USER:$USER /opt/asd-db
+git clone https://github.com/TipsyCanoe/Autism-Spectrum-Disorder-ASD-Treatment-Database.git /opt/asd-db
+cd /opt/asd-db
+</code></pre>
+<h3 id="4-backend-setup-python">4. Backend Setup (Python)</h3>
+<p>Create a virtual environment and install dependencies:</p>
+<pre><code class="language-bash">cd /opt/asd-db/backend
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+</code></pre>
+<h3 id="5-frontend-setup-react">5. Frontend Setup (React)</h3>
+<p>Install Node.js dependencies:</p>
+<pre><code class="language-bash">cd /opt/asd-db/frontend/testing-website
+npm install
+</code></pre>
+<h3 id="6-environment-configuration">6. Environment Configuration</h3>
+<p>Copy the production template and edit it:</p>
+<pre><code class="language-bash">cd /opt/asd-db/config
+cp production.env.template production.env
+nano production.env
+</code></pre>
+<p>Update the <code>DATABASE_URL</code> and other settings in <code>production.env</code>.</p>
+<h3 id="7-systemd-service-configuration">7. Systemd Service Configuration</h3>
+<p>Create the backend service file <code>/etc/systemd/system/asd-backend.service</code>:</p>
+<pre><code class="language-ini">[Unit]
+Description=ASD Database Python Backend
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/opt/asd-db/backend
+Environment=&quot;PATH=/opt/asd-db/backend/venv/bin&quot;
+EnvironmentFile=/opt/asd-db/config/production.env
+ExecStart=/opt/asd-db/backend/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>Create the node scheduler service file <code>/etc/systemd/system/asd-node-backend.service</code>:</p>
+<pre><code class="language-ini">[Unit]
+Description=ASD Database Node.js Scheduler
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/opt/asd-db/backend
+EnvironmentFile=/opt/asd-db/config/production.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p><strong>Note:</strong> Replace <code>User=ubuntu</code> with your actual username if different.</p>
+<p>Enable and start the services:</p>
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl enable asd-backend.service asd-node-backend.service
+sudo systemctl start asd-backend.service asd-node-backend.service
+</code></pre>
+<h3 id="8-nginx-configuration">8. Nginx Configuration</h3>
+<p>Remove the default configuration:</p>
+<pre><code class="language-bash">sudo rm /etc/nginx/sites-enabled/default
+</code></pre>
+<p>Create the site configuration <code>/etc/nginx/sites-available/asd-db.conf</code>:</p>
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name star.cs.wwu.edu;  # Replace with your domain
+
+    root /opt/asd-db/frontend/testing-website/build;
+    index index.html;
+
+    # Serve React app
+    location / {
+      try_files $uri $uri/ /index.html;
+    }
+
+    # Flask API
+    location /api/ {
+      proxy_pass http://127.0.0.1:5000;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Node job backend
+    location /jobs/ {
+      proxy_pass http://127.0.0.1:5001/;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection &quot;upgrade&quot;;
+    }
+
+    proxy_read_timeout 90s;
+}
+</code></pre>
+<p>Enable the site and restart Nginx:</p>
+<pre><code class="language-bash">sudo ln -s /etc/nginx/sites-available/asd-db.conf /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+</code></pre>
 <h2 id="deployment-methods">Deployment Methods</h2>
 <h3 id="automated-deployment-recommended">Automated Deployment (Recommended)</h3>
 <pre><code class="language-bash">./deploy-production.sh
