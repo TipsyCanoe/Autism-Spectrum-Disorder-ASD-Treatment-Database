@@ -12,6 +12,171 @@ The production system uses:
 - **Systemd**: Service management for both backends
 - **Neon Database**: Cloud-hosted PostgreSQL database
 
+## Initial Server Setup (Barebones VM)
+
+This section details how to set up a fresh Ubuntu 20.04/22.04 LTS server from scratch.
+
+### 1. System Prerequisites
+
+Update the system and install essential packages:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git curl wget build-essential python3 python3-pip python3-venv python3-dev nginx
+```
+
+### 2. Install Node.js
+
+Install Node.js (LTS version) using NodeSource:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+### 3. Clone the Repository
+
+Clone the repository to `/opt/asd-db`:
+
+```bash
+sudo mkdir -p /opt/asd-db
+sudo chown $USER:$USER /opt/asd-db
+git clone https://github.com/TipsyCanoe/Autism-Spectrum-Disorder-ASD-Treatment-Database.git /opt/asd-db
+cd /opt/asd-db
+```
+
+### 4. Backend Setup (Python)
+
+Create a virtual environment and install dependencies:
+
+```bash
+cd /opt/asd-db/backend
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 5. Frontend Setup (React)
+
+Install Node.js dependencies:
+
+```bash
+cd /opt/asd-db/frontend/testing-website
+npm install
+```
+
+### 6. Environment Configuration
+
+Copy the production template and edit it:
+
+```bash
+cd /opt/asd-db/config
+cp production.env.template production.env
+nano production.env
+```
+
+Update the `DATABASE_URL` and other settings in `production.env`.
+
+### 7. Systemd Service Configuration
+
+Create the backend service file `/etc/systemd/system/asd-backend.service`:
+
+```ini
+[Unit]
+Description=ASD Database Python Backend
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/opt/asd-db/backend
+Environment="PATH=/opt/asd-db/backend/venv/bin"
+EnvironmentFile=/opt/asd-db/config/production.env
+ExecStart=/opt/asd-db/backend/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Create the node scheduler service file `/etc/systemd/system/asd-node-backend.service`:
+
+```ini
+[Unit]
+Description=ASD Database Node.js Scheduler
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/opt/asd-db/backend
+EnvironmentFile=/opt/asd-db/config/production.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**Note:** Replace `User=ubuntu` with your actual username if different.
+
+Enable and start the services:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable asd-backend.service asd-node-backend.service
+sudo systemctl start asd-backend.service asd-node-backend.service
+```
+
+### 8. Nginx Configuration
+
+Remove the default configuration:
+
+```bash
+sudo rm /etc/nginx/sites-enabled/default
+```
+
+Create the site configuration `/etc/nginx/sites-available/asd-db.conf`:
+
+```nginx
+server {
+    listen 80;
+    server_name star.cs.wwu.edu;  # Replace with your domain
+
+    root /opt/asd-db/frontend/testing-website/build;
+    index index.html;
+
+    # Serve React app
+    location / {
+      try_files $uri $uri/ /index.html;
+    }
+
+    # Flask API
+    location /api/ {
+      proxy_pass http://127.0.0.1:5000;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Node job backend
+    location /jobs/ {
+      proxy_pass http://127.0.0.1:5001/;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+    }
+
+    proxy_read_timeout 90s;
+}
+```
+
+Enable the site and restart Nginx:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/asd-db.conf /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
 ## Deployment Methods
 
 ### Automated Deployment (Recommended)
