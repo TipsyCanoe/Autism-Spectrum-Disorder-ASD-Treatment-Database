@@ -15,18 +15,7 @@ This comprehensive database system provides:
 - **Interactive Interface**: React-based web application for easy user access
 - **AI-Powered Analysis**: MedBERT integration for advanced text processing
 
-**Live System**: Generously hosted by Western Washington University | Database: Neon PostgreSQL
-
-View our official docs [here](https://tipsycanoe.github.io/Autism-Spectrum-Disorder-ASD-Treatment-Database/)!
-
-We also feature:
-
-- **Advanced Search**: Filter treatments by age, symptoms, medications
-- **Evidence Synthesis**: Automated analysis of treatment effectiveness
-- **AI-Powered**: MedBERT integration for intelligent text processing
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Auto-Updates**: Scheduled PubMed data refresh
-- **Fast Performance**: Optimized queries and caching
+**Live System**: Hosted by Western Washington University | Database: Neon PostgreSQL
 
 ## **Quick Start (Local Development)**
 
@@ -45,7 +34,7 @@ cd Autism-Spectrum-Disorder-ASD-Treatment-Database
 
 # Install dependencies and start
 python3 -m venv venv && source venv/bin/activate
-pip install -r services/api/requirements.txt
+pip install -r backend/requirements.txt
 cd frontend/testing-website && npm install && cd ../..
 
 # Start all services
@@ -54,18 +43,43 @@ cd frontend/testing-website && npm install && cd ../..
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
+### Services Started
+
+- **Frontend**: React app on port 3000
+- **Python API**: Flask backend on port 5000
+- **Node.js API**: Job scheduler on port 5001
+
+## **Environment Configuration**
+
+This project supports multiple environments with automatic configuration:
+
+### Available Environments
+
+- **`local`** (default): Development with ports 3000, 5000, 5001
+- **`staging`**: Pre-production testing environment
+- **`production`**: Live deployment environment
+
 ### Environment Commands
 
 ```bash
 # Local development (default)
 ./start_all_servers.sh
+
+# Staging environment
+ENVIRONMENT=staging ./start_all_servers.sh
+
+# Load specific environment manually
+source load-env.sh  # Loads local by default
+ENVIRONMENT=production source load-env.sh
 ```
 
 ### Configuration Files
 
 - `config/local.env` - Local development settings
+- `config/staging.env` - Staging environment template
+- `config/production.env.template` - Production template (copy to `production.env`)
 
-📚 **Detailed Guide**: See [ENVIRONMENT_GUIDE.md](ENVIRONMENT_GUIDE.md)
+📚 **Detailed Guide**: See [Environment File Overview](developer/ENVIRONMENT_FILES_OVERVIEW.md)
 
 ## **Production Deployment**
 
@@ -83,7 +97,25 @@ This handles:
 - Service restarts and health checks
 - Nginx configuration reload
 
-For a more detailed guide and to see other deployment methods, please visit our dedicated deployment [page](https://tipsycanoe.github.io/Autism-Spectrum-Disorder-ASD-Treatment-Database/).
+For a more detailed guide, see [Deployment](developer/PRODUCTION_DEPLOYMENT.md)
+
+## **Testing**
+
+**Run all tests:**
+
+```bash
+./run_all_tests.sh
+```
+
+**Individual test suites:**
+
+```bash
+# Frontend tests
+cd frontend/testing-website && npm test
+
+# Backend tests  
+cd backend/tests && ./run_tests.sh
+```
 
 ## **Architecture**
 
@@ -97,13 +129,29 @@ For a more detailed guide and to see other deployment methods, please visit our 
 - **AI/ML**: MedBERT integration for text analysis
 - **Deployment**: Nginx + Gunicorn + Systemd (production)
 
+### Data Pipeline
+
+1. **PubMed API Integration** → Automated literature extraction
+2. **MedBERT Processing** → AI-powered text analysis and classification
+3. **Database Storage** → Structured treatment and outcome data
+4. **Web Interface** → Healthcare professional access and search
+
+## **Features**
+
+- **Advanced Search**: Filter treatments by age, symptoms, medications
+- **Evidence Synthesis**: Automated analysis of treatment effectiveness
+- **AI-Powered**: MedBERT integration for intelligent text processing
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Auto-Updates**: Scheduled PubMed data refresh
+- **Fast Performance**: Optimized queries and caching
+
 ## **Database & APIs**
 
 ### PubMed Integration
 
-- **Automated Extraction**: `pubmed_api/pubmed_API_data.py`, `pubmed_api/pubmed_API_ASD_data.py`
-- **Manual Updates**: Run `scripts/API_JOB.py` or use web interface
-- **Scheduling**: Configure in `/services/scheduler/scheduler.js` ([cron reference](https://crontab.guru))
+- **Automated Extraction**: `pubmed_API_data.py`, `pubmed_API_ASD_data.py`
+- **Manual Updates**: Run `API_JOB.py` or use web interface
+- **Scheduling**: Configure in `/backend/scheduler.js` ([cron reference](https://crontab.guru))
 
 ### Database
 
@@ -126,9 +174,14 @@ python fine_tuned_llm/MedBERT.py
 
 ## **Documentation**
 
-- **[Environment Setup Guide](docs/docs/getting_started/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
-- **[Production Deployment](docs/docs/getting_started/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
-- **[File Overview](docs/docs/advanced/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
+- **[Environment Setup Guide](developer/ENVIRONMENT_GUIDE.md)** - Comprehensive environment configuration
+- **[Production Deployment](developer/PRODUCTION_DEPLOYMENT.md)** - Server deployment procedures
+- **[Nginx Configuration](developer/NGINX_CONFIGURATION.md)** - Reverse proxy and routing setup
+- **[CI/CD Pipeline](developer/CI_CD_PIPELINE.md)** - Automated testing and deployment
+- **[File Overview](developer/ENVIRONMENT_FILES_OVERVIEW.md)** - Complete file reference
+- **Code Documentation** - Inline comments throughout codebase
+
+Update documentation by navigating to `mydocs`, then typing the command `mkdocs gh-deploy`.
 
 ## **Contributing**
 
@@ -140,7 +193,7 @@ python fine_tuned_llm/MedBERT.py
 6. Push to the branch (`git push origin feature/AmazingFeature`)
 7. Open a Pull Request
 
-## 📄 **License**
+## **License**
 
 This project is part of academic research at Western Washington University. Please contact the maintainers for usage permissions.
 

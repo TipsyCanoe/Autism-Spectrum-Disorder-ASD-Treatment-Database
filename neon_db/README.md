@@ -53,13 +53,13 @@ python3 neon_db/interactive_csv_upload.py
 
 ### Step 2: Enter CSV Filename
 
-When prompted, enter the filename from `PubmedAPIFiles/` directory:
+When prompted, enter the filename from `data/db_imports/` directory:
 
 ```
-Enter CSV filename (in PubmedAPIFiles/): your_file.csv
+Enter CSV filename (in data/db_imports/): your_file.csv
 ```
 
-**Note:** The script automatically prepends `PubmedAPIFiles/` to your filename.
+**Note:** The script automatically prepends `data/db_imports/` to your filename.
 
 **Examples:**
 - `test.csv` - Test file with sample data
@@ -131,7 +131,7 @@ Proceed with upload? (y/N): y
 | Schema | `jim_data` | Database schema |
 | Table | `data_embedded` | Target table |
 | Mode | `append` | Upload mode |
-| File Location | `PubmedAPIFiles/` | CSV directory |
+| File Location | `data/db_imports/` | CSV directory |
 
 ### Upload Modes
 
@@ -150,16 +150,17 @@ Proceed with upload? (y/N): y
 ## CSV File Requirements
 
 ### Location
-Place CSV files in the `PubmedAPIFiles/` directory at project root.
+Place CSV files in the `data/db_imports/` directory at project root.
 
 **Example CSV Locations:**
 ```
 Autism-Spectrum-Disorder-ASD-Treatment-Database/
-└── PubmedAPIFiles/
-    ├── test.csv                    (example test file)
-    ├── pubmed_papers_info.csv      (PubMed data)
-    ├── study_details_final.csv     (study details)
-    └── your_data.csv               (any CSV file)
+└── data/
+    └── db_imports/
+        ├── test.csv                    (example test file)
+        ├── pubmed_papers_info.csv      (PubMed data)
+        ├── study_details_final.csv     (study details)
+        └── your_data.csv               (any CSV file)
 ```
 
 ### Format Requirements
@@ -190,11 +191,11 @@ Autism-Spectrum-Disorder-ASD-Treatment-Database/
 
 **File Not Found**
 ```
-❌ File not found: PubmedAPIFiles/yourfile.csv
+❌ File not found: data/db_imports/yourfile.csv
 ```
-- Verify file exists in `PubmedAPIFiles/` directory
+- Verify file exists in `data/db_imports/` directory
 - Check spelling and `.csv` extension
-- List files: `ls PubmedAPIFiles/`
+- List files: `ls data/db_imports/`
 
 **Vector Dimension Error**
 ```
@@ -266,7 +267,7 @@ WHERE pmid IN (99999999, 88888888, 77777777);
 
 A sample test CSV with proper 768-dimensional vectors is provided for testing purposes:
 ```
-PubmedAPIFiles/test.csv
+data/db_imports/test.csv
 ```
 
 This test file contains dummy data with PMID 99999999 to help you verify the upload process works correctly.
@@ -293,7 +294,7 @@ DELETE FROM jim_data.data_embedded WHERE pmid = 99999999;
 
 To upload your actual data files:
 
-1. Place your CSV in `PubmedAPIFiles/` directory
+1. Place your CSV in `data/db_imports/` directory
 2. Ensure it matches the required format (see CSV File Requirements)
 3. Run the script and enter your filename
 4. Review the preview and confirm
@@ -330,7 +331,7 @@ python3 neon_db/automated_csv_uploader.py
 For advanced users:
 ```bash
 psql "connection_string"
-\copy jim_data.data_embedded FROM 'PubmedAPIFiles/file.csv' DELIMITER ',' CSV HEADER;
+\copy jim_data.data_embedded FROM 'data/db_imports/file.csv' DELIMITER ',' CSV HEADER;
 ```
 
 ---

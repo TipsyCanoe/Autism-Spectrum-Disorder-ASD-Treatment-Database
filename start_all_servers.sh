@@ -26,7 +26,7 @@ if [ "$ENVIRONMENT" = "production" ]; then
     
     # Restart systemd services
     echo "Restarting backend services..."
-    sudo systemctl restart asd-backend.service
+    sudo systemctl restart asd-backend.service asd-node-backend.service
     
     # Reload nginx to serve new frontend build
     echo "Reloading nginx..."
@@ -34,7 +34,7 @@ if [ "$ENVIRONMENT" = "production" ]; then
     
     # Check service status
     echo "Service status:"
-    sudo systemctl status asd-backend.service nginx.service --no-pager
+    sudo systemctl status asd-backend.service asd-node-backend.service nginx.service --no-pager
     
 else
     echo "Development mode: Starting services manually..."
@@ -59,21 +59,27 @@ else
     
     # Start Flask Backend with memory limits
     echo "Starting Backend Flask API (port $PYTHON_BACKEND_PORT)..."
-    (cd "$SCRIPT_DIR/backend" && 
+    (cd "$SCRIPT_DIR/services/api" && 
      source "$SCRIPT_DIR/venv/bin/activate" &&
      PYTHONUNBUFFERED=1 $PYTHON_CMD -B app.py > "$LOGS_DIR/backend_flask.log" 2>&1) &
     BACKEND_QUERY_PID=$!
+
+    # Start Node.js Scheduler
+    echo "Starting Node.js Scheduler..."
+    (cd "$SCRIPT_DIR/services/scheduler" && 
+     node server.js > "$LOGS_DIR/backend_node.log" 2>&1) &
+    SCHEDULER_PID=$!
     
     # Save PIDs
-    echo "$FRONTEND_PID $BACKEND_QUERY_PID" > "$SCRIPT_DIR/.server_pids"
+    echo "$FRONTEND_PID $BACKEND_QUERY_PID $SCHEDULER_PID" > "$SCRIPT_DIR/.server_pids"
     
-    echo "All servers started. PIDs: $FRONTEND_PID $BACKEND_QUERY_PID"
+    echo "All servers started. PIDs: $FRONTEND_PID $BACKEND_QUERY_PID $SCHEDULER_PID"
     echo "View logs with: tail -f $LOGS_DIR/*.log"
     echo "Stop servers with: ./stop_all_servers.sh"
     
     # Add cleanup trap
-    trap 'echo "Stopping servers..."; kill $FRONTEND_PID $BACKEND_QUERY_PID 2>/dev/null; exit' INT
+    trap 'echo "Stopping servers..."; kill $FRONTEND_PID $BACKEND_QUERY_PID $SCHEDULER_PID 2>/dev/null; exit' INT
     
     # Keep script running
-    wait $FRONTEND_PID $BACKEND_QUERY_PID
+    wait $FRONTEND_PID $BACKEND_QUERY_PID $SCHEDULER_PID
 fi

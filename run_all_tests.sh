@@ -85,13 +85,13 @@ run_backend_tests() {
     echo -e "\n${BOLD}${BLUE}=== Running Backend Tests ===${NC}\n"
     
     # Check if backend test directory exists
-    if [ ! -d "${SCRIPT_DIR}/backend/tests" ]; then
-        echo -e "${RED}Backend test directory not found at ${SCRIPT_DIR}/backend/tests${NC}"
+    if [ ! -d "${SCRIPT_DIR}/services/api/tests" ]; then
+        echo -e "${RED}Backend test directory not found at ${SCRIPT_DIR}/services/api/tests${NC}"
         return 1
     fi
     
     # Build the command
-    local cmd="${SCRIPT_DIR}/backend/tests/run_tests.sh"
+    local cmd="${SCRIPT_DIR}/services/api/tests/run_tests.sh"
     
     # Add marker if specified
     if [[ -n "$backend_marker" ]]; then
