@@ -981,7 +981,7 @@
 <li><strong>Cause:</strong> Deploy script interrupted, missing dependencies, or syntax errors.</li>
 <li><strong>Fix:</strong></li>
 <li>Run <code>sudo journalctl -xe -u asd-backend.service</code> to find the stack trace.</li>
-<li>If dependency missing, rerun <code>pip install -r backend/requirements.txt</code> inside the virtualenv.</li>
+<li>If dependency missing, rerun <code>pip install -r services/api/requirements.txt</code> inside the virtualenv.</li>
 <li>Rebuild frontend if the Node service fails due to missing build: <code>npm install &amp;&amp; npm run build</code> in <code>frontend/testing-website</code>.</li>
 </ul>
 <h3 id="api-returns-empty-results">API returns empty results</h3>

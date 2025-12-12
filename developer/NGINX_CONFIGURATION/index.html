@@ -1394,9 +1394,9 @@ sudo systemctl restart asd-backend.service asd-node-backend.service
 1. Verify the backend route exists:
    ```bash
    # For Python API
-   grep -r "route.*filters" /opt/asd-db/backend/app.py</p>
+   grep -r "route.*filters" /opt/asd-db/services/api/app.py</p>
 <p># For Node API
-   grep -r "post.*run-job" /opt/asd-db/backend/server.js
+   grep -r "post.*run-job" /opt/asd-db/services/scheduler/server.js
    ```</p>
 <ol>
 <li>

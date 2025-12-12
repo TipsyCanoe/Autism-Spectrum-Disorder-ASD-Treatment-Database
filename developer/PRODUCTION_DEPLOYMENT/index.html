@@ -1338,7 +1338,7 @@ cd /opt/asd-db
 </code></pre>
 <h3 id="4-backend-setup-python">4. Backend Setup (Python)</h3>
 <p>Create a virtual environment and install dependencies:</p>
-<pre><code class="language-bash">cd /opt/asd-db/backend
+<pre><code class="language-bash">cd /opt/asd-db/services/api
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
@@ -1364,10 +1364,10 @@ After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/opt/asd-db/backend
-Environment=&quot;PATH=/opt/asd-db/backend/venv/bin&quot;
+WorkingDirectory=/opt/asd-db/services/api
+Environment=&quot;PATH=/opt/asd-db/services/api/venv/bin&quot;
 EnvironmentFile=/opt/asd-db/config/production.env
-ExecStart=/opt/asd-db/backend/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app
+ExecStart=/opt/asd-db/services/api/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app
 Restart=always
 
 [Install]
@@ -1380,7 +1380,7 @@ After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/opt/asd-db/backend
+WorkingDirectory=/opt/asd-db/services/scheduler
 EnvironmentFile=/opt/asd-db/config/production.env
 ExecStart=/usr/bin/node server.js
 Restart=always
