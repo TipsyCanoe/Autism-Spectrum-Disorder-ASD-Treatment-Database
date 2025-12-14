@@ -20,7 +20,7 @@ cd "$SCRIPT_DIR"
 
 # 3. Restart services
 echo "🔄 Restarting services..."
-sudo systemctl restart asd-backend.service
+sudo systemctl restart asd-backend.service asd-node-backend.service
 
 # 4. Reload nginx
 echo "🌐 Reloading nginx..."
@@ -34,6 +34,7 @@ sleep 3
 # Check service status
 echo "📊 Service Status:"
 sudo systemctl is-active asd-backend.service || echo "❌ Python backend failed"
+sudo systemctl is-active asd-node-backend.service || echo "❌ Node scheduler failed"
 sudo systemctl is-active nginx.service || echo "❌ Nginx failed"
 
 # Test endpoints (with timeout and fallback)
