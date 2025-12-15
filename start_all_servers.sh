@@ -85,6 +85,41 @@ else
         fi
         return 0
     }
+
+    ensure_frontend_deps() {
+        local frontend_dir="$SCRIPT_DIR/frontend/testing-website"
+
+        if ! command -v npm >/dev/null 2>&1; then
+            echo "Error: npm is not installed (required to run the frontend)."
+            echo "Install Node.js/npm, then run again."
+            return 1
+        fi
+
+        if [ ! -f "$frontend_dir/package.json" ]; then
+            echo "Error: frontend package.json not found at: $frontend_dir/package.json"
+            return 1
+        fi
+
+        if [ ! -e "$frontend_dir/node_modules/.bin/react-scripts" ]; then
+            echo "Frontend dependencies missing (react-scripts not found). Installing..."
+            (
+                cd "$frontend_dir" || exit 1
+                if [ -f package-lock.json ]; then
+                    npm ci
+                else
+                    npm install
+                fi
+            ) || return 1
+        fi
+
+        if [ ! -e "$frontend_dir/node_modules/.bin/react-scripts" ]; then
+            echo "Error: react-scripts is still missing after install."
+            echo "Try: cd $frontend_dir && npm ci"
+            return 1
+        fi
+
+        return 0
+    }
     
     # Original development startup logic
     LOGS_DIR="$SCRIPT_DIR/logs"
@@ -111,6 +146,8 @@ else
         echo "Tip: run ./stop_all_servers.sh or change config/${ENVIRONMENT}.env"
         exit 1
     fi
+
+    ensure_frontend_deps || exit 1
     
     # Start Frontend (with reduced memory allocation)
     echo "Starting Frontend server (port $FRONTEND_PORT)..."
