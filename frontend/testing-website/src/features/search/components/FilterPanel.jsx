@@ -12,6 +12,8 @@ const FilterPanel = ({
   symptomOptions,
   genderOptions,
   medicationOptions, // Assuming medicationOptions might be passed for a new filter section
+  includeAi,
+  setIncludeAi,
 }) => {
   const [expandedSections, setExpandedSections] = useState({
     age: false,
@@ -100,6 +102,22 @@ const FilterPanel = ({
               }
             }}
           />
+        </div>
+
+        {/* AI Results Toggle */}
+        <div className="mb-6">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={includeAi}
+              onChange={(e) => setIncludeAi(e.target.checked)}
+              className="w-4 h-4 text-navbar-blue rounded border-gray-300 focus:ring-navbar-blue"
+            />
+            <span className="text-gray-700 font-medium">Include results helped by AI</span>
+          </label>
+          <p className="text-xs text-gray-500 mt-1 ml-6">
+            Uncheck to see only manually verified studies.
+          </p>
         </div>
 
         {/* Age Filter Section */}

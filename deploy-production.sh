@@ -20,8 +20,7 @@ cd "$SCRIPT_DIR"
 
 # 3. Restart services
 echo "🔄 Restarting services..."
-sudo systemctl restart asd-backend.service
-sudo systemctl restart asd-node-backend.service
+sudo systemctl restart asd-backend.service asd-node-backend.service
 
 # 4. Reload nginx
 echo "🌐 Reloading nginx..."
@@ -35,7 +34,7 @@ sleep 3
 # Check service status
 echo "📊 Service Status:"
 sudo systemctl is-active asd-backend.service || echo "❌ Python backend failed"
-sudo systemctl is-active asd-node-backend.service || echo "❌ Node backend failed" 
+sudo systemctl is-active asd-node-backend.service || echo "❌ Node scheduler failed"
 sudo systemctl is-active nginx.service || echo "❌ Nginx failed"
 
 # Test endpoints (with timeout and fallback)
@@ -46,16 +45,9 @@ else
     echo "⚠️  Python API test timed out (service may still be starting)"
 fi
 
-if timeout 5 curl -s http://localhost:5001/api > /dev/null 2>&1; then
-    echo "✅ Node API responding"
-else
-    echo "⚠️  Node API test timed out (service may still be starting)"
-fi
-
 echo ""
 echo "💡 If APIs show warnings, wait 30 seconds and test manually:"
 echo "   curl http://localhost:5000/api/filters"
-echo "   curl http://localhost:5001/api"
 
 echo "🎉 Production deployment complete!"
 echo "🌍 Website: https://star.cs.wwu.edu"

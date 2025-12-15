@@ -1,5 +1,14 @@
 # Ignore Python virtual environments
 medbert_env/
+venv/
+backend/venv/
+services/api/venv/
+
+# Ignore Node modules
+node_modules/
+backend/node_modules/
+services/scheduler/node_modules/
+
 
 # Ignore compiled Python files
 __pycache__/
@@ -24,7 +33,9 @@ frontend/testing-website/.env
 .server_pids
 *.backup
 
-# Ignore Python virtual environment directories
-venv/
-backend/venv/
+# Data directories
+data/raw/
+data/embeddings/
+# Keep data/db_imports/ tracked as it contains seed data
 
+.env

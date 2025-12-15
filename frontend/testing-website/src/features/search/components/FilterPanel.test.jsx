@@ -38,6 +38,7 @@ const mockHandleFilterChange = jest.fn();
 const mockSetSearchQuery = jest.fn();
 const mockClearFilters = jest.fn();
 const mockHandleSearch = jest.fn();
+const mockSetIncludeAi = jest.fn();
 
 const defaultProps = {
   selectedOptions: [],
@@ -46,6 +47,8 @@ const defaultProps = {
   setSearchQuery: mockSetSearchQuery,
   clearFilters: mockClearFilters,
   handleSearch: mockHandleSearch,
+  includeAi: false,
+  setIncludeAi: mockSetIncludeAi,
   ageOptions: [{ value: "0-3", label: "0-3 Years" }],
   symptomOptions: [{ value: "social", label: "Social" }],
   genderOptions: [{ value: "male", label: "Male" }],
@@ -136,5 +139,22 @@ describe("FilterPanel Component", () => {
     expect(screen.getByTestId("filter-section-age")).toBeInTheDocument();
     const ageCheckbox = screen.getByLabelText("0-3 Years"); // Assuming mock renders this label
     expect(ageCheckbox).toBeChecked();
+  });
+
+  test("renders and toggles AI checkbox", () => {
+    render(<FilterPanel {...defaultProps} />);
+    const aiCheckbox = screen.getByLabelText("Include results helped by AI");
+    expect(aiCheckbox).toBeInTheDocument();
+    expect(aiCheckbox).not.toBeChecked();
+
+    fireEvent.click(aiCheckbox);
+    expect(mockSetIncludeAi).toHaveBeenCalledTimes(1);
+    expect(mockSetIncludeAi).toHaveBeenCalledWith(true);
+  });
+
+  test("renders AI checkbox as checked when includeAi is true", () => {
+    render(<FilterPanel {...defaultProps} includeAi={true} />);
+    const aiCheckbox = screen.getByLabelText("Include results helped by AI");
+    expect(aiCheckbox).toBeChecked();
   });
 });
